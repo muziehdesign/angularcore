@@ -102,6 +102,40 @@
           }
         }
       }
+    },
+    "@muziehdesign/forms": {
+      "projectType": "library",
+      "root": "projects/muziehdesign/forms",
+      "sourceRoot": "projects/muziehdesign/forms/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/muziehdesign/forms/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/muziehdesign/forms/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/muziehdesign/forms/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/muziehdesign/forms/src/test.ts",
+            "tsConfig": "projects/muziehdesign/forms/tsconfig.spec.json",
+            "karmaConfig": "projects/muziehdesign/forms/karma.conf.js"
+          }
+        }
+      }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
