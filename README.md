@@ -1,27 +1,61 @@
-# Angular
+# ShoppingcartWeb
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.0.2.
+## Setup
 
-## Development server
+1. create file `config.local.json` in `/src`. Body example:
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+    ```
+    {
 
-## Code scaffolding
+    }
+    ```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Design System
 
-## Build
+This project follows [Muzieh Design System](https://ruifang.github.io/designsystem)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Extensions
 
-## Running unit tests
+1. Angular Language Service
+1. Prettier
+1. Tailwind CSS IntelliSense
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Todo
 
-## Running end-to-end tests
+-   [ ] css framework, responsiveness
+-   [ ] design system
+-   [x] local configuration
+-   [ ] module configuration
+-   [ ] api client
+-   [ ] logging
+-   [ ] path setup
+-   [ ] formatting
+-   [ ] schematics
+-   [ ] cypress
+-   [ ] analytics
+-   [x] authentication
+-   [ ] authorization
+-   [ ] error pages
+-   [ ] forms
+-   [ ] component styles
+-   [ ] layout
+-   [ ] health
+-   [x] lazy module
+-   [ ] commands
+-   [ ] build
+-   [ ] error handling
+-   [ ] bootstrap failure
+-   [ ] page service lifecycle
+-   [ ] separation of ui and domain
+-   [ ] state management
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Tasks
 
-## Further help
+-   module import cleanup
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Notes
+
+### authentication
+
+-   When testing in private mode, allow third-party cookies to avoid authentication errors
+-   Need to create signin-oidc.html and add output to angular.json
