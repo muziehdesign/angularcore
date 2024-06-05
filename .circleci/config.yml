@@ -52,7 +52,7 @@ jobs:
       - run:
           name: "version @muziehdesign/angularcore"
           command: |
-            sh ./../version.sh ${CIRCLE_BUILD_NUM} ${CIRCLE_BRANCH}
+            sh ./../../version.sh ${CIRCLE_BUILD_NUM} ${CIRCLE_BRANCH}
           working_directory: ./projects/core
       - run: npm ci
       - run: npm run ng -- build core
