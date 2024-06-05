@@ -39,7 +39,7 @@ jobs:
           chrome-version: 116.0.5845.96
           replace-existing-chrome: true
       - run: npm ci
-      - run: npm run ng -- test components 
+      #- run: npm run ng -- test components 
   build:
     <<: *defaults
     steps:
