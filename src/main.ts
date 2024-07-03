@@ -1,6 +1,6 @@
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { AuthenticationService } from '@muziehdesign/core';
+import { bootstrapIdentityServer } from '@muziehdesign/core';
 import { forkJoin, from, map, Observable, take } from 'rxjs';
 import { merge } from 'lodash';
 
@@ -18,15 +18,15 @@ loadSettings(environment.configurations)
                 enableProdMode();
             }
 
-            const auth = new AuthenticationService(appConfig.identity); // TODO
-            if (await auth.interceptSilentRedirect()) {
+            const idsBootstrap = await bootstrapIdentityServer(appConfig.identity, false);
+            if (idsBootstrap.halt) {
                 return;
             }
-            await auth.completeSignIn();
+
 
             // bootstrap
             const extraProviders = [
-                { provide: AuthenticationService, useValue: auth },
+                ...idsBootstrap.providers,
                 { provide: AppConfig, useValue: Object.freeze(appConfig) },
             ];
 

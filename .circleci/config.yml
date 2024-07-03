@@ -59,9 +59,6 @@ jobs:
       - store_artifacts:
           path: /dist/core
           destination: muziehdesign/angularcore
-      - store_artifacts:
-          path: /dist/muziehdesign/ui
-          destination: muziehdesign/ui
       - persist_to_workspace:
           root: .
           paths:
@@ -79,16 +76,15 @@ jobs:
       - run: 
           name: 'npm publish'
           command: |
-            if [ "$BRANCH" = "master" ] || [ "$BRANCH" = "develop" ] ||  [[ "$BRANCH" = \release\/* ]]; then
-              echo "publishing non-beta package"
-              npm publish ./dist/components
-              npm publish ./dist/design
+            if [ "$BRANCH" = "master" ]; then
+              npm publish ./dist/core latest
+            elif [ "$BRANCH" = "develop" ] then
+              npm publish ./dist/core next
+            elif [[ "$BRANCH" = \release\/* ]]; then
+              npm publish ./dist/core
             else
-              echo "publishing beta package"
-              npm publish ./dist/components --tag beta
-              npm publish ./dist/design --tag beta
+              npm publish ./dist/core --tag beta
             fi
-            # npm publish ./dist/muziehdesign/ui --tag alpha
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows

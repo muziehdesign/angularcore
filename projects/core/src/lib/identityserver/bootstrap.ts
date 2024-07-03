@@ -1,0 +1,29 @@
+import { StaticProvider } from '@angular/core';
+import { AuthenticationSettings } from './authentication-settings';
+import { AuthenticationService } from './authentication.service';
+
+export const bootstrapIdentityServer = async (settings: AuthenticationSettings, haltAnonymous: boolean) => {
+    const service = new AuthenticationService(settings);
+    const silentRedirected = await service.interceptSilentRedirect();
+    if (silentRedirected) {
+        return { halt: true, providers: [] } satisfies IdentityServerBootstrapResult;
+    }
+
+    const user = await service.completeSignIn();
+    if(!user) {
+        await service.login();
+        return { halt: true, providers: [] } satisfies IdentityServerBootstrapResult;
+    }
+
+    return {
+        halt: false,
+        providers: [
+            { provide: AuthenticationService, useValue: service }
+        ]
+    } satisfies IdentityServerBootstrapResult;
+};
+
+export interface IdentityServerBootstrapResult {
+    halt: boolean;
+    providers: StaticProvider[];
+}

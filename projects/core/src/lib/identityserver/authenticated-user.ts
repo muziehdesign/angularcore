@@ -16,4 +16,8 @@ export class AuthenticatedUser {
     get provider() {
         return this.profile.get('idp');
     }
+
+    getClaim(key: string) {
+        return this.profile.get(key);
+    }
 }
