@@ -78,7 +78,7 @@ jobs:
           command: |
             if [ "$BRANCH" = "master" ]; then
               npm publish ./dist/core latest
-            elif [ "$BRANCH" = "develop" ] then
+            elif [ "$BRANCH" = "develop" ]; then
               npm publish ./dist/core next
             elif [[ "$BRANCH" = \release\/* ]]; then
               npm publish ./dist/core
