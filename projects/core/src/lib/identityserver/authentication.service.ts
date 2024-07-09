@@ -1,11 +1,11 @@
 import { Log, User, UserManager, UserManagerSettings } from 'oidc-client';
 import { AuthenticatedUser } from './authenticated-user';
-import { AuthenticationSettings } from './authentication-settings';
+import { AuthenticationOptions } from './authentication-options';
 
 export class AuthenticationService {
     private readonly userManager: UserManager;
 
-    constructor(protected settings: AuthenticationSettings) {
+    constructor(protected settings: AuthenticationOptions) {
         Log.logger = console; // TODO
         const map = new Map<string, number>();
         map.set('debug', Log.DEBUG);

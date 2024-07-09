@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { AuthenticationSettings } from './authentication-settings';
+import { AuthenticationOptions } from './authentication-options';
 import { AuthenticationService } from './authentication.service';
 
 describe('AuthenticationService', () => {
@@ -7,7 +7,7 @@ describe('AuthenticationService', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({});
-        service = new AuthenticationService({} as AuthenticationSettings);
+        service = new AuthenticationService({} as AuthenticationOptions);
     });
 
     it('should be created', () => {

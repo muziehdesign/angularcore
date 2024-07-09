@@ -1,4 +1,4 @@
-import { AuthenticationSettings } from '@muziehdesign/angularcore';
+import { AuthenticationOptions } from '@muziehdesign/angularcore';
 import { BuildInfo } from './build-info';
 
 export class AppConfig {
@@ -11,6 +11,6 @@ export class AppConfig {
     shoppingCartApi?: {
         url: string;
     };
-    identity: AuthenticationSettings = {} as AuthenticationSettings;
+    identity: AuthenticationOptions = {} as AuthenticationOptions;
     build: BuildInfo = {} as BuildInfo;
 }

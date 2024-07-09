@@ -1,4 +1,4 @@
-export interface AuthenticationSettings {
+export interface AuthenticationOptions {
     logLevel: 'none' | 'error' | 'warn' | 'info' | 'debug';
     authority: string;
     clientId: string;

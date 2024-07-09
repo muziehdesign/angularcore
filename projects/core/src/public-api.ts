@@ -1,5 +1,5 @@
 // identityserver
-export * from './lib/identityserver/authentication-settings';
+export * from './lib/identityserver/authentication-options';
 export * from './lib/identityserver/authentication.service';
 export * from './lib/identityserver/authenticated-user';
 export * from './lib/identityserver/authentication-token.interceptor';

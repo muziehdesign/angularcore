@@ -1,8 +1,8 @@
 import { StaticProvider } from '@angular/core';
-import { AuthenticationSettings } from './authentication-settings';
+import { AuthenticationOptions } from './authentication-options';
 import { AuthenticationService } from './authentication.service';
 
-export const bootstrapIdentityServer = async (settings: AuthenticationSettings, haltAnonymous: boolean) => {
+export const bootstrapIdentityServer = async (settings: AuthenticationOptions, haltAnonymous: boolean) => {
     const service = new AuthenticationService(settings);
     const silentRedirected = await service.interceptSilentRedirect();
     if (silentRedirected) {
