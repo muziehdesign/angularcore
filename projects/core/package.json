@@ -1,6 +1,6 @@
 {
     "name": "@muziehdesign/angularcore",
-    "version": "0.0.1",
+    "version": "17.3.10",
     "peerDependencies": {
         "@angular/common": "^17.3.10",
         "@angular/core": "^17.3.10",

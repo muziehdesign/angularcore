@@ -1,6 +1,6 @@
 {
     "name": "shoppingcart-web",
-    "version": "0.0.0",
+    "version": "17.3.10",
     "scripts": {
         "ng": "ng",
         "start": "ng build core && ng serve",
