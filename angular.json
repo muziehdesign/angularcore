@@ -152,39 +152,6 @@
                     }
                 }
             }
-        },
-        "@muziehdesign/core": {
-          "projectType": "library",
-          "root": "projects/muziehdesign/core",
-          "sourceRoot": "projects/muziehdesign/core/src",
-          "prefix": "lib",
-          "architect": {
-            "build": {
-              "builder": "@angular-devkit/build-angular:ng-packagr",
-              "options": {
-                "project": "projects/muziehdesign/core/ng-package.json"
-              },
-              "configurations": {
-                "production": {
-                  "tsConfig": "projects/muziehdesign/core/tsconfig.lib.prod.json"
-                },
-                "development": {
-                  "tsConfig": "projects/muziehdesign/core/tsconfig.lib.json"
-                }
-              },
-              "defaultConfiguration": "production"
-            },
-            "test": {
-              "builder": "@angular-devkit/build-angular:karma",
-              "options": {
-                "tsConfig": "projects/muziehdesign/core/tsconfig.spec.json",
-                "polyfills": [
-                  "zone.js",
-                  "zone.js/testing"
-                ]
-              }
-            }
-          }
         }
     },
     "cli": {
