@@ -74,9 +74,9 @@ jobs:
             touch .npmrc
             echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
             if [ "${CIRCLE_BRANCH}" = "master" ]; then
-              npm publish latest
+              npm publish --tag latest
             elif [ "${CIRCLE_BRANCH}" = "develop" ]; then
-              npm publish next
+              npm publish --tag next
             elif [[ "${CIRCLE_BRANCH}" = \release\/* ]]; then
               npm publish
             else
