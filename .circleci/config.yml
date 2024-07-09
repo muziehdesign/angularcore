@@ -76,11 +76,11 @@ jobs:
       - run: 
           name: 'npm publish'
           command: |
-            if [ "$BRANCH" = "master" ]; then
+            if [ "${CIRCLE_BRANCH}" = "master" ]; then
               npm publish ./dist/core latest
-            elif [ "$BRANCH" = "develop" ]; then
+            elif [ "${CIRCLE_BRANCH}" = "develop" ]; then
               npm publish ./dist/core next
-            elif [[ "$BRANCH" = \release\/* ]]; then
+            elif [[ "${CIRCLE_BRANCH}" = \release\/* ]]; then
               npm publish ./dist/core
             else
               npm publish ./dist/core --tag beta
@@ -106,5 +106,7 @@ workflows:
           requires:
             - test
             - build
+          context: 
+            - SharedContext
 
       
