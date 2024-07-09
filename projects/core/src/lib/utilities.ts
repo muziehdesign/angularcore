@@ -1,8 +1,9 @@
-import { Observable, forkJoin, from, map } from 'rxjs';
+import { Observable, firstValueFrom, forkJoin, from, map } from 'rxjs';
 import { merge } from 'lodash';
 
-export const loadConfigurations = (urls: string[]): Observable<AppConfiguration> => {
-    return forkJoin(urls.map((url) => from(fetch(url).then((x) => x.json())) as Observable<AppConfiguration>)).pipe(map((configs: AppConfiguration[]) => merge({}, ...configs) as AppConfiguration));
+export const loadConfigurations = <T>(urls: string[]): Promise<T> => {
+    const forked$ = forkJoin(urls.map((url) => from(fetch(url).then((x) => x.json())) as Observable<AppConfiguration>)).pipe(map((configs: AppConfiguration[]) => merge({}, ...configs) as T));
+    return firstValueFrom(forked$);
 };
 
 export interface ServiceOptions {
