@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticatedUser } from '@muziehdesign/core';
+import { AuthenticatedUser } from '@muziehdesign/angularcore';
 import { Observable } from 'rxjs';
 import { LayoutFacade } from '../layout.facade';
 

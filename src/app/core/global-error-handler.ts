@@ -1,5 +1,5 @@
 import { ErrorHandler, Inject, Injectable } from "@angular/core";
-import { Logger, LOGGER } from "@muziehdesign/core";
+import { Logger, LOGGER } from "@muziehdesign/angularcore";
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {

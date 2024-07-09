@@ -1,6 +1,6 @@
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AUTHENTICATED_REQUEST } from '@muziehdesign/core';
+import { AUTHENTICATED_REQUEST } from '@muziehdesign/angularcore';
 import { Observable } from 'rxjs';
 import { AppConfig } from 'src/environments/app-config';
 import { PagedResponse } from '../paged.response';

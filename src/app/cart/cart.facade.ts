@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { AuthenticationService } from "@muziehdesign/core";
+import { AuthenticationService } from "@muziehdesign/angularcore";
 import { firstValueFrom, Observable } from "rxjs";
 import { CartItemModel } from "../models/cart-item.model";
 import { OrderService } from "../core/order.service";

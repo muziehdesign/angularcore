@@ -4,7 +4,7 @@ import { map, Observable } from 'rxjs';
 import { ItemResponse } from './models/responses/item.response';
 import { AppConfig } from 'src/environments/app-config';
 import { PagedResponse } from '../paged.response';
-import { AUTHENTICATED_REQUEST } from '@muziehdesign/core';
+import { AUTHENTICATED_REQUEST } from '@muziehdesign/angularcore';
 
 @Injectable({
     providedIn: 'root',

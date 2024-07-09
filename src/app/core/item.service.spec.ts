@@ -3,7 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { ItemService } from './item.service';
 import { CatalogClient } from '../api/catalog/catalog.client';
-import { AuthorizationService } from '@muziehdesign/core';
+import { AuthorizationService } from '@muziehdesign/angularcore';
 
 describe('ItemService', () => {
     let service: ItemService;

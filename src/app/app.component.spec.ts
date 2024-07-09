@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AuthenticationService } from '@muziehdesign/core';
+import { AuthenticationService } from '@muziehdesign/angularcore';
 import { AppConfig } from 'src/environments/app-config';
 import { AppComponent } from './app.component';
 import { FooterComponent } from './layout/footer/footer.component';

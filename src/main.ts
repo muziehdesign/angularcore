@@ -1,6 +1,6 @@
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { bootstrapIdentityServer } from '@muziehdesign/core';
+import { bootstrapIdentityServer } from '@muziehdesign/angularcore';
 import { forkJoin, from, map, Observable, take } from 'rxjs';
 import { merge } from 'lodash';
 

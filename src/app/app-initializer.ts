@@ -1,4 +1,4 @@
-import { AuthenticationService, AuthorizationData, AuthorizationService, Logger } from '@muziehdesign/core';
+import { AuthenticationService, AuthorizationData, AuthorizationService, Logger } from '@muziehdesign/angularcore';
 import { delay, firstValueFrom, map, tap } from 'rxjs';
 import { ShoppingCartClient } from './api/shopping-cart/shopping-cart.client';
 

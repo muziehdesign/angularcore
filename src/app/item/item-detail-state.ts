@@ -1,4 +1,4 @@
-import { AuthorizationService } from '@muziehdesign/core';
+import { AuthorizationService } from '@muziehdesign/angularcore';
 import { EMPTY, firstValueFrom, map, Observable, of } from 'rxjs';
 import { ItemResponse } from '../api/catalog/models/responses/item.response';
 import { ItemService } from '../core/item.service';

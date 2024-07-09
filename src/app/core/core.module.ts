@@ -1,6 +1,6 @@
 import { ErrorHandler, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthenticationTokenInterceptor, AUTHORIZATION_POLICY, LOGGER, PermissionAuthorizationPolicy } from '@muziehdesign/core';
+import { AuthenticationTokenInterceptor, AUTHORIZATION_POLICY, LOGGER, PermissionAuthorizationPolicy } from '@muziehdesign/angularcore';
 import { GlobalErrorHandler } from './global-error-handler';
 
 @NgModule({

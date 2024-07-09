@@ -1,6 +1,6 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthorizationService } from '@muziehdesign/core';
+import { AuthorizationService } from '@muziehdesign/angularcore';
 import { catchError, Observable, of, throwError } from 'rxjs';
 import { CatalogClient } from '../api/catalog/catalog.client';
 import { ItemResponse } from '../api/catalog/models/responses/item.response';

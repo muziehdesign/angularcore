@@ -1,4 +1,4 @@
-import { AuthenticationSettings } from '@muziehdesign/core';
+import { AuthenticationSettings } from '@muziehdesign/angularcore';
 import { BuildInfo } from './build-info';
 
 export class AppConfig {

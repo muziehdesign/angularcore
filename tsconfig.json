@@ -3,9 +3,8 @@
     "compileOnSave": false,
     "compilerOptions": {
         "paths": {
-            "@muziehdesign/core": [
-              "dist/core",
-              "dist/muziehdesign/core"
+            "@muziehdesign/angularcore": [
+              "dist/core"
             ]
         },
         "baseUrl": "./",

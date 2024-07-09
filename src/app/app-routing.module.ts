@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { requireAuthentication } from '@muziehdesign/core';
+import { requireAuthentication } from '@muziehdesign/angularcore';
 import { cartRoutes } from './cart/cart.routes';
 import { checkoutLazyLoadingRoutes } from './checkout/checkout-routing.module';
 import { orderLazyLoadingRoutes } from './order/order-routing.module';

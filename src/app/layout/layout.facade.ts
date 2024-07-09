@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AuthenticationService } from '@muziehdesign/core';
+import { AuthenticationService } from '@muziehdesign/angularcore';
 import { map, Observable } from 'rxjs';
 import { ShoppingCart } from '../core/shopping-cart';
 
