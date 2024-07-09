@@ -13,3 +13,5 @@ export * from './lib/authorization/authorized.guard';
 // logger
 export * from './lib/logger/logger.token';
 export * from './lib/logger/logger';
+// functions
+export * from './lib/utilities';
