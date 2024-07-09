@@ -5,7 +5,7 @@
         "@angular/common": "^17.3.10",
         "@angular/core": "^17.3.10",
         "lodash.merge": "^4.6.2",
-        "rxjs": "~7.5.0"
+        "rxjs": "^7.5.0"
     },
     "dependencies": {
         "tslib": "^2.3.0"
