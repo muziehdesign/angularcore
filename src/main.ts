@@ -22,7 +22,7 @@ loadConfigurations<AppConfig>(environment.configurations).then(async appConfig=>
         { provide: AppConfig, useValue: Object.freeze(appConfig) },
     ];
 
-    await platformBrowserDynamic(extraProviders)
+    return platformBrowserDynamic(extraProviders)
         .bootstrapModule(AppModule);
 
 }).catch(error=> {

@@ -1,3 +1,5 @@
+import { InjectionToken } from "@angular/core";
+
 export interface AuthenticationOptions {
     logLevel: 'none' | 'error' | 'warn' | 'info' | 'debug';
     authority: string;
@@ -12,3 +14,5 @@ export interface AuthenticationOptions {
     accessTokenExpiringNotificationTime?: number;
     filterProtocolClaims?: boolean;
 }
+
+export const AUTHENTICATION_OPTIONS = new InjectionToken<AuthenticationOptions>('AuthenticationOptions');
