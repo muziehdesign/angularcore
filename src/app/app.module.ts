@@ -1,7 +1,7 @@
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { AuthenticationService, AuthenticationTokenInterceptor, AuthorizationService, LOGGER } from '@muziehdesign/angularcore';
+import { AuthenticationService, AuthorizationService, LOGGER } from '@muziehdesign/angularcore';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -25,7 +25,6 @@ import { LayoutModule } from './layout/layout.module';
         AppRoutingModule,
     ],
     providers: [
-        { provide: HTTP_INTERCEPTORS, useClass: AuthenticationTokenInterceptor, multi: true },
         { provide: APP_INITIALIZER, useFactory: initializeApplication, multi: true, deps: [LOGGER] },
         { provide: APP_INITIALIZER, useFactory: initializeAuthorization, multi: true, deps: [AuthenticationService, AuthorizationService, ShoppingCartClient] },
     ],
