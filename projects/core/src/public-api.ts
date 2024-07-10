@@ -5,6 +5,7 @@ export * from './lib/identityserver/authenticated-user';
 export * from './lib/identityserver/authentication-token.interceptor';
 export * from './lib/identityserver/authenticated.guard';
 export * from './lib/identityserver/bootstrap';
+export * from './lib/identityserver/identity-server.module';
 // authorization
 export * from './lib/authorization/authorization.service';
 export * from './lib/authorization/authorization-policy';

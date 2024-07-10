@@ -1,8 +1,7 @@
 import { ErrorHandler, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AUTHORIZATION_POLICY, LOGGER, PermissionAuthorizationPolicy } from '@muziehdesign/angularcore';
+import { AUTHORIZATION_POLICY, LOGGER, PermissionAuthorizationPolicy, IdentityServerModule } from '@muziehdesign/angularcore';
 import { GlobalErrorHandler } from './global-error-handler';
-import { IdentityServerModule } from 'projects/core/src/lib/identityserver/identity-server.module';
 
 @NgModule({
     declarations: [],
