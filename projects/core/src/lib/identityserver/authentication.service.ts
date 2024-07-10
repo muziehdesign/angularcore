@@ -71,10 +71,10 @@ export class AuthenticationService {
         return this.userManager.getUser().then((u) => u !== null && u !== undefined);
     }
 
-    async getAuthorizationData(): Promise<string> {
+    async getToken(): Promise<string> {
         return this.userManager.getUser().then((u) => {
             if (u?.access_token) {
-                return `Bearer ${u.access_token}`;
+                return `${u.access_token}`;
             }
             
             return '';
