@@ -7,7 +7,7 @@ import { AuthorizationPolicy, AUTHORIZATION_POLICY } from './authorization-polic
 })
 export class AuthorizationService {
     private authorizations: Map<string, AuthorizationData>;
-    constructor(@Inject(AUTHORIZATION_POLICY) private authorizationPolicies: AuthorizationPolicy[]) {
+    constructor() {
         this.authorizations = new Map<string, AuthorizationData>();
     }
 

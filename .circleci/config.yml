@@ -9,18 +9,10 @@ general:
 
 orbs: 
   browser-tools: circleci/browser-tools@1.4.8
-  jobs:
-    test:
-      steps:
-        - browser-tools/install-browser-tools:
-            chrome-version: 116.0.5845.96
-            replace-existing-chrome: true
-            # TODO: remove until: https://github.com/CircleCI-Public/browser-tools-orb/issues/75
-
 
 defaults: &defaults
   docker:
-    - image: cimg/node:18.13.0-browsers
+    - image: cimg/node:22.2.0-browsers
       environment:
         CHROME_BIN: /usr/bin/google-chrome
 
