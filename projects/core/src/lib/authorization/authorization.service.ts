@@ -19,6 +19,10 @@ export class AuthorizationService {
         this.authorizations.set(key, data);
     }
 
+    getSnapshot() {
+        return new Map(this.authorizations);
+    }
+
     /**
      * Resets all authorization data stored in the service.
      */
