@@ -17,3 +17,5 @@ export * from './lib/logger/logger';
 // functions
 export * from './lib/utilities';
 export * from './lib/state';
+// pipes
+export * from './lib/pipes/truncated-count.pipe';
