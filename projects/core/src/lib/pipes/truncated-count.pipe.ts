@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'truncatedCount',
+  name: 'mzTruncatedCount',
   standalone: true
 })
 export class TruncatedCountPipe implements PipeTransform {
