@@ -19,3 +19,5 @@ export * from './lib/utilities';
 export * from './lib/state';
 // pipes
 export * from './lib/pipes/truncated-count.pipe';
+// tokens
+export * from './lib/window.token';
