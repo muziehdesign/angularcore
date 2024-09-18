@@ -2,7 +2,7 @@ import { StaticProvider } from '@angular/core';
 import { AuthenticationOptions } from './authentication-options';
 import { AuthenticationService } from './authentication.service';
 
-export const bootstrapIdentityServer = async (settings: AuthenticationOptions, haltAnonymous: boolean) => {
+export const bootstrapIdentityServer = async (settings: AuthenticationOptions, haltAnonymous: boolean = false) => {
     const service = new AuthenticationService(settings);
     const silentRedirected = await service.interceptSilentRedirect();
     if (silentRedirected) {
@@ -10,7 +10,7 @@ export const bootstrapIdentityServer = async (settings: AuthenticationOptions, h
     }
 
     const user = await service.completeSignIn();
-    if(!user) {
+    if(!user && haltAnonymous) {
         await service.login();
         return { halt: true, providers: [] } satisfies IdentityServerBootstrapResult;
     }
