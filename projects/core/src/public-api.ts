@@ -21,3 +21,5 @@ export * from './lib/state';
 export * from './lib/pipes/truncated-count.pipe';
 // tokens
 export * from './lib/window.token';
+// shapes
+export * from './lib/shapes';
