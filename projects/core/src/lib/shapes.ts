@@ -3,7 +3,7 @@ export interface List<T> {
     items: T[];
 }
 
-export interface PagedSearch {
+export interface Search {
     pageNumber: number;
     pageSize: number;
     sort: string;

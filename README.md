@@ -20,6 +20,19 @@ This project follows [Muzieh Design System](https://ruifang.github.io/designsyst
 1. Prettier
 1. Tailwind CSS IntelliSense
 
+## Command line tools
+1. create-ts-index, `npx create-ts-index src/app/models`
+
+## Naming conventions
+1. Feature modules typically come with a list view and a detail view, they should be called `{feature}-list` and `{feature-detail}` respectively. For example: 
+```
+- order
+    \order-list
+        order-list.component.ts
+    \order-details
+        order-details.component.ts
+```
+
 ## Todo
 
 -   [ ] css framework, responsiveness
