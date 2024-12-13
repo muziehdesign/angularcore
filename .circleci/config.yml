@@ -22,12 +22,12 @@ jobs:
     steps:
       - run:
         - checkout
-        - run: npm ci
-        - run: echo 
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
+      - run: npm ci
+      - run: echo 
+        - persist_to_workspace:
+            root: .
+            paths:
+              - .
   test:
     <<: *defaults
     steps:
