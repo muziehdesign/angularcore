@@ -17,18 +17,23 @@ defaults: &defaults
         CHROME_BIN: /usr/bin/google-chrome
 
 jobs:
-  say-hello:
+  pull:
     <<: *defaults
     steps:
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+        - checkout
+        - run: npm ci
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
   test:
     <<: *defaults
     steps:
-      - checkout
-      - run: npm ci
+      #- checkout
+      #- run: npm ci
       #- run: npm run ng -- test components 
+      - run: echo test
   build:
     <<: *defaults
     steps:
@@ -62,10 +67,8 @@ jobs:
           command: |
             touch .npmrc
             echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
-            if [ "${CIRCLE_BRANCH}" = "master" ]; then
+            if [ "${CIRCLE_BRANCH}" = "develop" ]; then
               npm publish --tag latest
-            elif [ "${CIRCLE_BRANCH}" = "develop" ]; then
-              npm publish --tag next
             elif [[ "${CIRCLE_BRANCH}" = \release\/* ]]; then
               npm publish
             else
