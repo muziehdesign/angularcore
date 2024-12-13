@@ -38,7 +38,7 @@ jobs:
   build:
     <<: *defaults
     steps:
-      - checkout
+      #- checkout
       #- run: npm run lint
       - run:
           name: "version"
@@ -49,7 +49,7 @@ jobs:
           command: |
             sh ./../../version.sh ${CIRCLE_BUILD_NUM} ${CIRCLE_BRANCH}
           working_directory: ./projects/core
-      - run: npm ci
+      #- run: npm ci
       - run: npm run ng -- build core
       - store_artifacts:
           path: /dist/core
