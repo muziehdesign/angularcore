@@ -30,6 +30,8 @@ jobs:
   test:
     <<: *defaults
     steps:
+      - attach_workspace:
+          at: .
       #- checkout
       #- run: npm ci
       #- run: npm run ng -- test components 
@@ -37,6 +39,8 @@ jobs:
   build:
     <<: *defaults
     steps:
+      - attach_workspace:
+          at: .
       #- checkout
       #- run: npm run lint
       - run:
