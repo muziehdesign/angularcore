@@ -20,14 +20,13 @@ jobs:
   prep:
     <<: *defaults
     steps:
-      - run:
-        - checkout
+      - checkout
       - run: npm ci
-      - run: echo 
-        - persist_to_workspace:
-            root: .
-            paths:
-              - .
+      - run: "echo prepstep"
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
   test:
     <<: *defaults
     steps:
