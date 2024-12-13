@@ -23,6 +23,7 @@ jobs:
       - run:
         - checkout
         - run: npm ci
+        - run: echo 
       - persist_to_workspace:
           root: .
           paths:
@@ -81,17 +82,17 @@ jobs:
 workflows:
   publish:
     jobs:
-      - say-hello:
+      - pull:
           filters:
             branches:
               ignore:
                 - gh-pages
       - test:
           requires:
-            - say-hello
+            - pull
       - build:
           requires:
-            - say-hello
+            - pull
       - publish:
           requires:
             - test
