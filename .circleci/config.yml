@@ -17,7 +17,7 @@ defaults: &defaults
         CHROME_BIN: /usr/bin/google-chrome
 
 jobs:
-  pull:
+  prep:
     <<: *defaults
     steps:
       - run:
@@ -82,17 +82,17 @@ jobs:
 workflows:
   publish:
     jobs:
-      - pull:
+      - prep:
           filters:
             branches:
               ignore:
                 - gh-pages
       - test:
           requires:
-            - pull
+            - prep
       - build:
           requires:
-            - pull
+            - prep
       - publish:
           requires:
             - test
