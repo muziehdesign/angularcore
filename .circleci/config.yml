@@ -17,22 +17,31 @@ defaults: &defaults
         CHROME_BIN: /usr/bin/google-chrome
 
 jobs:
-  say-hello:
-    <<: *defaults
-    steps:
-      - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
-  test:
+  prep:
     <<: *defaults
     steps:
       - checkout
       - run: npm ci
+      - run: "echo prepstep"
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  test:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      #- checkout
+      #- run: npm ci
       #- run: npm run ng -- test components 
+      - run: echo test
   build:
     <<: *defaults
     steps:
-      - checkout
+      - attach_workspace:
+          at: .
+      #- checkout
       #- run: npm run lint
       - run:
           name: "version"
@@ -43,7 +52,7 @@ jobs:
           command: |
             sh ./../../version.sh ${CIRCLE_BUILD_NUM} ${CIRCLE_BRANCH}
           working_directory: ./projects/core
-      - run: npm ci
+      #- run: npm ci
       - run: npm run ng -- build core
       - store_artifacts:
           path: /dist/core
@@ -62,10 +71,8 @@ jobs:
           command: |
             touch .npmrc
             echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
-            if [ "${CIRCLE_BRANCH}" = "master" ]; then
+            if [ "${CIRCLE_BRANCH}" = "develop" ]; then
               npm publish --tag latest
-            elif [ "${CIRCLE_BRANCH}" = "develop" ]; then
-              npm publish --tag next
             elif [[ "${CIRCLE_BRANCH}" = \release\/* ]]; then
               npm publish
             else
@@ -78,17 +85,17 @@ jobs:
 workflows:
   publish:
     jobs:
-      - say-hello:
+      - prep:
           filters:
             branches:
               ignore:
                 - gh-pages
       - test:
           requires:
-            - say-hello
+            - prep
       - build:
           requires:
-            - say-hello
+            - prep
       - publish:
           requires:
             - test
