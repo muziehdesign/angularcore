@@ -102,10 +102,9 @@ workflows:
           requires:
             - prep
       - publish:
+          context: SharedContext
           requires:
             - test
             - build
-          context: 
-            - SharedContext
 
       
