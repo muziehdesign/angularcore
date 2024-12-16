@@ -22,7 +22,11 @@ jobs:
     steps:
       - checkout
       - run: npm ci
-      - run: "echo prepstep"
+      - run:
+          name: "version"
+          command: |
+            sh ./version.sh ${CIRCLE_BUILD_NUM} ${CIRCLE_BRANCH}
+            cat foo.txt
       - persist_to_workspace:
           root: .
           paths:
@@ -32,8 +36,6 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      #- checkout
-      #- run: npm ci
       #- run: npm run ng -- test components 
       - run: echo test
   build:
@@ -41,18 +43,12 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      #- checkout
       #- run: npm run lint
-      - run:
-          name: "version"
-          command: |
-            sh ./version.sh ${CIRCLE_BUILD_NUM} ${CIRCLE_BRANCH}
       - run:
           name: "version @muziehdesign/angularcore"
           command: |
-            sh ./../../version.sh ${CIRCLE_BUILD_NUM} ${CIRCLE_BRANCH}
+            npm pkg get version
           working_directory: ./projects/core
-      #- run: npm ci
       - run: npm run ng -- build core
       - store_artifacts:
           path: /dist/core
@@ -67,15 +63,24 @@ jobs:
       - attach_workspace:
           at: .
       - run: 
-          name: 'npm publish'
+          name: "npm publish prep"
           command: |
             touch .npmrc
             echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
-            if [ "${CIRCLE_BRANCH}" = "develop" ]; then
-              npm publish --tag latest
-            elif [[ "${CIRCLE_BRANCH}" = \release\/* ]]; then
+      - run: 
+          name: 'npm publish'
+          command: |
+            if [ "${CIRCLE_BRANCH}" = "next" ]; then
+              echo "publishing next package"
+              npm publish --tag next
+            elif [ "${CIRCLE_BRANCH}" = "develop" ]; then
+              echo "publishing latest package"
+              npm publish --tag latest         
+            elif (echo "$BRANCH" | grep -q "^release/"); then
+              echo "publishing release package"
               npm publish
             else
+              echo "publishing beta package"
               npm publish --tag beta
             fi
           working_directory: ./dist/core
