@@ -27,7 +27,7 @@
     "@angular/platform-browser": "^18.2.13",
     "@angular/platform-browser-dynamic": "^18.2.13",
     "@angular/router": "^18.2.13",
-    "@muziehdesign/forms": "^17.0.720",
+    "@muziehdesign/forms": "^18.0.734",
     "@tailwindcss/forms": "^0.5.2",
     "lodash.merge": "^4.6.2",
     "muzieh-ngcomponents": "^17.0.1603",
