@@ -72,18 +72,17 @@ jobs:
           command: |
             if [ "${CIRCLE_BRANCH}" = "next" ]; then
               echo "publishing next package"
-              npm publish --tag next
+              npm publish ./dist/core --tag next
             elif [ "${CIRCLE_BRANCH}" = "develop" ]; then
               echo "publishing latest package"
-              npm publish --tag latest         
+              npm publish ./dist/core --tag latest         
             elif (echo "$BRANCH" | grep -q "^release/"); then
               echo "publishing release package"
-              npm publish
+              npm publish ./dist/core
             else
               echo "publishing beta package"
-              npm publish --tag beta
+              npm publish ./dist/core --tag beta
             fi
-          working_directory: ./dist/core
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
