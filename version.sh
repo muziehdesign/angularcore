@@ -28,7 +28,7 @@ echo "TAG=$TAG"
 echo "$PACKAGEVERSION" > foo.txt
 echo "$TAG" >> foo.txt
 
-DIRECTORIES="./ ./projects/components ./projects/design"
+DIRECTORIES="./ ./projects/core"
 
 for DIR in $DIRECTORIES; do
   if [ -d "$DIR" ]; then
