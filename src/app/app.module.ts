@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AuthenticationService, AuthorizationService, LOGGER } from '@muziehdesign/angularcore';
@@ -13,21 +13,14 @@ import { initializeApplication, initializeAuthorization } from './app-initialize
 import { ShoppingCartClient } from './api/shopping-cart/shopping-cart.client';
 import { LayoutModule } from './layout/layout.module';
 
-@NgModule({
-    declarations: [AppComponent, PageNotFoundComponent, ProfileComponent],
-    imports: [
-        BrowserModule,
-        HttpClientModule,
+@NgModule({ declarations: [AppComponent, PageNotFoundComponent, ProfileComponent],
+    bootstrap: [AppComponent], imports: [BrowserModule,
         CoreModule,
         LayoutModule,
-
         // route
-        AppRoutingModule,
-    ],
-    providers: [
+        AppRoutingModule], providers: [
         { provide: APP_INITIALIZER, useFactory: initializeApplication, multi: true, deps: [LOGGER] },
         { provide: APP_INITIALIZER, useFactory: initializeAuthorization, multi: true, deps: [AuthenticationService, AuthorizationService, ShoppingCartClient] },
-    ],
-    bootstrap: [AppComponent],
-})
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class AppModule {}
