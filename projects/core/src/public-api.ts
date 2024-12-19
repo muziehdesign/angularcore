@@ -1,25 +1,25 @@
 // identityserver
-export * from './lib/identityserver/authentication-options';
-export * from './lib/identityserver/authentication.service';
-export * from './lib/identityserver/authenticated-user';
-export * from './lib/identityserver/authentication-token.interceptor';
-export * from './lib/identityserver/authenticated.guard';
-export * from './lib/identityserver/bootstrap';
-export * from './lib/identityserver/identity-server.module';
+export { AuthenticationOptions, AUTHENTICATION_OPTIONS } from './lib/identityserver/authentication-options';
+export { AuthenticationService } from './lib/identityserver/authentication.service';
+export { AuthenticatedUser } from './lib/identityserver/authenticated-user';
+export { AuthenticationTokenInterceptor, AUTHENTICATED_REQUEST } from './lib/identityserver/authentication-token.interceptor';
+export { requireAuthentication } from './lib/identityserver/authenticated.guard';
+export { bootstrapIdentityServer, IdentityServerBootstrapResult } from './lib/identityserver/bootstrap';
+export { IdentityServerModule } from './lib/identityserver/identity-server.module';
 // authorization
-export * from './lib/authorization/authorization.service';
-export * from './lib/authorization/authorization-policy';
-export * from './lib/authorization/authorization-data';
-export * from './lib/authorization/authorized.guard';
+export { AuthorizationService } from './lib/authorization/authorization.service';
+export { AuthorizationContext, AuthorizationPolicy, AUTHORIZATION_POLICY, PermissionAuthorizationPolicy } from './lib/authorization/authorization-policy';
+export { AuthorizationData } from './lib/authorization/authorization-data';
+export { requireAuthorization } from './lib/authorization/authorized.guard';
 // logger
-export * from './lib/logger/logger.token';
-export * from './lib/logger/logger';
+export { LOGGER } from './lib/logger/logger.token';
+export { Logger } from './lib/logger/logger';
 // functions
-export * from './lib/utilities';
-export * from './lib/state';
+export { loadConfigurations, ServiceOptions, BuildOptions, AppConfiguration } from './lib/utilities';
+export { State } from './lib/state';
 // pipes
-export * from './lib/pipes/truncated-count.pipe';
+export { TruncatedCountPipe } from './lib/pipes/truncated-count.pipe';
 // tokens
-export * from './lib/window.token';
+export { WINDOW } from './lib/window.token';
 // shapes
-export * from './lib/shapes';
+export { List, Paged, Search } from './lib/shapes';

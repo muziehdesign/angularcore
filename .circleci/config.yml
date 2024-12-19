@@ -74,8 +74,8 @@ jobs:
               echo "publishing next package"
               npm publish ./dist/core --tag next
             elif [ "${CIRCLE_BRANCH}" = "develop" ]; then
-              echo "publishing latest package"
-              npm publish ./dist/core --tag latest         
+              echo "publishing next package"
+              npm publish ./dist/core --tag next         
             elif (echo "$BRANCH" | grep -q "^release/"); then
               echo "publishing release package"
               npm publish ./dist/core
