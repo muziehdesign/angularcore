@@ -59,7 +59,7 @@ export class AuthenticationService {
         }
 
         // validate user existence/renew token
-        const user: User | null | undefined = await this.userManager.signinSilent().catch(() => undefined);
+        const user: User | null | undefined = await this.userManager.getUser().catch(() => undefined);
         return Promise.resolve(this.mapToAuthenticatedUser(user));
     }
 
