@@ -8,8 +8,7 @@ import { AuthenticationService } from './authentication.service';
     declarations: [],
     imports: [],
     providers: [
-        { provide: HTTP_INTERCEPTORS, useClass: AuthenticationTokenInterceptor, multi: true },
-        AuthenticationService
+        { provide: HTTP_INTERCEPTORS, useClass: AuthenticationTokenInterceptor, multi: true }
     ],
 })
 export class IdentityServerModule {}

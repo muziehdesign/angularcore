@@ -3,7 +3,6 @@ import { AuthenticatedUser } from './authenticated-user';
 import { AuthenticationOptions } from './authentication-options';
 import { Injectable } from '@angular/core';
 
-@Injectable()
 export class AuthenticationService {
     private readonly userManager: UserManager;
 
