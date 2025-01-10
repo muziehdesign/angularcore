@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpContextToken } from '@angular/common/http';
-import { from, map, Observable, switchMap } from 'rxjs';
+import { from, Observable, switchMap } from 'rxjs';
 import { AuthenticationService } from './authentication.service';
 
 export const AUTHENTICATED_REQUEST = new HttpContextToken<boolean>(() => false);

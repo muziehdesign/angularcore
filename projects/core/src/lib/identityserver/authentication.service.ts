@@ -1,7 +1,9 @@
 import { Log, User, UserManager, UserManagerSettings } from 'oidc-client';
 import { AuthenticatedUser } from './authenticated-user';
 import { AuthenticationOptions } from './authentication-options';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class AuthenticationService {
     private readonly userManager: UserManager;
 
@@ -15,7 +17,7 @@ export class AuthenticationService {
         map.set('info', Log.INFO);
         Log.level = map.get(settings.logLevel) || Log.NONE;
 
-        this.userManager = new UserManager(<UserManagerSettings>{
+        this.userManager = new UserManager({
             authority: settings.authority,
             client_id: settings.clientId,
             response_type: settings.responseType,
@@ -29,7 +31,7 @@ export class AuthenticationService {
             filterProtocolClaims: settings.filterProtocolClaims,
             loadUserInfo: true,
             monitorSession: true,
-        });
+        } satisfies UserManagerSettings);
         this.userManager.events.addUserSignedOut(async () => {
             await this.userManager.signoutRedirect();
         });
@@ -63,12 +65,17 @@ export class AuthenticationService {
         return Promise.resolve(this.mapToAuthenticatedUser(user));
     }
 
+    async handleLoginCallback(): Promise<void> {
+        const redirectedUser = await this.userManager.signinRedirectCallback();
+        window.history.replaceState({}, window.document.title, redirectedUser.state || '/');
+    }
+
     async login(): Promise<void> {
         return this.userManager.signinRedirect();
     }
 
     async isAuthenticated(): Promise<boolean> {
-        return this.userManager.getUser().then((u) => u !== null && u !== undefined);
+        return this.userManager.getUser().then((u) => u !== null && !u.expired);
     }
 
     async getToken(): Promise<string> {
