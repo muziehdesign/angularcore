@@ -1,12 +1,13 @@
 import { Log, User, UserManager, UserManagerSettings } from 'oidc-client';
 import { AuthenticatedUser } from './authenticated-user';
 import { AuthenticationOptions } from './authentication-options';
-import { Injectable } from '@angular/core';
+import { BehaviorSubject, map } from 'rxjs';
 
 export class AuthenticationService {
     private readonly userManager: UserManager;
+    private readonly user = new BehaviorSubject<User | undefined>(undefined);
 
-    constructor(protected settings: AuthenticationOptions) {
+    constructor(private settings: AuthenticationOptions) {
         Log.logger = console; // TODO
         const map = new Map<string, number>();
         map.set('debug', Log.DEBUG);
@@ -31,19 +32,34 @@ export class AuthenticationService {
             loadUserInfo: true,
             monitorSession: true,
         } satisfies UserManagerSettings);
+
         this.userManager.events.addUserSignedOut(async () => {
+            this.user.next(undefined);
             await this.userManager.signoutRedirect();
         });
-    }
 
-    async getUser(): Promise<AuthenticatedUser | undefined> {
-        return this.userManager.getUser().then((x) => {
-            return this.mapToAuthenticatedUser(x);
+        this.userManager.events.addUserLoaded((user) => {
+            Log.logger.debug(`[AuthenticationService]user loaded`);
+            this.user.next(user);
+        });
+
+        this.userManager.events.addUserUnloaded(()=>{
+            Log.logger.debug(`[AuthenticationService]user unloaded`);
+            this.user.next(undefined); 
         });
     }
 
-    async interceptSilentRedirect(): Promise<boolean> {
-        // intercept silent redirect and halt actual bootstrap
+    async loadUser(): Promise<AuthenticatedUser | undefined> {
+        const user: User | null | undefined = await this.userManager.getUser().catch(() => undefined);
+        if (user?.expired) {
+            Log.logger.debug(`[AuthenticationService]Retrieved user but user has expired ${user.expires_at}`);
+            return undefined;
+        }
+        return Promise.resolve(this.mapToAuthenticatedUser(user));
+    }
+
+    /** Handle silent callback. True indicates it called `signinSilentCallback`, bootstrap should be halted */
+    async handleSilentCallback(): Promise<boolean> {
         if (window.location.href.indexOf(this.settings.silentRedirectUri) > -1) {
             await this.userManager.signinSilentCallback();
             return true;
@@ -52,46 +68,49 @@ export class AuthenticationService {
         return false;
     }
 
-    async completeSignIn(): Promise<AuthenticatedUser | undefined> {
-        // handle signin callback
-        if (window.location.href.indexOf(this.settings.redirectUri) > -1) {
+    async handleLoginCallback(): Promise<void> {
+        if(window.location.href.indexOf(this.settings.redirectUri) > -1) {
             const redirectedUser = await this.userManager.signinRedirectCallback();
             window.history.replaceState({}, window.document.title, redirectedUser.state || '/');
         }
-
-        // validate user existence/renew token
-        const user: User | null | undefined = await this.userManager.getUser().catch(() => undefined);
-        return Promise.resolve(this.mapToAuthenticatedUser(user));
-    }
-
-    async handleLoginCallback(): Promise<void> {
-        const redirectedUser = await this.userManager.signinRedirectCallback();
-        window.history.replaceState({}, window.document.title, redirectedUser.state || '/');
     }
 
     async login(): Promise<void> {
         return this.userManager.signinRedirect();
     }
 
-    async isAuthenticated(): Promise<boolean> {
-        return this.userManager.getUser().then((u) => u !== null && !u.expired);
+    getSnapshot() {
+        const user = this.user.getValue();
+        return {
+            user: this.mapToAuthenticatedUser(user),
+            authenticated: user !== undefined,
+            token: user?.access_token
+        } satisfies AuthenticationStateData;
     }
 
-    async getToken(): Promise<string> {
-        return this.userManager.getUser().then((u) => {
-            if (u?.access_token) {
-                return `${u.access_token}`;
-            }
-            
-            return '';
-        });
+    stateChanges() {
+        return this.user.asObservable().pipe(
+            map((user: User | undefined)=> {
+                return {
+                    user: this.mapToAuthenticatedUser(user),
+                    authenticated: user !== undefined,
+                    token: user?.access_token
+                } satisfies AuthenticationStateData;
+            })
+        );
     }
 
-    private mapToAuthenticatedUser(user: User | undefined | null) {
+    private mapToAuthenticatedUser(user: User | undefined | null): AuthenticatedUser | undefined {
         if (user) {
             return new AuthenticatedUser(new Map<string, any>(Object.entries(user.profile)));
         }
 
         return undefined;
     }
+}
+
+export interface AuthenticationStateData {
+    authenticated: boolean;
+    user?: AuthenticatedUser;
+    token?: string;
 }

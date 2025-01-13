@@ -15,7 +15,7 @@ export class CartFacade {
     }
 
     async loginIfNeeded(): Promise<boolean> {
-        const authenticated = await this.auth.isAuthenticated();
+        const authenticated = await this.auth.getSnapshot().authenticated;
         if(!authenticated) {
             await this.auth.login(); // TODO: redirect to state is not working
             return true;
@@ -26,7 +26,7 @@ export class CartFacade {
 
     async createOrder(model: CreateOrderModel): Promise<void> {
         const items = this.cart.getSnaptshot();
-        const response = await firstValueFrom(this.service.createOrder(items, model));
+        await firstValueFrom(this.service.createOrder(items, model));
         this.cart.clear();
     }
 

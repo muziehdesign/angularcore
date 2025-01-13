@@ -8,7 +8,7 @@ export class LayoutFacade {
     constructor(private auth: AuthenticationService, private cart: ShoppingCart) {}
 
     getUser() {
-        return this.auth.getUser();
+        return this.auth.getSnapshot().user;
     }
 
     login() {

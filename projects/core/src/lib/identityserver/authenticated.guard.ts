@@ -3,11 +3,8 @@ import { AuthenticationService } from './authentication.service';
 
 export const requireAuthentication = async (): Promise<boolean> => {
     const auth = inject(AuthenticationService);
-    return auth.getUser().then((u) => {
-        if (u) {
-            return true;
-        }
-
-        return auth.login().then(() => false);
-    });
+    if(auth.getSnapshot().authenticated) {
+        return true;
+    }
+    return auth.login().then(() => false);
 };

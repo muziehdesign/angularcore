@@ -21,7 +21,7 @@ export const initializeApplication = (logger: Logger): (() => Promise<void>) => 
 
 export const initializeAuthorization = (authentication: AuthenticationService, authorization: AuthorizationService, client: ShoppingCartClient): (() => Promise<boolean>) => {
     return async (): Promise<boolean> => {
-        const authenticated = await authentication.isAuthenticated();
+        const authenticated = await authentication.getSnapshot().authenticated;
         if (!authenticated) {
             return Promise.resolve(true);
         }

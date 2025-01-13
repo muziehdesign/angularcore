@@ -1,10 +1,10 @@
 // identityserver
 export { AuthenticationOptions, AUTHENTICATION_OPTIONS } from './lib/identityserver/authentication-options';
-export { AuthenticationService } from './lib/identityserver/authentication.service';
+export { AuthenticationService, AuthenticationStateData } from './lib/identityserver/authentication.service';
 export { AuthenticatedUser } from './lib/identityserver/authenticated-user';
 export { AuthenticationTokenInterceptor, AUTHENTICATED_REQUEST } from './lib/identityserver/authentication-token.interceptor';
 export { requireAuthentication } from './lib/identityserver/authenticated.guard';
-export { bootstrapIdentityServer, IdentityServerBootstrapResult } from './lib/identityserver/bootstrap';
+export { bootstrapAuthenticationService } from './lib/identityserver/bootstrap';
 export { IdentityServerModule } from './lib/identityserver/identity-server.module';
 // authorization
 export { AuthorizationService } from './lib/authorization/authorization.service';
