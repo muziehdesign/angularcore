@@ -5,7 +5,6 @@ export { AuthenticatedUser } from './lib/identityserver/authenticated-user';
 export { AuthenticationTokenInterceptor, AUTHENTICATED_REQUEST } from './lib/identityserver/authentication-token.interceptor';
 export { requireAuthentication } from './lib/identityserver/authenticated.guard';
 export { bootstrapAuthenticationService } from './lib/identityserver/bootstrap';
-export { IdentityServerModule } from './lib/identityserver/identity-server.module';
 // authorization
 export { AuthorizationService } from './lib/authorization/authorization.service';
 export { AuthorizationContext, AuthorizationPolicy, AUTHORIZATION_POLICY, PermissionAuthorizationPolicy } from './lib/authorization/authorization-policy';

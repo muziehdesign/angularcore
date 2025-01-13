@@ -1,13 +1,15 @@
 import { Log, User, UserManager, UserManagerSettings } from 'oidc-client';
 import { AuthenticatedUser } from './authenticated-user';
-import { AuthenticationOptions } from './authentication-options';
+import { AUTHENTICATION_OPTIONS, AuthenticationOptions } from './authentication-options';
 import { BehaviorSubject, map } from 'rxjs';
+import { Inject, Injectable } from '@angular/core';
 
+@Injectable()
 export class AuthenticationService {
     private readonly userManager: UserManager;
     private readonly user = new BehaviorSubject<User | undefined>(undefined);
 
-    constructor(private settings: AuthenticationOptions) {
+    constructor(@Inject(AUTHENTICATION_OPTIONS) private settings: AuthenticationOptions) {
         Log.logger = console; // TODO
         const map = new Map<string, number>();
         map.set('debug', Log.DEBUG);
