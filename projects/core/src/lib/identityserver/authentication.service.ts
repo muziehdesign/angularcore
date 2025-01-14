@@ -24,12 +24,10 @@ export class AuthenticationService {
         });
 
         this.userManager.events.addUserLoaded((user) => {
-            console.log(`[AuthenticationService]user loaded`);
             this.state.next(user);
         });
 
         this.userManager.events.addUserUnloaded(() => {
-            console.log(`[AuthenticationService]user unloaded`);
             this.state.next(undefined);
         });
 
@@ -43,7 +41,6 @@ export class AuthenticationService {
             this.state.next(undefined);
             return undefined;
         }
-        console.log('[AuthenticationService]loaded user', user);
         this.state.next(user);
         return Promise.resolve(this.mapToAuthenticatedUser(user));
     }
@@ -56,14 +53,12 @@ export class AuthenticationService {
 
     async handleLoginCallback(): Promise<string> {
         const redirectedUser = await this.userManager.signinRedirectCallback();
-        console.log('redirectedUser', redirectedUser, window);
         window.history.replaceState({}, window.document.title, redirectedUser.state || '/');
         return redirectedUser.state;
     }
 
     async login(url?: string): Promise<void> {
         const returnUrl = url || window.location.href.replace(window.location.origin, '');
-        console.log('[AuthenticationService]return url is', returnUrl);
         return this.userManager.signinRedirect({ state: returnUrl });
     }
 
