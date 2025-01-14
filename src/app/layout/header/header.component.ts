@@ -25,4 +25,8 @@ export class HeaderComponent implements OnInit {
         await this.facade.login();
         return false;
     }
+
+    async troubleshoot() {
+        console.log(this.facade.getUser());
+    }
 }

@@ -21,16 +21,17 @@ export const initializeApplication = (logger: Logger): (() => Promise<void>) => 
 
 export const initializeAuthorization = (authentication: AuthenticationService, authorization: AuthorizationService, client: ShoppingCartClient): (() => Promise<boolean>) => {
     return async (): Promise<boolean> => {
-        const authenticated = await authentication.getSnapshot().authenticated;
-        if (!authenticated) {
-            return Promise.resolve(true);
-        }
+        await authentication.loadUser();
+        console.log('initialize authorization, snapshot: ', authentication.getSnapshot());
+        
+        return true;
 
+        /*
         return firstValueFrom(
             client.getAuthorization().pipe(
                 tap((x) => authorization.register('ShoppingCartClient', x as AuthorizationData)),
                 map((x) => true)
             )
-        );
+        );*/
     };
 };

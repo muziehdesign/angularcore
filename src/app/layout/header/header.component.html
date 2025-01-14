@@ -5,7 +5,7 @@
             <span class="sr-only">Acme Systems</span>
         </a>
     </div>
-    <div *ngIf="user">
+    <div>
         <a routerLink="/orders" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Orders</a>
     </div>
     <div *ngIf="!user">
@@ -23,4 +23,5 @@
             </span>
         </a>
     </div>
+    <button (click)="troubleshoot()">Troubleshoot</button>
 </nav>

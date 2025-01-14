@@ -9,7 +9,8 @@ export const orderLazyLoadingRoutes: Routes = [
     {
         path: 'orders',
         loadChildren: () => import('./order.module').then((m) => m.OrderModule),
-        canActivate: [requireAuthentication, requireAuthorization(SHOPPING_CART_PERMISSIONS.getOrders)],
+        //canActivate: [requireAuthentication, requireAuthorization(SHOPPING_CART_PERMISSIONS.getOrders)],
+        canActivate: [requireAuthentication],
     },
 ];
 
