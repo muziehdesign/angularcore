@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.7.0/oidc-client.js"></script>
+        <script>
+            console.log('[login redirect page]');
+          var mgr = new Oidc.UserManager({response_type: "code"});
+          mgr.signinRedirectCallback().then((data) => {
+                alert('redirecting back to state: ', data.state);
+                window.history.replaceState({},
+                    window.document.title,
+                    window.location.origin);
+                window.location = "/";
+            }, error => {
+                console.error(error);
+            });
+        </script>
+    </head>
+    <body>
+        login redirect
+        <div class="flex h-full flex-col">
+            <div class="bg-tulablue text-white flex flex-row h-screen justify-center items-center">
+                <img src="/assets/logo-dark.svg" alt="LiveTula Connect" class="h-14"/>
+                <div class='h-2 w-2 ml-2 mt-25 bg-white rounded-full animate-bounce [animation-delay:-0.6s]'></div>
+                <div class='h-2 w-2 ml-2 mt-25 bg-white rounded-full animate-bounce [animation-delay:-0.4s]'></div>
+                <div class='h-2 w-2 ml-2 mt-25 bg-white rounded-full animate-bounce [animation-delay:-0.2s]'></div>
+            </div>
+        </div>
+    </body>
+</html>
