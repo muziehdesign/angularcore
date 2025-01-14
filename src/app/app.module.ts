@@ -13,14 +13,21 @@ import { initializeApplication, initializeAuthorization } from './app-initialize
 import { ShoppingCartClient } from './api/shopping-cart/shopping-cart.client';
 import { LayoutModule } from './layout/layout.module';
 
-@NgModule({ declarations: [AppComponent, PageNotFoundComponent, ProfileComponent],
-    bootstrap: [AppComponent], imports: [BrowserModule,
+@NgModule({
+    declarations: [AppComponent, PageNotFoundComponent, ProfileComponent],
+    bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
         CoreModule,
         LayoutModule,
         // route
-        AppRoutingModule], providers: [
-        { provide: APP_INITIALIZER, useFactory: initializeApplication, multi: true, deps: [LOGGER] },
-        { provide: APP_INITIALIZER, useFactory: initializeAuthorization, multi: true, deps: [AuthenticationService, AuthorizationService, ShoppingCartClient] },
-        provideHttpClient(withInterceptorsFromDi()),
-    ] })
+        AppRoutingModule,
+    ],
+    providers: [
+        AuthenticationService,
+        { provide: APP_INITIALIZER, useFactory: initializeApplication, multi: true, deps: [LOGGER] }, 
+        { provide: APP_INITIALIZER, useFactory: initializeAuthorization, multi: true, deps: [AuthenticationService, AuthorizationService, ShoppingCartClient] }, 
+        provideHttpClient(withInterceptorsFromDi())
+    ],
+})
 export class AppModule {}

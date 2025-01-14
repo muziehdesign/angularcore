@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { requireAuthentication } from '@muziehdesign/angularcore';
+import { authenticationRoutes, requireAuthentication } from '@muziehdesign/angularcore';
 import { cartRoutes } from './cart/cart.routes';
 import { checkoutLazyLoadingRoutes } from './checkout/checkout-routing.module';
 import { orderLazyLoadingRoutes } from './order/order-routing.module';
@@ -10,6 +10,7 @@ import { ProfileComponent } from './profile/profile.component';
 const routes: Routes = [
     { path: '', redirectTo: '/items', pathMatch: 'full' },
     { path: 'logout', redirectTo: '/', pathMatch: 'full' },
+    ...authenticationRoutes,
     ...orderLazyLoadingRoutes,
     ...checkoutLazyLoadingRoutes,
     { path: 'items', loadChildren: () => import('./item/item.routes').then((x) => x.itemRoutes) },

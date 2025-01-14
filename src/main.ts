@@ -1,10 +1,11 @@
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { AuthenticationService, bootstrapAuthenticationService, loadConfigurations } from '@muziehdesign/angularcore';
+import { AUTHENTICATION_OPTIONS, loadConfigurations } from '@muziehdesign/angularcore';
 
 import { AppModule } from './app/app.module';
 import { AppConfig } from './environments/app-config';
 import { environment } from './environments/environment';
+
 
 if (environment.production === true) {
     enableProdMode();
@@ -12,17 +13,11 @@ if (environment.production === true) {
 
 loadConfigurations<AppConfig>(environment.configurations)
     .then(async (appConfig) => {
-        const auth = await bootstrapAuthenticationService(appConfig.identity);
-        const silentCallback = await auth.handleSilentCallback();
-        if (silentCallback) {
-            return;
-        }
-        await auth.handleLoginCallback();
-        await auth.loadUser();
+
 
         // bootstrap
         const extraProviders = [
-            { provide: AuthenticationService, useValue: auth },
+            { provide: AUTHENTICATION_OPTIONS, useValue: Object.freeze(appConfig.identity) },
             { provide: AppConfig, useValue: Object.freeze(appConfig) },
         ];
 
