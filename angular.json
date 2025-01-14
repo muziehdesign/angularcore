@@ -36,7 +36,7 @@
                             {
                                 "glob": "oidc-client.min.js",
                                 "input": "node_modules/oidc-client/dist",
-                                "output": "static/oidc-client"
+                                "output": "oidc"
                             }
                         ],
                         "styles": ["./node_modules/@angular/material/prebuilt-themes/indigo-pink.css", "src/styles.scss"],

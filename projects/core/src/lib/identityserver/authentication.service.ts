@@ -6,17 +6,34 @@ import { Inject, Injectable } from '@angular/core';
 
 @Injectable()
 export class AuthenticationService {
+    private readonly userManager: UserManager;
     private readonly state = new BehaviorSubject<User | undefined>(undefined);
 
-    constructor(private userManager: UserManager) {
-        /*Log.logger = console; // TODO
+    constructor(@Inject(AUTHENTICATION_OPTIONS) private settings: AuthenticationOptions) {
+        Log.logger = console; // TODO
         const map = new Map<string, number>();
         map.set('debug', Log.DEBUG);
         map.set('error', Log.ERROR);
         map.set('none', Log.NONE);
         map.set('warn', Log.WARN);
         map.set('info', Log.INFO);
-        Log.level = map.get(settings.logLevel) || Log.NONE;*/
+        Log.level = map.get(settings.logLevel) || Log.NONE;
+
+        this.userManager = new UserManager({
+            authority: settings.authority,
+            client_id: settings.clientId,
+            response_type: settings.responseType,
+            scope: settings.scope,
+            redirect_uri: settings.redirectUri,
+            silent_redirect_uri: settings.silentRedirectUri,
+            post_logout_redirect_uri: settings.postLogoutRedirectUri,
+            automaticSilentRenew: settings.automaticSilentRenew,
+            checkSessionInterval: settings.checkSessionInterval,
+            accessTokenExpiringNotificationTime: settings.accessTokenExpiringNotificationTime,
+            filterProtocolClaims: settings.filterProtocolClaims,
+            loadUserInfo: true,
+            monitorSession: true,
+        } satisfies UserManagerSettings);
 
         this.userManager.events.addUserSignedOut(async () => {
             this.state.next(undefined);
