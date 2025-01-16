@@ -16,14 +16,29 @@ export interface Paged<T> {
     items: T[];
 }
 
-export interface Auditable {
+export interface AuditableResponse {
     createdDate: Date;
-    createdSubject: Subject;
+    createdSubject: SubjectResponse;
     lastModifiedDate: Date;
-    lastModifiedSubject: Subject;
+    lastModifiedSubject: SubjectResponse;
 }
 
-export interface Subject {
+export interface SubjectResponse {
+    subjectId: string;
+    name: string;
+    givenName: string;
+    familyName: string;
+    userPrincipalName: string;
+}
+
+export interface AuditableModel {
+    createdDate: Date;
+    createdSubject: SubjectModel;
+    lastModifiedDate: Date;
+    lastModifiedSubject: SubjectModel;
+}
+
+export interface SubjectModel {
     subjectId: string;
     name: string;
     givenName: string;
