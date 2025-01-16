@@ -5,8 +5,8 @@ export interface List<T> {
 
 export interface Search {
     pageNumber: number;
-    pageSize: number;
-    sort: string;
+    pageSize?: number;
+    sort?: string;
 }
 
 export interface Paged<T> {
@@ -14,4 +14,19 @@ export interface Paged<T> {
     pageNumber: number;
     pageSize: number;
     items: T[];
+}
+
+export interface Auditable {
+    createdDate: Date;
+    createdSubject: Subject;
+    lastModifiedDate: Date;
+    lastModifiedSubject: Subject;
+}
+
+export interface Subject {
+    subjectId: string;
+    name: string;
+    givenName: string;
+    familyName: string;
+    userPrincipalName: string;
 }
