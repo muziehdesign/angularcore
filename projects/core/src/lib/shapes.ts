@@ -18,12 +18,12 @@ export interface Paged<T> {
 
 export interface AuditableEntity {
     createdDate: Date;
-    createdSubject: SubjectResponse;
+    createdSubject: Subject;
     lastModifiedDate: Date;
-    lastModifiedSubject: SubjectResponse;
+    lastModifiedSubject: Subject;
 }
 
-export interface SubjectResponse {
+export interface Subject {
     subjectId: string;
     name: string;
     givenName: string;
