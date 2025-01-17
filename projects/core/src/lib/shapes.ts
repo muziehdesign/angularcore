@@ -16,7 +16,7 @@ export interface Paged<T> {
     items: T[];
 }
 
-export interface AuditableResponse {
+export interface AuditableEntity {
     createdDate: Date;
     createdSubject: SubjectResponse;
     lastModifiedDate: Date;
@@ -31,7 +31,7 @@ export interface SubjectResponse {
     userPrincipalName: string;
 }
 
-export interface AuditableModel {
+export interface AuditableEntityModel {
     createdDate: Date;
     createdSubject: SubjectModel;
     lastModifiedDate: Date;

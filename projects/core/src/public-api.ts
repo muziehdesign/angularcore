@@ -21,4 +21,4 @@ export { TruncatedCountPipe } from './lib/pipes/truncated-count.pipe';
 // tokens
 export { WINDOW } from './lib/window.token';
 // shapes
-export { List, Paged, Search, AuditableResponse, SubjectResponse, AuditableModel, SubjectModel } from './lib/shapes';
+export { List, Paged, Search, AuditableEntity as AuditableResponse, SubjectResponse, AuditableEntityModel as AuditableModel, SubjectModel } from './lib/shapes';
