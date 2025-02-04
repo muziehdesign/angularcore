@@ -9,6 +9,12 @@ export interface Search {
     sort?: string;
 }
 
+export interface SearchModel {
+    pageNumber: number;
+    pageSize?: number;
+    sort?: string;
+}
+
 export interface Paged<T> {
     totalItems: number;
     pageNumber: number;
