@@ -48,7 +48,15 @@ export class AuthenticationService {
             this.state.next(undefined);
         });
 
-        console.log('[AuthenticationService]ctor');
+        this.userManager.events.addAccessTokenExpired(async () => {
+            this.state.next(undefined);
+            await this.userManager.signoutRedirect();
+        });
+
+        this.userManager.events.addSilentRenewError(async () => {
+            this.state.next(undefined);
+            await this.userManager.signoutRedirect();
+        });
     }
 
     async loadUser(): Promise<AuthenticatedUser | undefined> {
