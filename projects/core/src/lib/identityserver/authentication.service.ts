@@ -50,12 +50,12 @@ export class AuthenticationService {
 
         this.userManager.events.addAccessTokenExpired(async () => {
             this.state.next(undefined);
-            await this.userManager.signoutRedirect();
+            await this.userManager.signinRedirect();
         });
 
         this.userManager.events.addSilentRenewError(async () => {
             this.state.next(undefined);
-            await this.userManager.signoutRedirect();
+            await this.userManager.signinRedirect();
         });
     }
 
