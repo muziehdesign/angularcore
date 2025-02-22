@@ -1,7 +1,7 @@
-import { RedirectCommand, Router, Routes } from "@angular/router";
-import { BlankComponent } from "../blank/blank.component";
-import { inject } from "@angular/core";
-import { AuthenticationService } from "./authentication.service";
+import { RedirectCommand, Router, Routes } from '@angular/router';
+import { BlankComponent } from '../blank/blank.component';
+import { inject } from '@angular/core';
+import { AuthenticationService } from './authentication.service';
 
 export const authenticationRoutes: Routes = [
     {
@@ -11,10 +11,14 @@ export const authenticationRoutes: Routes = [
             async () => {
                 const auth = inject(AuthenticationService);
                 const router = inject(Router);
-                const returnUrl = await auth.handleLoginCallback();
-                const urlTree = router.parseUrl(returnUrl);
-                return new RedirectCommand(urlTree);
+                try {
+                    const returnUrl = await auth.handleLoginCallback();
+                    const urlTree = router.parseUrl(returnUrl);
+                    return new RedirectCommand(urlTree, { replaceUrl: true });
+                } catch {
+                    return new RedirectCommand(router.parseUrl('/'), { replaceUrl: true });
+                }
             },
         ],
-    }
+    },
 ];

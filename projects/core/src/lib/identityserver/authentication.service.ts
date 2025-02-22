@@ -59,10 +59,10 @@ export class AuthenticationService {
         });
     }
 
-    async loadUser(): Promise<AuthenticatedUser | undefined> {
-        const user: User | null | undefined = await this.userManager.getUser().catch(() => undefined);
-        if (!user || user?.expired) {
-            console.log(`[AuthenticationService]Retrieved user but user doesn't exist or has expired, ${user?.expires_at}`);
+    async signinSilent(): Promise<AuthenticatedUser | undefined> {
+        const user: User | null | undefined =  await this.userManager.signinSilent().catch(() => undefined);
+        if (!user) {
+            console.log(`[AuthenticationService]Silent signin unsuccessful`);
             this.state.next(undefined);
             return undefined;
         }
@@ -70,7 +70,17 @@ export class AuthenticationService {
         return Promise.resolve(this.mapToAuthenticatedUser(user));
     }
 
-    /** Handle silent callback. True indicates it called `signinSilentCallback`, bootstrap should be halted if this is handled in main.ts*/
+    async loadUser(): Promise<AuthenticatedUser | undefined> {
+        const user: User | null | undefined = await this.userManager.getUser().catch(() => undefined);
+        if (!user || user.expired) {
+            console.log(`[AuthenticationService]No user data to load, or user expired at ${user?.expires_at}`);
+            this.state.next(undefined);
+            return undefined;
+        }
+        this.state.next(user);
+        return Promise.resolve(this.mapToAuthenticatedUser(user));
+    }
+
     async handleSilentCallback(): Promise<boolean> {
         await this.userManager.signinSilentCallback();
         return true;
@@ -78,7 +88,7 @@ export class AuthenticationService {
 
     async handleLoginCallback(): Promise<string> {
         const redirectedUser = await this.userManager.signinRedirectCallback();
-        window.history.replaceState({}, window.document.title, redirectedUser.state || '/');
+        //window.history.replaceState({}, '', redirectedUser.state || '/');
         return redirectedUser.state;
     }
 
