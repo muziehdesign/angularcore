@@ -13,7 +13,7 @@ export const authenticationRoutes: Routes = [
                 const router = inject(Router);
                 try {
                     const returnUrl = await auth.handleLoginCallback();
-                    const urlTree = router.parseUrl(returnUrl);
+                    const urlTree = router.parseUrl(returnUrl || '/');
                     return new RedirectCommand(urlTree, { replaceUrl: true });
                 } catch {
                     return new RedirectCommand(router.parseUrl('/'), { replaceUrl: true });
