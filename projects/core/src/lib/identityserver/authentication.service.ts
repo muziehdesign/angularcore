@@ -89,6 +89,7 @@ export class AuthenticationService {
     async handleLoginCallback(): Promise<string> {
         const redirectedUser = await this.userManager.signinRedirectCallback();
         //window.history.replaceState({}, '', redirectedUser.state || '/');
+        Log.info(`[AuthenticationService]handle login callback: ${JSON.stringify(redirectedUser)}`);
         return redirectedUser.state;
     }
 
