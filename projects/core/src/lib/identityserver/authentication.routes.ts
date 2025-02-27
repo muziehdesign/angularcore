@@ -14,6 +14,7 @@ export const authenticationRoutes: Routes = [
                 try {
                     const returnUrl = await auth.handleLoginCallback();
                     const urlTree = router.parseUrl(returnUrl || '/');
+                    console.log(`restored state ${returnUrl}, redirecting...`)
                     return new RedirectCommand(urlTree, { replaceUrl: true });
                 } catch {
                     return new RedirectCommand(router.parseUrl('/'), { replaceUrl: true });
