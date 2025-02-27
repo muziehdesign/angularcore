@@ -8,6 +8,7 @@ export const requireAuthentication = async (route:ActivatedRouteSnapshot, state:
         return true;
     }
 
+    console.log(`authenticating ${state.url}`);
     await auth.login(state.url);
     return false;
 };
