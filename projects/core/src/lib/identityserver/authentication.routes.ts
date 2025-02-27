@@ -12,9 +12,11 @@ export const authenticationRoutes: Routes = [
                 const auth = inject(AuthenticationService);
                 const router = inject(Router);
                 try {
+                    console.log(`[login-redirect]handling.....`);
                     const returnUrl = await auth.handleLoginCallback();
                     const urlTree = router.parseUrl(returnUrl || '/');
 
+                    console.log(`[login-redirect]redirecting to ${returnUrl || '/'}, ${urlTree.toString()}`);
                     return new RedirectCommand(urlTree);
                 } catch {
                     return new RedirectCommand(router.parseUrl('/'));

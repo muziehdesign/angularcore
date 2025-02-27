@@ -77,6 +77,7 @@ export class AuthenticationService {
             this.state.next(undefined);
             return undefined;
         }
+        console.log(`[AuthenticationService]Restored user, expires at ${user?.expires_at}, in ${user?.expires_in}`);
         this.state.next(user);
         return Promise.resolve(this.mapToAuthenticatedUser(user));
     }
@@ -90,7 +91,7 @@ export class AuthenticationService {
         const redirectedUser = await this.userManager.signinRedirectCallback();
         const returnUrl = redirectedUser.state || '/';
         //window.history.replaceState({}, '', returnUrl);
-        console.log(`[AuthenticationService]handle login callback: ${returnUrl}`);
+        console.log(`[AuthenticationService]handle login callback: ${redirectedUser.expired}, ${redirectedUser.expires_at}, ${returnUrl}`);
         return redirectedUser.state;
     }
 
