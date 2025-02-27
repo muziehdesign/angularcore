@@ -21,7 +21,7 @@ export const initializeApplication = (logger: Logger): (() => Promise<void>) => 
 
 export const initializeAuthorization = (authentication: AuthenticationService, authorization: AuthorizationService, client: ShoppingCartClient): (() => Promise<boolean>) => {
     return async (): Promise<boolean> => {
-        await authentication.loadUser();
+        //await authentication.signinSilent();
         console.log('initialize authorization, snapshot: ', authentication.getSnapshot());
         
         return true;

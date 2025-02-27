@@ -7,17 +7,17 @@ export const authenticationRoutes: Routes = [
     {
         path: 'login-redirect',
         component: BlankComponent,
-        canActivate: [
+        canMatch: [
             async () => {
                 const auth = inject(AuthenticationService);
                 const router = inject(Router);
                 try {
                     const returnUrl = await auth.handleLoginCallback();
                     const urlTree = router.parseUrl(returnUrl || '/');
-                    console.log(`restored state ${returnUrl}, redirecting...`)
-                    return new RedirectCommand(urlTree, { replaceUrl: true });
+
+                    return new RedirectCommand(urlTree);
                 } catch {
-                    return new RedirectCommand(router.parseUrl('/'), { replaceUrl: true });
+                    return new RedirectCommand(router.parseUrl('/'));
                 }
             },
         ],

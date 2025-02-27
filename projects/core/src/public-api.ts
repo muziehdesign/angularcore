@@ -4,6 +4,7 @@ export { AuthenticationService, AuthenticationStateData } from './lib/identityse
 export { AuthenticatedUser } from './lib/identityserver/authenticated-user';
 export { AuthenticationTokenInterceptor, AUTHENTICATED_REQUEST } from './lib/identityserver/authentication-token.interceptor';
 export { requireAuthentication } from './lib/identityserver/authenticated.guard';
+export { AuthenticationGuard } from './lib/identityserver/authenticated.guard';
 export { authenticationRoutes } from './lib/identityserver/authentication.routes';
 // authorization
 export { AuthorizationService } from './lib/authorization/authorization.service';

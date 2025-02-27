@@ -4,7 +4,7 @@ import { AUTHENTICATION_OPTIONS, AuthenticationOptions } from './authentication-
 import { BehaviorSubject, map } from 'rxjs';
 import { Inject, Injectable } from '@angular/core';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AuthenticationService {
     private readonly userManager: UserManager;
     private readonly state = new BehaviorSubject<User | undefined>(undefined);
@@ -60,7 +60,7 @@ export class AuthenticationService {
     }
 
     async signinSilent(): Promise<AuthenticatedUser | undefined> {
-        const user: User | null | undefined =  await this.userManager.signinSilent().catch(() => undefined);
+        const user: User | null | undefined = await this.userManager.signinSilent().catch(() => undefined);
         if (!user) {
             console.log(`[AuthenticationService]Silent signin unsuccessful`);
             this.state.next(undefined);
@@ -89,14 +89,32 @@ export class AuthenticationService {
     async handleLoginCallback(): Promise<string> {
         const redirectedUser = await this.userManager.signinRedirectCallback();
         const returnUrl = redirectedUser.state || '/';
-        window.history.replaceState({}, '', returnUrl);
-        console.log(`[AuthenticationService]handle login callback: ${returnUrl}}`);
+        //window.history.replaceState({}, '', returnUrl);
+        console.log(`[AuthenticationService]handle login callback: ${returnUrl}`);
         return redirectedUser.state;
     }
 
     async login(url?: string): Promise<void> {
         const returnUrl = url || window.location.href.replace(window.location.origin, '');
         return this.userManager.signinRedirect({ state: returnUrl });
+    }
+
+    /**
+     * Checks if current user is authenticated by first checking storage, then performing a silent signin.
+     * @returns whether or not current user has authenticated
+     */
+    async checkAuthentication(): Promise<boolean> {
+        const user = this.state.getValue();
+        if (user) {
+            return true;
+        }
+
+        let silentSignedIn = await this.signinSilent();
+        if (silentSignedIn) {
+            return true;
+        }
+
+        return false;
     }
 
     getSnapshot() {
