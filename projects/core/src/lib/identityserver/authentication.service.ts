@@ -115,6 +115,7 @@ export class AuthenticationService {
             return true;
         }
 
+        await this.userManager.clearStaleState();
         let silentSignedIn = await this.signinSilent();
         if (silentSignedIn) {
             return true;
