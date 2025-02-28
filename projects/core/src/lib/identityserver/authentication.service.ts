@@ -36,24 +36,29 @@ export class AuthenticationService {
         } satisfies UserManagerSettings);
 
         this.userManager.events.addUserSignedOut(async () => {
+            console.log('[AuthenticationService]user signed out');
             this.state.next(undefined);
             await this.userManager.signoutRedirect();
         });
 
         this.userManager.events.addUserLoaded((user) => {
+            console.log('[AuthenticationService]user loaded');
             this.state.next(user);
         });
 
         this.userManager.events.addUserUnloaded(() => {
+            console.log('[AuthenticationService]user unloaded');
             this.state.next(undefined);
         });
 
         this.userManager.events.addAccessTokenExpired(async () => {
+            console.log('[AuthenticationService]access token expired');
             this.state.next(undefined);
             await this.userManager.signinRedirect();
         });
 
         this.userManager.events.addSilentRenewError(async () => {
+            console.log('[AuthenticationService]silent renew error');
             this.state.next(undefined);
             await this.userManager.signinRedirect();
         });
