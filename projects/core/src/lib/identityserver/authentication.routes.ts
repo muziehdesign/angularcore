@@ -17,10 +17,10 @@ export const authenticationRoutes: Routes = [
                     const urlTree = router.parseUrl(returnUrl || '/');
 
                     console.log(`[login-redirect]redirecting to ${returnUrl || '/'}, ${urlTree.toString()}`);
-                    return new RedirectCommand(urlTree);
+                    return urlTree;
                 } catch (e) {
                     console.log(`[login-redirect]error`, e);
-                    return new RedirectCommand(router.parseUrl('/'));
+                    return router.createUrlTree(['/']);
                 }
             },
         ],
