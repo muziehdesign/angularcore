@@ -52,8 +52,9 @@ export class AuthenticationService {
         });
 
         this.userManager.events.addAccessTokenExpired(async () => {
-            console.log('[AuthenticationService]access token expired');
+            console.log('[AuthenticationService]access token expired, removing user then redirect to sign in');
             this.state.next(undefined);
+            await this.userManager.removeUser();
             await this.userManager.signinRedirect();
         });
 
@@ -111,7 +112,8 @@ export class AuthenticationService {
      */
     async checkAuthentication(): Promise<boolean> {
         const user = this.state.getValue();
-        if (user) {
+        console.log(`[Authentication]checking authentication against local: ${user?.expired} ${user?.expires_at}`);
+        if (user && !user.expired) {
             return true;
         }
 
@@ -128,7 +130,7 @@ export class AuthenticationService {
         const user = this.state.getValue();
         return {
             user: this.mapToAuthenticatedUser(user),
-            authenticated: user !== undefined,
+            authenticated: user !== undefined && !user.expired,
             token: user?.access_token,
         } satisfies AuthenticationStateData;
     }
@@ -159,3 +161,24 @@ export interface AuthenticationStateData {
     user?: AuthenticatedUser;
     token?: string;
 }
+
+/**
+ * 
+ *  https://github.com/IdentityModel/oidc-client-js/wiki#methods
+    getUser: Returns promise to load the User object for the currently authenticated user.
+    removeUser: Returns promise to remove from any storage the currently authenticated user.
+    signinRedirect: Returns promise to trigger a redirect of the current window to the authorization endpoint.
+    signinRedirectCallback: Returns promise to process response from the authorization endpoint. The result of the promise is the authenticated User.
+    signinSilent: Returns promise to trigger a silent request (via an iframe) to the authorization endpoint. The result of the promise is the authenticated User.
+    signinSilentCallback: Returns promise to notify the parent window of response from the authorization endpoint.
+    signinPopup: Returns promise to trigger a request (via a popup window) to the authorization endpoint. The result of the promise is the authenticated User.
+    signinPopupCallback: Returns promise to notify the opening window of response from the authorization endpoint.
+    signoutRedirect: Returns promise to trigger a redirect of the current window to the end session endpoint.
+    signoutRedirectCallback: Returns promise to process response from the end session endpoint.
+    signoutPopup [1.4.0]: Returns promise to trigger a redirect of a popup window window to the end session endpoint.
+    signoutPopupCallback [1.4.0]: Returns promise to process response from the end session endpoint from a popup window.
+    querySessionStatus [1.1.0]: Returns promise to query OP for user's current signin status. Returns object with session_state and subject identifier.
+    startSilentRenew [1.4.0]: Enables silent renew for the UserManager.
+    stopSilentRenew [1.4.0]: Disables silent renew for the UserManager.
+    clearStaleState: Removes stale state entries in storage for incomplete authorize requests.
+ */
