@@ -55,13 +55,13 @@ export class AuthenticationService {
             console.log('[AuthenticationService]access token expired, removing user then redirect to sign in');
             this.state.next(undefined);
             await this.userManager.removeUser();
-            await this.userManager.signinRedirect();
+            await this.login();
         });
 
         this.userManager.events.addSilentRenewError(async () => {
             console.log('[AuthenticationService]silent renew error');
             this.state.next(undefined);
-            await this.userManager.signinRedirect();
+            await this.login();
         });
     }
 
@@ -103,6 +103,7 @@ export class AuthenticationService {
 
     async login(url?: string): Promise<void> {
         const returnUrl = url || window.location.href.replace(window.location.origin, '');
+        console.log(`[AuthenticationService]sign in redirect with return url of ${returnUrl}`);
         return this.userManager.signinRedirect({ state: returnUrl });
     }
 
