@@ -35,6 +35,8 @@ export class AuthenticationService {
             monitorSession: settings.monitorSession || true,
         } satisfies UserManagerSettings);
 
+        console.log('[AuthenticationService]version 3/5 1:58');
+
         this.userManager.events.addUserSignedOut(async () => {
             console.log('[AuthenticationService]user signed out');
             this.state.next(undefined);
@@ -52,31 +54,31 @@ export class AuthenticationService {
         });
 
         this.userManager.events.addAccessTokenExpired(async () => {
-            console.log('[AuthenticationService]access token expired, removing user then redirect to sign in');
+            console.log('[AuthenticationService]access token expired');
             this.state.next(undefined);
-            await this.login();
         });
 
-        this.userManager.events.addSilentRenewError(async () => {
-            console.log('[AuthenticationService]silent renew error');
-            this.state.next(undefined);
-            await this.login();
+        this.userManager.events.addSilentRenewError(async (error) => {
+            console.log('[AuthenticationService]silent renew error', error);
+            this.state.next(undefined); // should signin silent again
+        });
+
+        this.userManager.events.addUserSessionChanged(()=>{
+            console.log('[AuthenticationService]user session changed');
         });
     }
 
     async signinSilent(): Promise<AuthenticatedUser | undefined> {
-        const user: User | null | undefined = await this.userManager.signinSilent().catch(() => undefined);
+        const user: User | undefined = await this.userManager.signinSilent().catch(() => undefined);
         if (!user) {
             console.log(`[AuthenticationService]Silent signin unsuccessful`);
-            this.state.next(undefined);
             return undefined;
         }
-        this.state.next(user);
         return Promise.resolve(this.mapToAuthenticatedUser(user));
     }
 
     async loadUser(): Promise<AuthenticatedUser | undefined> {
-        const user: User | null | undefined = await this.userManager.getUser().catch(() => undefined);
+        const user: User | null = await this.userManager.getUser().catch(() => null);
         if (!user || user.expired) {
             console.log(`[AuthenticationService]No user data to load, or user expired at ${user?.expires_at}`);
             this.state.next(undefined);
@@ -100,30 +102,19 @@ export class AuthenticationService {
         return redirectedUser.state;
     }
 
-    async login(url?: string): Promise<void> {
-        const returnUrl = url || window.location.href.replace(window.location.origin, '');
-        console.log(`[AuthenticationService]sign in redirect with return url of ${returnUrl}`);
-        return this.userManager.signinRedirect({ state: returnUrl });
+    async login(returnUrl: string): Promise<boolean> {
+        const user: User | undefined = await this.userManager.signinSilent().catch(() => undefined);
+        if(!user) {
+            console.log(`[AuthenticationService]sign in silent unsuccessful, redirect with return url of ${returnUrl}`);
+            await this.userManager.signinRedirect({ state: returnUrl });
+            return false;
+        }
+        console.log(`[AuthenticationService]silently signed in user for login`);
+        return true;
     }
 
-    /**
-     * Checks if current user is authenticated by first checking storage, then performing a silent signin.
-     * @returns whether or not current user has authenticated
-     */
-    async checkAuthentication(): Promise<boolean> {
-        const user = this.state.getValue();
-        console.log(`[Authentication]checking authentication against local: ${user?.expired} ${user?.expires_at}`);
-        if (user && !user.expired) {
-            return true;
-        }
-
-        await this.userManager.clearStaleState();
-        let silentSignedIn = await this.signinSilent();
-        if (silentSignedIn) {
-            return true;
-        }
-
-        return false;
+    initialize() {
+        this.userManager.clearStaleState();
     }
 
     getSnapshot() {
@@ -147,7 +138,7 @@ export class AuthenticationService {
         );
     }
 
-    private mapToAuthenticatedUser(user: User | undefined | null): AuthenticatedUser | undefined {
+    private mapToAuthenticatedUser(user: User | undefined): AuthenticatedUser | undefined {
         if (user) {
             return new AuthenticatedUser(new Map<string, any>(Object.entries(user.profile)));
         }
