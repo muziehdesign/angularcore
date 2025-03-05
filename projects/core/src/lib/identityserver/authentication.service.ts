@@ -32,7 +32,7 @@ export class AuthenticationService {
             accessTokenExpiringNotificationTime: settings.accessTokenExpiringNotificationTime,
             filterProtocolClaims: settings.filterProtocolClaims,
             loadUserInfo: true,
-            monitorSession: true,
+            monitorSession: settings.monitorSession || true,
         } satisfies UserManagerSettings);
 
         this.userManager.events.addUserSignedOut(async () => {
@@ -54,7 +54,6 @@ export class AuthenticationService {
         this.userManager.events.addAccessTokenExpired(async () => {
             console.log('[AuthenticationService]access token expired, removing user then redirect to sign in');
             this.state.next(undefined);
-            await this.userManager.removeUser();
             await this.login();
         });
 
