@@ -89,4 +89,5 @@ Checklist
         - navigate backwards
     - authenticated
     - authenticated but in a new tab
+- resume session
     - with expired user data in storage

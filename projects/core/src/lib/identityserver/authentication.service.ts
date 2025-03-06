@@ -1,15 +1,19 @@
 import { Log, User, UserManager, UserManagerSettings } from 'oidc-client';
 import { AuthenticatedUser } from './authenticated-user';
 import { AUTHENTICATION_OPTIONS, AuthenticationOptions } from './authentication-options';
-import { BehaviorSubject, map } from 'rxjs';
+import { BehaviorSubject, Subject, map } from 'rxjs';
 import { Inject, Injectable } from '@angular/core';
+import { WINDOW } from '../window.token';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
     private readonly userManager: UserManager;
     private readonly state = new BehaviorSubject<User | undefined>(undefined);
 
-    constructor(@Inject(AUTHENTICATION_OPTIONS) private settings: AuthenticationOptions) {
+    constructor(
+        @Inject(AUTHENTICATION_OPTIONS) private settings: AuthenticationOptions,
+        @Inject(WINDOW) private window: Window
+    ) {
         Log.logger = console; // TODO
         const map = new Map<string, number>();
         map.set('debug', Log.DEBUG);
@@ -32,10 +36,10 @@ export class AuthenticationService {
             accessTokenExpiringNotificationTime: settings.accessTokenExpiringNotificationTime,
             filterProtocolClaims: settings.filterProtocolClaims,
             loadUserInfo: true,
-            monitorSession: settings.monitorSession || true,
+            monitorSession: true,
         } satisfies UserManagerSettings);
 
-        console.log('[AuthenticationService]version 3/5 1:58');
+        console.log('[AuthenticationService]version 3/6 11:05');
 
         this.userManager.events.addUserSignedOut(async () => {
             console.log('[AuthenticationService]user signed out');
@@ -56,14 +60,15 @@ export class AuthenticationService {
         this.userManager.events.addAccessTokenExpired(async () => {
             console.log('[AuthenticationService]access token expired');
             this.state.next(undefined);
+            this.window.alert('Session expired. Please refresh browser page to continue.');
         });
 
         this.userManager.events.addSilentRenewError(async (error) => {
             console.log('[AuthenticationService]silent renew error', error);
-            this.state.next(undefined); // should signin silent again
+            this.state.next(undefined); 
         });
 
-        this.userManager.events.addUserSessionChanged(()=>{
+        this.userManager.events.addUserSessionChanged(() => {
             console.log('[AuthenticationService]user session changed');
         });
     }
@@ -104,7 +109,7 @@ export class AuthenticationService {
 
     async login(returnUrl: string): Promise<boolean> {
         const user: User | undefined = await this.userManager.signinSilent().catch(() => undefined);
-        if(!user) {
+        if (!user) {
             console.log(`[AuthenticationService]sign in silent unsuccessful, redirect with return url of ${returnUrl}`);
             await this.userManager.signinRedirect({ state: returnUrl });
             return false;
