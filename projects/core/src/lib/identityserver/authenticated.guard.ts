@@ -1,56 +1,40 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AuthenticationService } from './authentication.service';
-import { ActivatedRouteSnapshot, CanActivate, CanMatch, GuardResult, MaybeAsync, Route, Router, RouterStateSnapshot, UrlSegment } from '@angular/router';
-
-export const requireAuthentication = async (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> => {
-    const auth = inject(AuthenticationService);
-    if (auth.getSnapshot().authenticated) {
-        return true;
-    }
-
-    console.log(window.history);
-    console.log(`authenticating ${state.url}`);
-    await auth.login(state.url);
-    return new Promise<boolean>((resolve) => setTimeout(() => resolve(false), 1000));
-};
-
-export const requireAuthenticationCanMatch = async (route: Route, segments: UrlSegment[]): Promise<boolean> => {
-    const auth = inject(AuthenticationService);
-    if (auth.getSnapshot().authenticated) {
-        return true;
-    }
-
-    const url = segments.map((segment) => segment.path).join('/');
-    console.log(`authenticating ${url}`);
-    await auth.login(url);
-    return new Promise<boolean>((resolve) => setTimeout(() => resolve(false), 3000));
-};
+import { ActivatedRouteSnapshot, CanActivate, CanLoad, CanMatch, GuardResult, MaybeAsync, Route, Router, RouterStateSnapshot, UrlSegment } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Injectable()
 export class AuthenticationGuard implements CanMatch, CanActivate {
-    constructor(private auth: AuthenticationService) {}
+    constructor(private auth: AuthenticationService, private location: Location) {}
 
     async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<GuardResult> {
-
-        const authenticated = await this.auth.checkAuthentication();
-        if (authenticated) {
-            return true;
-        }
-
-        console.log(`authenticating ${state.url}`);
-        await this.auth.login(state.url);
-        return new Promise<boolean>((resolve) => setTimeout(() => resolve(false), 10000));
+        const url = state.url;
+        console.log(`canActivate authenticating ${url}`);
+        return this.checkAuthentication(url);
     }
 
     async canMatch(route: Route, segments: UrlSegment[]): Promise<GuardResult> {
-        const authenticated = await this.auth.checkAuthentication();
-        if (authenticated) {
+        const url = this.location.path();
+        console.log(`canMatch authenticating ${url}`);
+
+        return this.checkAuthentication(url);
+    }
+
+    private async checkAuthentication(returnUrl: string): Promise<boolean> {
+        let authenticated = this.auth.getSnapshot().authenticated;
+        if(authenticated) {
             return true;
         }
 
-        const url = segments.map((segment) => segment.path).join('/');
-        console.log(`authenticating ${url}`);
-        await this.auth.login(url);
-        return new Promise<boolean>((resolve) => setTimeout(() => resolve(false), 10000));
+        authenticated = await this.auth.login(returnUrl);
+        if(authenticated) {
+            return true;
+        }
+        return new Promise<boolean>((resolve) => 
+            setTimeout(() => {
+                console.log(`[Authentication]returning false`)
+                resolve(false);
+            }, 3000) // timeout to make sure user sees sign in redirect before anything else, i.e. page not found because of canMatch
+        );
     }
 }

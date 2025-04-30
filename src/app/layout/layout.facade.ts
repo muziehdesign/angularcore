@@ -12,7 +12,7 @@ export class LayoutFacade {
     }
 
     login() {
-        return this.auth.login();
+        return this.auth.login('/');
     }
 
     getCartCount(): Observable<number> {

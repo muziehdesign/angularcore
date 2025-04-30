@@ -72,3 +72,22 @@ This project follows [Muzieh Design System](https://ruifang.github.io/designsyst
 
 -   When testing in private mode, allow third-party cookies to avoid authentication errors
 -   Need to create signin-oidc.html and add output to angular.json
+
+Checklist
+
+- open public page
+    - unauthenticated
+        - navigate to protected page
+        - navigate backwards
+    - authenticated
+        - navigate to protected page
+        - navigate to unprotected page
+        - navigate backwards
+- open protected page
+    - unauthenticated
+        - navigate to another protected page
+        - navigate backwards
+    - authenticated
+    - authenticated but in a new tab
+- resume session
+    - with expired user data in storage

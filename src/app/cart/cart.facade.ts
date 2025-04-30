@@ -17,7 +17,7 @@ export class CartFacade {
     async loginIfNeeded(): Promise<boolean> {
         const authenticated = await this.auth.getSnapshot().authenticated;
         if(!authenticated) {
-            await this.auth.login(); // TODO: redirect to state is not working
+            await this.auth.login('/'); // TODO: redirect to state is not working
             return true;
         }
 

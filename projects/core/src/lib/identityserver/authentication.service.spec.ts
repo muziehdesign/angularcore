@@ -7,7 +7,7 @@ describe('AuthenticationService', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({});
-        service = new AuthenticationService({} as AuthenticationOptions);
+        service = new AuthenticationService({} as AuthenticationOptions, {} as Window);
     });
 
     it('should be created', () => {
