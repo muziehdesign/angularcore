@@ -1,14 +1,15 @@
-// @use 'design/base';
-// @use 'design/button';
-// @use 'design/dl';
-// @use 'design/dropdown-menu';
-// @use 'design/form';
-// @use 'design/pagination';
-// @use 'design/table';
-// @use 'design/tabs';
-// @use 'design/progress-bar';
-// @use 'design/alert';
-// @use 'design/date-picker';
+@use 'design/base';
+@use 'design/button';
+@use 'design/dl';
+@use 'design/dropdown-menu';
+@use 'design/form';
+@use 'design/pagination';
+@use 'design/table';
+@use 'design/tabs';
+@use 'design/progress-bar';
+@use 'design/alert';
+@use 'design/date-picker';
+@use 'design/utilities';
 
 @tailwind base;
 @tailwind components;
