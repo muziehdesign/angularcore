@@ -11,11 +11,10 @@ import { NgFormModelState, NgFormModelStateFactory } from '@muziehdesign/forms';
 import { ItemFacade } from '../item.facade';
 
 @Component({
-  selector: 'app-item-detail',
-  standalone: true,
-  imports: [CommonModule, FormsModule, MuziehFormsModule],
-  templateUrl: './item-detail.component.html',
-  styleUrls: ['./item-detail.component.scss']
+    selector: 'app-item-detail',
+    imports: [CommonModule, FormsModule, MuziehFormsModule],
+    templateUrl: './item-detail.component.html',
+    styleUrls: ['./item-detail.component.scss']
 })
 export class ItemDetailComponent implements AfterViewInit {
   item: Signal<ItemModel | undefined>;

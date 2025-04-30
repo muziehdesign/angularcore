@@ -8,6 +8,7 @@ import { PagedModel } from 'src/app/models/paged.model';
     selector: 'app-order-list',
     templateUrl: './order-list.component.html',
     styleUrls: ['./order-list.component.scss'],
+    standalone: false
 })
 export class OrderListComponent {
     orders$: Observable<PagedModel<OrderSummaryModel>>;

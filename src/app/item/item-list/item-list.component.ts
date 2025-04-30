@@ -8,10 +8,9 @@ import { PagedModel } from 'src/app/models/paged.model';
 
 @Component({
     selector: 'app-item-list',
-    standalone: true,
     imports: [CommonModule, ItemCardComponent],
     templateUrl: './item-list.component.html',
-    styleUrls: ['./item-list.component.scss'],
+    styleUrls: ['./item-list.component.scss']
 })
 export class ItemListComponent {
     items: Signal<PagedModel<ItemModel> | undefined>;

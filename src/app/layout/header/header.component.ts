@@ -7,6 +7,7 @@ import { LayoutFacade } from '../layout.facade';
     selector: 'app-header',
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss'],
+    standalone: false
 })
 export class HeaderComponent implements OnInit {
     user: AuthenticatedUser | undefined;
