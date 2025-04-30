@@ -1,8 +1,7 @@
 const colors = require('tailwindcss/colors');
 
 module.exports = {
-    content: ['./src/**/*.{html,ts}'],
-    darkMode: false, // or 'media' or 'class'
+    content: ["./src/**/*.{html,ts}"],
     theme: {
         fontFamily: {
             sans: ['Roboto', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Helvetica Neue', 'Arial', 'Noto Sans', 'sans-serif'],
@@ -20,6 +19,7 @@ module.exports = {
             black: colors.black,
             white: colors.white,
             gray: colors.gray,
+            neutral: colors.neutral,
             red: colors.red,
             yellow: colors.yellow,
             green: colors.green,
@@ -35,5 +35,5 @@ module.exports = {
     variants: {
         extend: {},
     },
-    plugins: [require('@tailwindcss/forms')],
-};
+    plugins: ['postcss-import', require('@tailwindcss/forms')({strategy: 'class'})],
+}
