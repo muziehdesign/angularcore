@@ -13,7 +13,6 @@ import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-cart',
-    standalone: true,
     imports: [CommonModule, RouterModule, FormsModule, MuziehFormsModule],
     templateUrl: './cart.component.html',
     styleUrls: ['./cart.component.scss'],

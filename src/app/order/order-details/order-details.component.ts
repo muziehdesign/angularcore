@@ -4,5 +4,6 @@ import { Component } from '@angular/core';
     selector: 'app-order-details',
     templateUrl: './order-details.component.html',
     styleUrls: ['./order-details.component.scss'],
+    standalone: false
 })
 export class OrderDetailsComponent {}

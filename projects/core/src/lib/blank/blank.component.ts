@@ -3,10 +3,9 @@ import { AuthenticationService } from '../identityserver/authentication.service'
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'lib-blank',
-  standalone: true,
-  imports: [],
-  templateUrl: './blank.component.html'
+    selector: 'lib-blank',
+    imports: [],
+    templateUrl: './blank.component.html'
 })
 export class BlankComponent implements OnInit {
  

@@ -7,6 +7,7 @@ import { ShoppingCart } from '../core/shopping-cart';
     selector: 'app-checkout',
     templateUrl: './checkout.component.html',
     styleUrls: ['./checkout.component.scss'],
+    standalone: false
 })
 export class CheckoutComponent {
     items$: Observable<CartItemModel[]>;

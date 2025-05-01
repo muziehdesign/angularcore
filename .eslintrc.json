@@ -4,14 +4,23 @@
     "overrides": [
         {
             "files": ["*.ts"],
+            "parser": "@typescript-eslint/parser",
             "parserOptions": {
                 "project": ["tsconfig.json"],
                 "createDefaultProgram": true
             },
-            "extends": ["plugin:@typescript-eslint/recommended", "plugin:@angular-eslint/recommended", "plugin:@angular-eslint/template/process-inline-templates", "plugin:sonarjs/recommended"],
-            "parser": "@typescript-eslint/parser",
             "plugins": ["@typescript-eslint", "sonarjs"],
+            "extends": ["plugin:@typescript-eslint/recommended", "plugin:@angular-eslint/recommended", "plugin:@angular-eslint/template/process-inline-templates", "plugin:sonarjs/recommended-legacy"],
             "rules": {
+                "@angular-eslint/prefer-standalone": "off",
+                "sonarjs/todo-tag": "off",
+                "sonarjs/unused-import": "off",
+                "sonarjs/no-commented-code": "off",
+                "sonarjs/no-empty-test-file": "off",
+                "sonarjs/deprecation": "off",
+                "sonarjs/reduce-initial-value": "off",
+                "sonarjs/no-skipped-tests": "off",
+                "sonarjs/no-dead-store": "off",
                 "@angular-eslint/directive-selector": [
                     "error",
                     {
