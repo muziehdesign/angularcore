@@ -58,15 +58,15 @@ export class Logger extends BaseLogger {
         console.error(message, ...optionalParams);
     }
     protected override logInfo(message?: any, ...optionalParams: any[]): void {
-        console.error(message, ...optionalParams);
+        console.info(message, ...optionalParams);
     }
 
     protected override logDebug(message?: any, ...optionalParams: any[]): void {
-        console.error(message, ...optionalParams);
+        console.debug(message, ...optionalParams);
     }
 
     protected override logWarning(message?: any, ...optionalParams: any[]): void {
-        console.error(message, ...optionalParams);
+        console.warn(message, ...optionalParams);
     }
 
     protected override logCritical(message?: any, ...optionalParams: any[]): void {

@@ -12,7 +12,7 @@ export { AuthorizationData } from './lib/authorization/authorization-data';
 export { requireAuthorization } from './lib/authorization/authorized.guard';
 // logger
 export { LOGGER } from './lib/logger/logger.token';
-export { Logger } from './lib/logger/logger';
+export { Logger, BaseLogger } from './lib/logger/logger';
 // functions
 export { loadConfigurations, ServiceOptions, BuildOptions, AppConfiguration } from './lib/utilities';
 export { State } from './lib/state';
