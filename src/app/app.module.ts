@@ -26,14 +26,6 @@ import { LayoutModule } from './layout/layout.module';
     providers: [
         //AuthenticationService,
         AuthenticationGuard,
-        provideAppInitializer(() => {
-        const initializerFn = (initializeApplication)(inject(LOGGER));
-        return initializerFn();
-      }), 
-        provideAppInitializer(() => {
-        const initializerFn = (initializeAuthorization)(inject(AuthenticationService), inject(AuthorizationService), inject(ShoppingCartClient));
-        return initializerFn();
-      }), 
         provideHttpClient(withInterceptorsFromDi())
     ],
 })

@@ -30,6 +30,7 @@ export class ItemService {
     }
 
     getItemRelatedAuthorizations(): string[] {
-        return this.authorization.authorizePolicies([SHOPPING_CART_PERMISSIONS.createOrder, SHOPPING_CART_PERMISSIONS.updateOrder]);
+        //return this.authorization.authorizePolicies([SHOPPING_CART_PERMISSIONS.createOrder, SHOPPING_CART_PERMISSIONS.updateOrder]);
+        return [];
     }
 }
