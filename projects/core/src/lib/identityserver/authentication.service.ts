@@ -1,7 +1,7 @@
 import { Log, User, UserManager, UserManagerSettings } from 'oidc-client';
 import { AuthenticatedUser } from './authenticated-user';
 import { AUTHENTICATION_OPTIONS, AuthenticationOptions } from './authentication-options';
-import { BehaviorSubject, Subject, map } from 'rxjs';
+import { BehaviorSubject, Subject, map, tap } from 'rxjs';
 import { Inject, Injectable } from '@angular/core';
 import { WINDOW } from '../window.token';
 
@@ -38,8 +38,6 @@ export class AuthenticationService {
             loadUserInfo: true,
             monitorSession: true,
         } satisfies UserManagerSettings);
-
-        console.log('[AuthenticationService]version 3/6 11:05');
 
         this.userManager.events.addUserSignedOut(async () => {
             console.log('[AuthenticationService]user signed out');
@@ -140,7 +138,8 @@ export class AuthenticationService {
                     authenticated: user !== undefined,
                     token: user?.access_token,
                 } satisfies AuthenticationStateData;
-            })
+            }),
+            tap(u=>console.log('[statechanges]', u))
         );
     }
 

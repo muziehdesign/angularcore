@@ -1,4 +1,4 @@
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Observable } from 'rxjs';
 
 export class State<T> {
     private state$: BehaviorSubject<T>;
@@ -7,20 +7,21 @@ export class State<T> {
         this.state$ = new BehaviorSubject(initialValues);
     }
 
-    patch(partial: Partial<T>) {
-        const newValue = Object.assign({}, this.state$.getValue(), partial);
+    patch(partial: Partial<T>): void {
+        const currentState = this.state$.getValue();
+        const newValue = { ...currentState, ...partial };
         this.set(newValue);
     }
 
-    set(newValue: T) {
-        this.state$.next(structuredClone(newValue));
+    set(newValue: T): void {
+        this.state$.next({ ...newValue });
     }
 
-    getSnapshot() {
-        return structuredClone(this.state$.getValue());
+    getSnapshot(): T {
+        return { ...this.state$.getValue() };
     }
 
-    stateChanges() {
+    stateChanges(): Observable<T> {
         return this.state$.asObservable();
     }
 }

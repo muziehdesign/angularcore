@@ -9,14 +9,11 @@ export class AuthenticationGuard implements CanMatch, CanActivate {
 
     async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<GuardResult> {
         const url = state.url;
-        console.log(`canActivate authenticating ${url}`);
         return this.checkAuthentication(url);
     }
 
     async canMatch(route: Route, segments: UrlSegment[]): Promise<GuardResult> {
         const url = this.location.path();
-        console.log(`canMatch authenticating ${url}`);
-
         return this.checkAuthentication(url);
     }
 

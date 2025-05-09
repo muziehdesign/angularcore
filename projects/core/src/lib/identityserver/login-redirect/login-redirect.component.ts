@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from '../identityserver/authentication.service';
+import { AuthenticationService } from '../authentication.service';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'lib-blank',
+    selector: 'mz-login-redirect',
     imports: [],
-    templateUrl: './blank.component.html'
+    standalone: true,
+    template: ''
 })
-export class BlankComponent implements OnInit {
+export class LoginRedirectComponent implements OnInit {
  
   constructor(private auth: AuthenticationService, private router: Router) {
 

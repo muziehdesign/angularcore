@@ -1,50 +1,75 @@
-import { inject, Inject, Injectable, Injector } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AuthorizationData } from './authorization-data';
 import { AuthorizationPolicy, AUTHORIZATION_POLICY } from './authorization-policy';
+import { AsyncSubject, BehaviorSubject, filter, firstValueFrom, forkJoin, map, Observable, ReplaySubject, take } from 'rxjs';
+import { State } from '../state';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthorizationService {
-    private authorizations: Map<string, AuthorizationData>;
-    constructor() {
-        this.authorizations = new Map<string, AuthorizationData>();
+    private state = new State<AuthorizationDataState>({
+        loading: false,
+        data: new Map<string, AuthorizationData>()
+    });
+
+    register(sources: { namespace: string; request: Observable<AuthorizationData> }[]) {
+        this.state.patch({ loading: true, data: new Map<string, AuthorizationData>() });
+
+        const requests = sources.map((s) => {
+            return s.request.pipe(
+                map((response: AuthorizationData) => {
+                    return { namespace: s.namespace, data: response };
+                })
+            );
+        });
+
+        forkJoin(requests).subscribe({
+            next: (value) => {
+                const data = new Map<string, AuthorizationData>();
+                value.forEach((v) => {
+                    data.set(v.namespace, v.data);
+                });
+                this.state.patch({ loading: false, data: data})
+            },
+            error: (error) =>{
+                this.state.patch({ loading: false, error: error, data: new Map<string, AuthorizationData>() });
+            }
+        });
     }
 
-    set(data: Map<string, AuthorizationData>) {
-        this.authorizations = data;
-    }
-
-    register(key: string, data: AuthorizationData) {
-        this.authorizations.set(key, data);
-    }
-
-    getSnapshot() {
-        return new Map(this.authorizations);
+    getSnapshot(): AuthorizationDataState {
+        return this.state.getSnapshot();
     }
 
     /**
-     * Resets all authorization data stored in the service.
+     * Authorizes a policy or permission policy against the authorization data snapshot.
      */
-    reset() {
-        this.authorizations = new Map<string, AuthorizationData>();
+    async authorize(permission: string): Promise<boolean> {
+        const namespace = permission.split('.')[0];
+        const data = this.state.getSnapshot().data;
+        return data.get(namespace)?.permissions.includes(permission) === true;
     }
 
-    // authorizes based on snapshot
-    authorize(policy: string): boolean {
-        const result = this.authorizePolicies([policy]);
-        return result.length > 0;
+    async authorizeWhenReady(policy: string): Promise<boolean> {
+        const source$ = this.state.stateChanges().pipe(
+            filter((state) => state.loading === false),
+            take(1),
+            map((state) => {
+                if(state.error) {
+                    throw state.error;
+                }
+                
+                const data = state.data;
+                return data.get(policy.split('.')[0])?.permissions.includes(policy) === true;
+            })
+        );
+        return await firstValueFrom(source$);
     }
+}
 
-    authorizePolicies(policies: string[]): string[] {
-        const data = [...this.authorizations.values()];
-        const results: string[] = [];
-        for (const policy of policies) {
-            const result = data.find((d) => d.permissions.includes(policy));
-            if (result) {
-                results.push(policy);
-            }
-        }
-        return results;
-    }
+export interface AuthorizationDataState {
+    data: Map<string, AuthorizationData>;
+    loading: boolean;
+    error?: Error;
 }
