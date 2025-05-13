@@ -10,6 +10,7 @@ export { AuthorizationService } from './lib/authorization/authorization.service'
 export { AuthorizationContext, AuthorizationPolicy, AUTHORIZATION_POLICY, PermissionAuthorizationPolicy } from './lib/authorization/authorization-policy';
 export { AuthorizationData } from './lib/authorization/authorization-data';
 export { requireAuthorization } from './lib/authorization/authorized.guard';
+export { AuthorizationGuard } from './lib/authorization.guard';
 // logger
 export { LOGGER } from './lib/logger/logger.token';
 export { Logger, BaseLogger, LogLevel, LOG_LEVELS } from './lib/logger/logger';

@@ -3,6 +3,9 @@ import { AuthenticationService } from './authentication.service';
 import { ActivatedRouteSnapshot, CanActivate, CanLoad, CanMatch, GuardResult, MaybeAsync, Route, Router, RouterStateSnapshot, UrlSegment } from '@angular/router';
 import { Location } from '@angular/common';
 
+/**
+ * @deprecated Use AuthorizationGuard instead
+ */
 @Injectable()
 export class AuthenticationGuard implements CanMatch, CanActivate {
     constructor(private auth: AuthenticationService, private location: Location) {}
