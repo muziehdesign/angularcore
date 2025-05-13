@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavigationEnd, Router, RouterEvent } from '@angular/router';
+import { Logger } from '@muziehdesign/angularcore';
 import { User } from 'oidc-client';
 import { filter } from 'rxjs';
 import { AppConfig } from 'src/environments/app-config';
@@ -15,7 +16,8 @@ export class AppComponent {
     user: User | null = null;
     constructor(
         private config: AppConfig,
-        private router: Router
+        private router: Router,
+        private logger: Logger
     ) {
         this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(
             (event) => {
@@ -24,5 +26,9 @@ export class AppComponent {
             },
             () => {}
         );
+
+        this.logger.info('AppComponent initialized');
+        this.logger.debug(this.logger);
+        console.debug('debug debug debug');
     }
 }

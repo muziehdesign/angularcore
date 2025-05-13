@@ -3,20 +3,20 @@ import { AuthenticationService } from './authentication.service';
 import { ActivatedRouteSnapshot, CanActivate, CanLoad, CanMatch, GuardResult, MaybeAsync, Route, Router, RouterStateSnapshot, UrlSegment } from '@angular/router';
 import { Location } from '@angular/common';
 
+/**
+ * @deprecated Use AuthorizationGuard instead
+ */
 @Injectable()
 export class AuthenticationGuard implements CanMatch, CanActivate {
     constructor(private auth: AuthenticationService, private location: Location) {}
 
     async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<GuardResult> {
         const url = state.url;
-        console.log(`canActivate authenticating ${url}`);
         return this.checkAuthentication(url);
     }
 
     async canMatch(route: Route, segments: UrlSegment[]): Promise<GuardResult> {
         const url = this.location.path();
-        console.log(`canMatch authenticating ${url}`);
-
         return this.checkAuthentication(url);
     }
 

@@ -1,17 +1,16 @@
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { NgModule, inject, provideAppInitializer } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { AuthenticationGuard, AuthenticationService, AuthorizationService, LOGGER } from '@muziehdesign/angularcore';
+import { AuthenticationGuard, AuthenticationService, AuthorizationService } from '@muziehdesign/angularcore';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ProfileComponent } from './profile/profile.component';
 import { CoreModule } from './core/core.module';
-
-import { initializeApplication, initializeAuthorization } from './app-initializer';
-import { ShoppingCartClient } from './api/shopping-cart/shopping-cart.client';
 import { LayoutModule } from './layout/layout.module';
+import { ShoppingCartClient } from './api/shopping-cart/shopping-cart.client';
+import { map } from 'rxjs';
 
 @NgModule({
     declarations: [AppComponent, PageNotFoundComponent, ProfileComponent],
@@ -24,17 +23,22 @@ import { LayoutModule } from './layout/layout.module';
         AppRoutingModule,
     ],
     providers: [
-        //AuthenticationService,
         AuthenticationGuard,
-        provideAppInitializer(() => {
-        const initializerFn = (initializeApplication)(inject(LOGGER));
-        return initializerFn();
-      }), 
-        provideAppInitializer(() => {
-        const initializerFn = (initializeAuthorization)(inject(AuthenticationService), inject(AuthorizationService), inject(ShoppingCartClient));
-        return initializerFn();
-      }), 
-        provideHttpClient(withInterceptorsFromDi())
+        provideHttpClient(withInterceptorsFromDi()),
+        {
+            provide: 'APP_INITIALIZER',
+            useFactory: (authentication: AuthenticationService, authorization: AuthorizationService, client: ShoppingCartClient) => () => {
+                authorization.register(
+                    client.getAuthorization().pipe(
+                        map((data) => {
+                            return [{ namespace: 'ShoppingCart', data }];
+                        })
+                    )
+                );
+            },
+            deps: [AuthenticationService, AuthorizationService, ShoppingCartClient],
+            multi: true,
+        },
     ],
 })
 export class AppModule {}

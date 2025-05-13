@@ -8,21 +8,20 @@ BRANCH=$2
 VERSION=$(npm pkg get version | tr -d '"')
 MAJOR=$(echo "$VERSION" | awk -F '[/.]' '{ print $1 }')
 MINOR=$(echo "$VERSION" | awk -F '[/.]' '{ print $2 }')
-PATCH=$BUILD
+PATCH=$(echo "$VERSION" | awk -F '[/.-]' '{ print $3 }')
 
 PACKAGEVERSION=$VERSION
 TAG=$MAJOR
 
 
-if (echo "$BRANCH" | grep -q "^release")
+if (echo "$BRANCH" | grep -q "^release");
 then
-    PACKAGEVERSION="${MAJOR}.${MINOR}.${PATCH:="0"}"
-elif [ "$CIRCLE_BRANCH" = "next" ]
+    PACKAGEVERSION="${MAJOR}.${MINOR}.${BUILD}"
+elif [ "$BRANCH" = "develop" ] || [ "$BRANCH" = "next" ]
 then
-    PACKAGEVERSION="${MAJOR}.${MINOR}.${PATCH:="0"}-next"
-    TAG="next"
+    PACKAGEVERSION="${MAJOR}.${MINOR}.${PATCH}-next.${BUILD}"
 else
-    PACKAGEVERSION="${MAJOR}.${MINOR}.${PATCH:="0"}-beta"
+    PACKAGEVERSION="${MAJOR}.${MINOR}.${PATCH}-beta.${BUILD}"
     TAG="beta"
 fi
 

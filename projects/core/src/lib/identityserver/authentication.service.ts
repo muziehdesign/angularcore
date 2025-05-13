@@ -1,7 +1,7 @@
 import { Log, User, UserManager, UserManagerSettings } from 'oidc-client';
 import { AuthenticatedUser } from './authenticated-user';
 import { AUTHENTICATION_OPTIONS, AuthenticationOptions } from './authentication-options';
-import { BehaviorSubject, Subject, map } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { Inject, Injectable } from '@angular/core';
 import { WINDOW } from '../window.token';
 
@@ -39,8 +39,6 @@ export class AuthenticationService {
             monitorSession: true,
         } satisfies UserManagerSettings);
 
-        console.log('[AuthenticationService]version 3/6 11:05');
-
         this.userManager.events.addUserSignedOut(async () => {
             console.log('[AuthenticationService]user signed out');
             this.state.next(undefined);
@@ -72,15 +70,6 @@ export class AuthenticationService {
         this.userManager.events.addUserSessionChanged(() => {
             console.log('[AuthenticationService]user session changed');
         });
-    }
-
-    async signinSilent(): Promise<AuthenticatedUser | undefined> {
-        const user: User | undefined = await this.userManager.signinSilent().catch(() => undefined);
-        if (!user) {
-            console.log(`[AuthenticationService]Silent signin unsuccessful`);
-            return undefined;
-        }
-        return Promise.resolve(this.mapToAuthenticatedUser(user));
     }
 
     async loadUser(): Promise<AuthenticatedUser | undefined> {
@@ -119,11 +108,11 @@ export class AuthenticationService {
         return true;
     }
 
-    initialize() {
+    async initialize(): Promise<void> {
         this.userManager.clearStaleState();
     }
 
-    getSnapshot() {
+    getSnapshot() : AuthenticationStateData {
         const user = this.state.getValue();
         return {
             user: this.mapToAuthenticatedUser(user),
@@ -132,7 +121,7 @@ export class AuthenticationService {
         } satisfies AuthenticationStateData;
     }
 
-    stateChanges() {
+    stateChanges(): Observable<AuthenticationStateData> {
         return this.state.asObservable().pipe(
             map((user: User | undefined) => {
                 return {
@@ -150,6 +139,15 @@ export class AuthenticationService {
         }
 
         return undefined;
+    }
+
+    private async signinSilent(): Promise<AuthenticatedUser | undefined> {
+        const user: User | undefined = await this.userManager.signinSilent().catch(() => undefined);
+        if (!user) {
+            console.log(`[AuthenticationService]Silent signin unsuccessful`);
+            return undefined;
+        }
+        return Promise.resolve(this.mapToAuthenticatedUser(user));
     }
 }
 

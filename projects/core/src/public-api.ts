@@ -3,16 +3,17 @@ export { AuthenticationOptions, AUTHENTICATION_OPTIONS } from './lib/identityser
 export { AuthenticationService, AuthenticationStateData } from './lib/identityserver/authentication.service';
 export { AuthenticatedUser } from './lib/identityserver/authenticated-user';
 export { AuthenticationTokenInterceptor, AUTHENTICATED_REQUEST } from './lib/identityserver/authentication-token.interceptor';
-export { AuthenticationGuard } from './lib/identityserver/authenticated.guard';
+export { AuthenticationGuard } from './lib/identityserver/authentication.guard';
 export { authenticationRoutes } from './lib/identityserver/authentication.routes';
 // authorization
 export { AuthorizationService } from './lib/authorization/authorization.service';
 export { AuthorizationContext, AuthorizationPolicy, AUTHORIZATION_POLICY, PermissionAuthorizationPolicy } from './lib/authorization/authorization-policy';
 export { AuthorizationData } from './lib/authorization/authorization-data';
 export { requireAuthorization } from './lib/authorization/authorized.guard';
+export { AuthorizationGuard } from './lib/authorization.guard';
 // logger
 export { LOGGER } from './lib/logger/logger.token';
-export { Logger } from './lib/logger/logger';
+export { Logger, BaseLogger, LogLevel, LOG_LEVELS } from './lib/logger/logger';
 // functions
 export { loadConfigurations, ServiceOptions, BuildOptions, AppConfiguration } from './lib/utilities';
 export { State } from './lib/state';
