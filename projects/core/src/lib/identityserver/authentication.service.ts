@@ -1,7 +1,7 @@
 import { Log, User, UserManager, UserManagerSettings } from 'oidc-client';
 import { AuthenticatedUser } from './authenticated-user';
 import { AUTHENTICATION_OPTIONS, AuthenticationOptions } from './authentication-options';
-import { BehaviorSubject, Observable, Subject, map, tap } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { Inject, Injectable } from '@angular/core';
 import { WINDOW } from '../window.token';
 
@@ -9,7 +9,6 @@ import { WINDOW } from '../window.token';
 export class AuthenticationService {
     private readonly userManager: UserManager;
     private readonly state = new BehaviorSubject<User | undefined>(undefined);
-    private initialized = false;
 
     constructor(
         @Inject(AUTHENTICATION_OPTIONS) private settings: AuthenticationOptions,
