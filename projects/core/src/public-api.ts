@@ -23,3 +23,6 @@ export { TruncatedCountPipe } from './lib/pipes/truncated-count.pipe';
 export { WINDOW } from './lib/window.token';
 // shapes
 export { List, Paged, Search, SearchModel, Auditable, Subject, AuditableModel, SubjectModel } from './lib/shapes';
+
+export { UnexpectedError } from './lib/errors';
+export { OperationResource, OperationResult, OperationStatus } from './lib/operation-resource';
