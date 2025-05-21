@@ -8,9 +8,11 @@
     <div>
         <a routerLink="/orders" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Orders</a>
     </div>
-    <div *ngIf="!user">
-        <a href="javascript:void(0)" class="link-button" (click)="signIn()">Sign in</a>
+
+    <div>
+        <a routerLink="/about" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">About</a>
     </div>
+
     <div class="block mr-4">
         <a routerLink="/cart" class="inline-block relative">
             <span class="-top-2.5 absolute left-3.5">
@@ -23,5 +25,12 @@
             </span>
         </a>
     </div>
-    <button (click)="troubleshoot()">Troubleshoot</button>
+
+    <div>
+        @if(user()) {
+            {{ user()?.name }}
+        } @else {
+            <button (click)="signIn()">Login</button>
+        }
+    </div>
 </nav>

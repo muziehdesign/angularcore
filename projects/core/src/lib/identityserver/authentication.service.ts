@@ -1,9 +1,10 @@
-import { Log, User, UserManager, UserManagerSettings } from 'oidc-client';
 import { AuthenticatedUser } from './authenticated-user';
 import { AUTHENTICATION_OPTIONS, AuthenticationOptions } from './authentication-options';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { AsyncSubject, BehaviorSubject, Observable, map } from 'rxjs';
 import { Inject, Injectable } from '@angular/core';
 import { WINDOW } from '../window.token';
+import { Log, User, UserManager, UserManagerSettings } from 'oidc-client-ts';
+import { Logger } from '../logger/logger';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -12,16 +13,19 @@ export class AuthenticationService {
 
     constructor(
         @Inject(AUTHENTICATION_OPTIONS) private settings: AuthenticationOptions,
-        @Inject(WINDOW) private window: Window
+        @Inject(WINDOW) private window: Window,
+        private logger: Logger
     ) {
-        Log.logger = console; // TODO
+
         const map = new Map<string, number>();
         map.set('debug', Log.DEBUG);
         map.set('error', Log.ERROR);
         map.set('none', Log.NONE);
         map.set('warn', Log.WARN);
         map.set('info', Log.INFO);
-        Log.level = map.get(settings.logLevel) || Log.NONE;
+
+        Log.setLevel(map.get(settings.logLevel) || Log.NONE);
+        Log.setLogger(logger);
 
         this.userManager = new UserManager({
             authority: settings.authority,
@@ -32,15 +36,15 @@ export class AuthenticationService {
             silent_redirect_uri: settings.silentRedirectUri,
             post_logout_redirect_uri: settings.postLogoutRedirectUri,
             automaticSilentRenew: settings.automaticSilentRenew,
-            checkSessionInterval: settings.checkSessionInterval,
-            accessTokenExpiringNotificationTime: settings.accessTokenExpiringNotificationTime,
+            checkSessionIntervalInSeconds: settings.checkSessionInterval,
+            accessTokenExpiringNotificationTimeInSeconds: settings.accessTokenExpiringNotificationTime,
             filterProtocolClaims: settings.filterProtocolClaims,
             loadUserInfo: true,
             monitorSession: true,
         } satisfies UserManagerSettings);
 
         this.userManager.events.addUserSignedOut(async () => {
-            console.log('[AuthenticationService]user signed out');
+            this.logger.debug('[AuthenticationService]Sign-in status at the OP has changed. Performing signoutRedirect.');
             this.state.next(undefined);
             await this.userManager.signoutRedirect();
         });
@@ -94,22 +98,21 @@ export class AuthenticationService {
         const returnUrl = redirectedUser.state || '/';
         //window.history.replaceState({}, '', returnUrl);
         console.log(`[AuthenticationService]handle login callback: ${redirectedUser.expired}, ${redirectedUser.expires_at}, ${returnUrl}`);
-        return redirectedUser.state;
+        return redirectedUser.state as string;
     }
 
     async login(returnUrl: string): Promise<boolean> {
-        const user: User | undefined = await this.userManager.signinSilent().catch(() => undefined);
+        const user: User | null = await this.siginSilent();
         if (!user) {
-            console.log(`[AuthenticationService]sign in silent unsuccessful, redirect with return url of ${returnUrl}`);
             await this.userManager.signinRedirect({ state: returnUrl });
             return false;
         }
-        console.log(`[AuthenticationService]silently signed in user for login`);
         return true;
     }
 
     async initialize(): Promise<void> {
         this.userManager.clearStaleState();
+        await this.siginSilent();
     }
 
     getSnapshot() : AuthenticationStateData {
@@ -141,13 +144,8 @@ export class AuthenticationService {
         return undefined;
     }
 
-    private async signinSilent(): Promise<AuthenticatedUser | undefined> {
-        const user: User | undefined = await this.userManager.signinSilent().catch(() => undefined);
-        if (!user) {
-            console.log(`[AuthenticationService]Silent signin unsuccessful`);
-            return undefined;
-        }
-        return Promise.resolve(this.mapToAuthenticatedUser(user));
+    private siginSilent(): Promise<User | null> { 
+        return this.userManager.signinSilent().catch(() => null);
     }
 }
 

@@ -6,9 +6,11 @@ import { checkoutLazyLoadingRoutes } from './checkout/checkout-routing.module';
 import { orderLazyLoadingRoutes } from './order/order-routing.module';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ProfileComponent } from './profile/profile.component';
+import { AboutComponent } from './about/about.component';
 
 const routes: Routes = [
-    { path: '', redirectTo: '/items', pathMatch: 'full' },
+    { path: '', redirectTo: '/about', pathMatch: 'full' },
+    { path: 'about', component: AboutComponent },
     { path: 'logout', redirectTo: '/', pathMatch: 'full' },
     ...authenticationRoutes,
     ...orderLazyLoadingRoutes,

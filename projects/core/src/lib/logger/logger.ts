@@ -64,7 +64,6 @@ export class Logger extends BaseLogger {
     }
 
     protected override logDebug(message?: any, ...optionalParams: any[]): void {
-        console.log('debug?');
         console.debug(message, ...optionalParams);
     }
 
