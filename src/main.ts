@@ -1,6 +1,6 @@
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { AUTHENTICATION_OPTIONS, loadConfigurations } from '@muziehdesign/angularcore';
+import { loadConfigurations, provideAuthentication } from '@muziehdesign/angularcore';
 
 import { AppModule } from './app/app.module';
 import { AppConfig } from './environments/app-config';
@@ -17,8 +17,9 @@ loadConfigurations<AppConfig>(environment.configurations)
 
         // bootstrap
         const extraProviders = [
-            { provide: AUTHENTICATION_OPTIONS, useValue: Object.freeze(appConfig.identity) },
+            //{ provide: AUTHENTICATION_OPTIONS, useValue: Object.freeze(appConfig.identity) },
             { provide: AppConfig, useValue: Object.freeze(appConfig) },
+            provideAuthentication(appConfig.identity),
         ];
 
         return platformBrowserDynamic(extraProviders).bootstrapModule(AppModule);

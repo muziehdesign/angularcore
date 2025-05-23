@@ -5,14 +5,15 @@ import { Inject, Injectable } from '@angular/core';
 import { WINDOW } from '../window.token';
 import { Log, User, UserManager, UserManagerSettings } from 'oidc-client-ts';
 import { Logger } from '../logger/logger';
+import { OIDC_USER_MANAGER } from './providers';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-    private readonly userManager: UserManager;
     private readonly state = new BehaviorSubject<User | undefined>(undefined);
 
     constructor(
         @Inject(AUTHENTICATION_OPTIONS) private settings: AuthenticationOptions,
+        @Inject(OIDC_USER_MANAGER) private userManager: UserManager,
         @Inject(WINDOW) private window: Window,
         private logger: Logger
     ) {
@@ -26,22 +27,6 @@ export class AuthenticationService {
 
         Log.setLevel(map.get(settings.logLevel) || Log.NONE);
         Log.setLogger(logger);
-
-        this.userManager = new UserManager({
-            authority: settings.authority,
-            client_id: settings.clientId,
-            response_type: settings.responseType,
-            scope: settings.scope,
-            redirect_uri: settings.redirectUri,
-            silent_redirect_uri: settings.silentRedirectUri,
-            post_logout_redirect_uri: settings.postLogoutRedirectUri,
-            automaticSilentRenew: settings.automaticSilentRenew,
-            checkSessionIntervalInSeconds: settings.checkSessionInterval,
-            accessTokenExpiringNotificationTimeInSeconds: settings.accessTokenExpiringNotificationTime,
-            filterProtocolClaims: settings.filterProtocolClaims,
-            loadUserInfo: true,
-            monitorSession: true,
-        } satisfies UserManagerSettings);
 
         this.userManager.events.addUserSignedOut(async () => {
             this.logger.debug('[AuthenticationService]Sign-in status at the OP has changed. Performing signoutRedirect.');

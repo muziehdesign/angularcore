@@ -26,3 +26,5 @@ export { List, Paged, Search, SearchModel, Auditable, Subject, AuditableModel, S
 
 export { UnexpectedError } from './lib/errors';
 export { OperationResource, OperationResult, OperationStatus } from './lib/operation-resource';
+
+export { provideAuthentication } from './lib/identityserver/providers';

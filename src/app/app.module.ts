@@ -1,7 +1,7 @@
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { AuthenticationGuard, AuthenticationService, AuthorizationService } from '@muziehdesign/angularcore';
+import { AuthenticationGuard, AuthenticationService, AuthorizationService, provideAuthentication } from '@muziehdesign/angularcore';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -39,7 +39,7 @@ import { map } from 'rxjs';
             },
             deps: [AuthenticationService, AuthorizationService, ShoppingCartClient],
             multi: true,
-        },
+        }
     ],
 })
 export class AppModule {}
