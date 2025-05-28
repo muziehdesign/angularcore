@@ -19,7 +19,6 @@ loadConfigurations<AppConfig>(environment.configurations)
         const extraProviders = [
             //{ provide: AUTHENTICATION_OPTIONS, useValue: Object.freeze(appConfig.identity) },
             { provide: AppConfig, useValue: Object.freeze(appConfig) },
-            provideAuthentication(appConfig.identity),
         ];
 
         return platformBrowserDynamic(extraProviders).bootstrapModule(AppModule);

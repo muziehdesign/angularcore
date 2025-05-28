@@ -7,7 +7,7 @@ import { Log, User, UserManager } from 'oidc-client-ts';
 import { Logger } from '../logger/logger';
 import { OIDC_USER_MANAGER } from './providers';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class AuthenticationService {
     private readonly state = new BehaviorSubject<User | undefined>(undefined);
 
@@ -17,7 +17,7 @@ export class AuthenticationService {
         @Inject(WINDOW) private window: Window,
         private logger: Logger
     ) {
-
+        console.log('[AuthenticationService]Creating authentication service', settings);
         const map = new Map<string, number>();
         map.set('debug', Log.DEBUG);
         map.set('error', Log.ERROR);

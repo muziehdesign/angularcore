@@ -2,7 +2,7 @@
     <head>
         <script src="./oidc-client-ts.min.js"></script>
         <script>
-          var mgr = new Oidc.UserManager({response_type: "code"});
+          var mgr = new oidc.UserManager({response_type: "query"});
           mgr.signinSilentCallback().catch(error => {
                 console.error(error);
             });

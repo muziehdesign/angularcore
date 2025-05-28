@@ -1,13 +1,14 @@
-import { EnvironmentProviders, FactoryProvider, inject, InjectionToken, makeEnvironmentProviders, Optional, provideAppInitializer, Provider } from "@angular/core";
+import { EnvironmentProviders, FactoryProvider, inject, InjectionToken, Injector, makeEnvironmentProviders, Optional, provideAppInitializer, provideEnvironmentInitializer, Provider } from "@angular/core";
 import { INavigator, UserManager, UserManagerSettings } from "oidc-client-ts";
 import { AUTHENTICATION_OPTIONS, AuthenticationOptions } from "./authentication-options";
+import { AuthenticationService } from "./authentication.service";
 
 export const OIDC_REDIRECT_NAVIGATOR = new InjectionToken<INavigator>('OidcRedirectNavigator');
 export const OIDC_POPUP_NAVIGATOR = new InjectionToken<INavigator>('OidcPopupNavigator');
 export const OIDC_IFRAME_NAVIGATOR = new InjectionToken<INavigator>('OidcIframeNavigator');
 export const OIDC_USER_MANAGER = new InjectionToken<UserManager>('OidcUserManager');
 
-export const USER_MANAGER_PROVIDER: FactoryProvider = {
+export const DEFAULT_USER_MANAGER_PROVIDER: FactoryProvider = {
     provide: OIDC_USER_MANAGER,
     useFactory: (options: AuthenticationOptions, oidcRedirectNavigator: INavigator, oidcPopupNavigator: INavigator, oidcIframeNavigator: INavigator) => {
         const settings =  {
@@ -30,27 +31,20 @@ export const USER_MANAGER_PROVIDER: FactoryProvider = {
     deps: [AUTHENTICATION_OPTIONS, [new Optional(), OIDC_REDIRECT_NAVIGATOR], [new Optional(), OIDC_POPUP_NAVIGATOR], [new Optional(), OIDC_IFRAME_NAVIGATOR]]
 };
 
-// TODO: this still needs work
-// TODO: option should allow to optionally wait for initialization
-export function provideAuthentication(options: AuthenticationOptions) : EnvironmentProviders {
+export function provideAuthentication(configFn: (injector: Injector) => AuthenticationOptions) : EnvironmentProviders {
+
+    console.log('providing');
     const providers: Provider[] = [
         {
             provide: AUTHENTICATION_OPTIONS,
-            useValue: Object.freeze(options)
+            useFactory: (injector: Injector) => {
+                console.log('[AuthenticationService]Creating authentication options'); 
+                return configFn(injector);
+            },
+            deps: [Injector]
         },
-        // {
-        //     provide: OIDC_REDIRECT_NAVIGATOR,
-        //     useValue: window
-        // },
-        // {
-        //     provide: OIDC_POPUP_NAVIGATOR,
-        //     useValue: window
-        // },
-        // {
-        //     provide: OIDC_IFRAME_NAVIGATOR,
-        //     useValue: window
-        // }
-        USER_MANAGER_PROVIDER,
+        DEFAULT_USER_MANAGER_PROVIDER,
+        AuthenticationService,
     ];
 
     return makeEnvironmentProviders(providers);
