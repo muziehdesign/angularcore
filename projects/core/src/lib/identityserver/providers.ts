@@ -1,4 +1,4 @@
-import { FactoryProvider, InjectionToken, makeEnvironmentProviders, Optional, Provider } from "@angular/core";
+import { EnvironmentProviders, FactoryProvider, inject, InjectionToken, makeEnvironmentProviders, Optional, provideAppInitializer, Provider } from "@angular/core";
 import { INavigator, UserManager, UserManagerSettings } from "oidc-client-ts";
 import { AUTHENTICATION_OPTIONS, AuthenticationOptions } from "./authentication-options";
 
@@ -6,7 +6,6 @@ export const OIDC_REDIRECT_NAVIGATOR = new InjectionToken<INavigator>('OidcRedir
 export const OIDC_POPUP_NAVIGATOR = new InjectionToken<INavigator>('OidcPopupNavigator');
 export const OIDC_IFRAME_NAVIGATOR = new InjectionToken<INavigator>('OidcIframeNavigator');
 export const OIDC_USER_MANAGER = new InjectionToken<UserManager>('OidcUserManager');
-
 
 export const USER_MANAGER_PROVIDER: FactoryProvider = {
     provide: OIDC_USER_MANAGER,
@@ -32,13 +31,13 @@ export const USER_MANAGER_PROVIDER: FactoryProvider = {
 };
 
 // TODO: this still needs work
-export function provideAuthentication(options: AuthenticationOptions) : Provider[] {
-    return [
-        USER_MANAGER_PROVIDER,
+// TODO: option should allow to optionally wait for initialization
+export function provideAuthentication(options: AuthenticationOptions) : EnvironmentProviders {
+    const providers: Provider[] = [
         {
             provide: AUTHENTICATION_OPTIONS,
             useValue: Object.freeze(options)
-        }
+        },
         // {
         //     provide: OIDC_REDIRECT_NAVIGATOR,
         //     useValue: window
@@ -51,5 +50,8 @@ export function provideAuthentication(options: AuthenticationOptions) : Provider
         //     provide: OIDC_IFRAME_NAVIGATOR,
         //     useValue: window
         // }
+        USER_MANAGER_PROVIDER,
     ];
+
+    return makeEnvironmentProviders(providers);
 };

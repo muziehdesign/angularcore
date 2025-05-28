@@ -1,9 +1,9 @@
 import { AuthenticatedUser } from './authenticated-user';
 import { AUTHENTICATION_OPTIONS, AuthenticationOptions } from './authentication-options';
-import { AsyncSubject, BehaviorSubject, Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { Inject, Injectable } from '@angular/core';
 import { WINDOW } from '../window.token';
-import { Log, User, UserManager, UserManagerSettings } from 'oidc-client-ts';
+import { Log, User, UserManager } from 'oidc-client-ts';
 import { Logger } from '../logger/logger';
 import { OIDC_USER_MANAGER } from './providers';
 
