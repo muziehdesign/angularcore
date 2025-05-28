@@ -31,7 +31,7 @@ export const DEFAULT_USER_MANAGER_PROVIDER: FactoryProvider = {
     deps: [AUTHENTICATION_OPTIONS, [new Optional(), OIDC_REDIRECT_NAVIGATOR], [new Optional(), OIDC_POPUP_NAVIGATOR], [new Optional(), OIDC_IFRAME_NAVIGATOR]]
 };
 
-export function provideAuthentication(configFn: (injector: Injector) => AuthenticationOptions) : EnvironmentProviders {
+export function provideAuthentication(configFn: (injector: Injector) => AuthenticationOptions, extraProviders: Provider[] = []) : EnvironmentProviders {
 
     console.log('providing');
     const providers: Provider[] = [
@@ -45,7 +45,10 @@ export function provideAuthentication(configFn: (injector: Injector) => Authenti
         },
         DEFAULT_USER_MANAGER_PROVIDER,
         AuthenticationService,
+        ...extraProviders
     ];
+
+
 
     return makeEnvironmentProviders(providers);
 };
