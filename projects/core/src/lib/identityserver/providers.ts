@@ -24,11 +24,12 @@ export const DEFAULT_USER_MANAGER_PROVIDER: FactoryProvider = {
             checkSessionIntervalInSeconds: options.checkSessionInterval,
             accessTokenExpiringNotificationTimeInSeconds: options.accessTokenExpiringNotificationTime,
             filterProtocolClaims: options.filterProtocolClaims,
-            loadUserInfo: options.loadUserInfo || true, // TODO
-            monitorSession: options.monitorSession || true, //TODO
+            loadUserInfo: options.loadUserInfo,
+            monitorSession: options.monitorSession,
             userStore: stateStore,
             stateStore: stateStore
         } satisfies UserManagerSettings;
+        console.log('[AuthenticationService]Creating user manager with settings', settings);
         return new UserManager(settings, oidcRedirectNavigator, oidcPopupNavigator, oidcIframeNavigator);
     },
     deps: [AUTHENTICATION_OPTIONS, [new Optional(), OIDC_STATE_STORE], [new Optional(), OIDC_REDIRECT_NAVIGATOR], [new Optional(), OIDC_POPUP_NAVIGATOR], [new Optional(), OIDC_IFRAME_NAVIGATOR]]
