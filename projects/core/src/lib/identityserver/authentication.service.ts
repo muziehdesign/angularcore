@@ -110,6 +110,7 @@ export class AuthenticationService {
 
     async initialize(): Promise<void> {
         this.userManager.clearStaleState();
+        await this.signinSilent();
     }
 
     getSnapshot() : AuthenticationStateData {
