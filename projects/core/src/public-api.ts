@@ -27,4 +27,4 @@ export { List, Paged, Search, SearchModel, Auditable, Subject, AuditableModel, S
 export { UnexpectedError } from './lib/errors';
 export { OperationResource, OperationResult, OperationStatus } from './lib/operation-resource';
 
-export { provideAuthentication, OIDC_IFRAME_NAVIGATOR, OIDC_POPUP_NAVIGATOR, OIDC_REDIRECT_NAVIGATOR, OIDC_USER_MANAGER } from './lib/identityserver/providers';
+export { provideAuthentication, OIDC_IFRAME_NAVIGATOR, OIDC_POPUP_NAVIGATOR, OIDC_REDIRECT_NAVIGATOR, OIDC_USER_MANAGER, OIDC_STATE_STORE } from './lib/identityserver/providers';
