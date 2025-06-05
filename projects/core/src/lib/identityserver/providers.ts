@@ -24,8 +24,8 @@ export const DEFAULT_USER_MANAGER_PROVIDER: FactoryProvider = {
             checkSessionIntervalInSeconds: options.checkSessionInterval,
             accessTokenExpiringNotificationTimeInSeconds: options.accessTokenExpiringNotificationTime,
             filterProtocolClaims: options.filterProtocolClaims,
-            loadUserInfo: true,
-            monitorSession: true,
+            loadUserInfo: options.loadUserInfo || true, // TODO
+            monitorSession: options.monitorSession || true, //TODO
             userStore: stateStore,
             stateStore: stateStore
         } satisfies UserManagerSettings;
