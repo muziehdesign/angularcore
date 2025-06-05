@@ -78,6 +78,14 @@ export class AuthenticationService {
         return true;
     }
 
+    async signinRedirectCallback(url: string = this.window.location.href): Promise<string> {
+        const redirectedUser = await this.userManager.signinRedirectCallback(url);
+        const returnUrl = redirectedUser.state || '/';
+        //window.history.replaceState({}, '', returnUrl);
+        console.log(`[AuthenticationService]handle login callback: ${redirectedUser.expired}, ${redirectedUser.expires_at}, ${returnUrl}`);
+        return redirectedUser.state as string;
+    }
+
     async handleLoginCallback(): Promise<string> {
         const redirectedUser = await this.userManager.signinRedirectCallback();
         const returnUrl = redirectedUser.state || '/';
