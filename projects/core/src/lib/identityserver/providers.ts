@@ -1,5 +1,5 @@
 import { EnvironmentProviders, FactoryProvider, inject, InjectionToken, Injector, makeEnvironmentProviders, Optional, provideAppInitializer, provideEnvironmentInitializer, Provider } from "@angular/core";
-import { INavigator, UserManager, UserManagerSettings } from "oidc-client-ts";
+import { INavigator, StateStore, UserManager, UserManagerSettings } from "oidc-client-ts";
 import { AUTHENTICATION_OPTIONS, AuthenticationOptions } from "./authentication-options";
 import { AuthenticationService } from "./authentication.service";
 
@@ -7,10 +7,11 @@ export const OIDC_REDIRECT_NAVIGATOR = new InjectionToken<INavigator>('OidcRedir
 export const OIDC_POPUP_NAVIGATOR = new InjectionToken<INavigator>('OidcPopupNavigator');
 export const OIDC_IFRAME_NAVIGATOR = new InjectionToken<INavigator>('OidcIframeNavigator');
 export const OIDC_USER_MANAGER = new InjectionToken<UserManager>('OidcUserManager');
+export const OIDC_STATE_STORE = new InjectionToken<StateStore>('OidcStateStore');
 
 export const DEFAULT_USER_MANAGER_PROVIDER: FactoryProvider = {
     provide: OIDC_USER_MANAGER,
-    useFactory: (options: AuthenticationOptions, oidcRedirectNavigator: INavigator, oidcPopupNavigator: INavigator, oidcIframeNavigator: INavigator) => {
+    useFactory: (options: AuthenticationOptions, stateStore: StateStore, oidcRedirectNavigator: INavigator, oidcPopupNavigator: INavigator, oidcIframeNavigator: INavigator) => {
         const settings =  {
             authority: options.authority,
             client_id: options.clientId,
@@ -25,10 +26,12 @@ export const DEFAULT_USER_MANAGER_PROVIDER: FactoryProvider = {
             filterProtocolClaims: options.filterProtocolClaims,
             loadUserInfo: true,
             monitorSession: true,
+            userStore: stateStore,
+            stateStore: stateStore
         } satisfies UserManagerSettings;
         return new UserManager(settings, oidcRedirectNavigator, oidcPopupNavigator, oidcIframeNavigator);
     },
-    deps: [AUTHENTICATION_OPTIONS, [new Optional(), OIDC_REDIRECT_NAVIGATOR], [new Optional(), OIDC_POPUP_NAVIGATOR], [new Optional(), OIDC_IFRAME_NAVIGATOR]]
+    deps: [AUTHENTICATION_OPTIONS, [new Optional(), OIDC_STATE_STORE], [new Optional(), OIDC_REDIRECT_NAVIGATOR], [new Optional(), OIDC_POPUP_NAVIGATOR], [new Optional(), OIDC_IFRAME_NAVIGATOR]]
 };
 
 export function provideAuthentication(configFn: (injector: Injector) => AuthenticationOptions) : EnvironmentProviders {
@@ -46,8 +49,6 @@ export function provideAuthentication(configFn: (injector: Injector) => Authenti
         DEFAULT_USER_MANAGER_PROVIDER,
         AuthenticationService
     ];
-
-
 
     return makeEnvironmentProviders(providers);
 };
