@@ -56,8 +56,6 @@ export class AuthenticationService {
         this.userManager.events.addSilentRenewError(async (error) => {
             console.log('[AuthenticationService]silent renew error', error);
             this.state.next(undefined); 
-            this.window.alert('Session expired. Please refresh browser page to continue.');
-            this.userManager.stopSilentRenew();
 
             if(this.settings.onSilentRenewError) {
                 await this.settings.onSilentRenewError(error);
@@ -94,6 +92,10 @@ export class AuthenticationService {
         return redirectedUser.state as string;
     }
 
+    /**
+     * @deprecated use signinRedirectCallback instead
+     * @returns 
+     */
     async handleLoginCallback(): Promise<string> {
         const redirectedUser = await this.userManager.signinRedirectCallback();
         const returnUrl = redirectedUser.state || '/';

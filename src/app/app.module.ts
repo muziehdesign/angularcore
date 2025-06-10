@@ -1,7 +1,7 @@
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { APP_INITIALIZER, Injector, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { AuthenticationService, AuthorizationService, provideAuthentication } from '@muziehdesign/angularcore';
+import { AuthenticationService, AuthorizationService, provideAuthentication, WINDOW } from '@muziehdesign/angularcore';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,7 +24,14 @@ import { AppConfig } from 'src/environments/app-config';
     providers: [
         provideAuthentication((injector: Injector) => {
             const config = injector.get(AppConfig);
-            return config.identity;
+            return {
+                ...config.identity,
+                onSilentRenewError: (error: Error) => {
+                    const w = injector.get(WINDOW);
+                    w.alert('Session expired. Please refresh browser page to continue.');
+                    return Promise.resolve();
+                },
+            };
         }),
         provideHttpClient(withInterceptorsFromDi()),
         {
