@@ -1,6 +1,6 @@
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { loadConfigurations, provideAuthentication } from '@muziehdesign/angularcore';
+import { loadConfigurations } from '@muziehdesign/angularcore';
 
 import { AppModule } from './app/app.module';
 import { AppConfig } from './environments/app-config';
@@ -14,10 +14,8 @@ if (environment.production === true) {
 loadConfigurations<AppConfig>(environment.configurations)
     .then(async (appConfig) => {
 
-
         // bootstrap
         const extraProviders = [
-            //{ provide: AUTHENTICATION_OPTIONS, useValue: Object.freeze(appConfig.identity) },
             { provide: AppConfig, useValue: Object.freeze(appConfig) },
         ];
 

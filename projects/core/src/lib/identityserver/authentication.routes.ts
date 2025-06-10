@@ -1,4 +1,4 @@
-import { RedirectCommand, Router, Routes } from '@angular/router';
+import { RedirectCommand, Route, Router, Routes, UrlSegment } from '@angular/router';
 import { LoginRedirectComponent } from './login-redirect/login-redirect.component';
 import { inject } from '@angular/core';
 import { AuthenticationService } from './authentication.service';
@@ -8,11 +8,12 @@ export const authenticationRoutes: Routes = [
         path: 'login-redirect',
         component: LoginRedirectComponent,
         canMatch: [
-            async () => {
+            async (route: Route, segments: UrlSegment[]) => {
                 const auth = inject(AuthenticationService);
                 const router = inject(Router);
                 
                 try {
+                    console.log('[login-redirect]Handling login callback', segments, route.path);
                     const returnUrl = await auth.handleLoginCallback();
                     const urlTree = router.parseUrl(returnUrl || '/');
 
