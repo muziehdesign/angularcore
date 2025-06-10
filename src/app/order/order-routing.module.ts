@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthenticationGuard } from '@muziehdesign/angularcore';
+import { AuthorizationGuard } from '@muziehdesign/angularcore';
 import { OrderDetailsComponent } from './order-details/order-details.component';
 import { OrderListComponent } from './order-list/order-list.component';
 
@@ -9,7 +9,7 @@ export const orderLazyLoadingRoutes: Routes = [
         path: 'orders',
         loadChildren: () => import('./order.module').then((m) => m.OrderModule),
         //canActivate: [requireAuthentication, requireAuthorization(SHOPPING_CART_PERMISSIONS.getOrders)],
-        canMatch: [AuthenticationGuard],
+        canMatch: [AuthorizationGuard],
     },
 ];
 
