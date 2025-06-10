@@ -15,6 +15,7 @@ export interface AuthenticationOptions {
     filterProtocolClaims?: boolean;
     monitorSession?: boolean;
     loadUserInfo?: boolean;
+    onSilentRenewError?: (error: Error) => Promise<void>;
 }
 
 export const AUTHENTICATION_OPTIONS = new InjectionToken<AuthenticationOptions>('AuthenticationOptions');

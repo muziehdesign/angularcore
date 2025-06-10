@@ -44,6 +44,10 @@ export class AuthenticationService {
             this.state.next(undefined);
         });
 
+        this.userManager.events.addAccessTokenExpiring(async ()=>{
+            console.log('[AuthenticationService]access token expiring');
+        });
+
         this.userManager.events.addAccessTokenExpired(async () => {
             console.log('[AuthenticationService]access token expired');
             this.state.next(undefined);
@@ -54,6 +58,10 @@ export class AuthenticationService {
             this.state.next(undefined); 
             this.window.alert('Session expired. Please refresh browser page to continue.');
             this.userManager.stopSilentRenew();
+
+            if(this.settings.onSilentRenewError) {
+                await this.settings.onSilentRenewError(error);
+            }
         });
 
         this.userManager.events.addUserSessionChanged(() => {
