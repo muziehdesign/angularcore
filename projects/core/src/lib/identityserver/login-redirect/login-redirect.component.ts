@@ -14,7 +14,7 @@ export class LoginRedirectComponent implements OnInit {
 
   }
   async ngOnInit() {
-    const returnUrl = await this.auth.handleLoginCallback();
+    const returnUrl = await this.auth.signinRedirectCallback();
     this.router.navigateByUrl(returnUrl);
   }
 }

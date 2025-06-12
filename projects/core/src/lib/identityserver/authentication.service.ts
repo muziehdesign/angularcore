@@ -84,7 +84,7 @@ export class AuthenticationService {
         return true;
     }
 
-    async signinRedirectCallback(url: string = this.window.location.href): Promise<string> {
+    async signinRedirectCallback(url?: string): Promise<string> {
         const redirectedUser = await this.userManager.signinRedirectCallback(url);
         const returnUrl = redirectedUser.state || '/';
         //window.history.replaceState({}, '', returnUrl);
@@ -92,19 +92,12 @@ export class AuthenticationService {
         return redirectedUser.state as string;
     }
 
-    /**
-     * @deprecated use signinRedirectCallback instead
-     * @returns 
-     */
-    async handleLoginCallback(): Promise<string> {
-        const redirectedUser = await this.userManager.signinRedirectCallback();
-        const returnUrl = redirectedUser.state || '/';
-        //window.history.replaceState({}, '', returnUrl);
-        console.log(`[AuthenticationService]handle login callback: ${redirectedUser.expired}, ${redirectedUser.expires_at}, ${returnUrl}`);
-        return redirectedUser.state as string;
+    siginSilent(): Promise<User | null> { 
+        const user = this.userManager.signinSilent().catch(() => null);
+        return user;
     }
 
-    async login(returnUrl: string): Promise<boolean> {
+    async signin(returnUrl: string): Promise<boolean> {
         const user: User | null = await this.siginSilent();
         if (!user) {
             await this.userManager.signinRedirect({ state: returnUrl });
@@ -145,10 +138,6 @@ export class AuthenticationService {
         }
 
         return undefined;
-    }
-
-    private siginSilent(): Promise<User | null> { 
-        return this.userManager.signinSilent().catch(() => null);
     }
 }
 

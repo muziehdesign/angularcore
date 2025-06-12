@@ -14,7 +14,7 @@ export const authenticationRoutes: Routes = [
                 
                 try {
                     console.log('[login-redirect]Handling login callback', segments, route.path);
-                    const returnUrl = await auth.handleLoginCallback();
+                    const returnUrl = await auth.signinRedirectCallback();
                     const urlTree = router.parseUrl(returnUrl || '/');
 
                     return new RedirectCommand(urlTree);

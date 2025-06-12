@@ -37,14 +37,14 @@ describe('AuthorizationGuard', () => {
 
     it('should deny activation if not authenticated and login fails', async () => {
         authenticationServiceSpy.getSnapshot.and.returnValue({ authenticated: false });
-        authenticationServiceSpy.login.and.returnValue(Promise.resolve(false));
+        authenticationServiceSpy.signin.and.returnValue(Promise.resolve(false));
 
         const snapshot = new ActivatedRouteSnapshot();
         snapshot.data = { authorization: [] };
         const result = await guard.canActivate(snapshot, { url: '/test' } as RouterStateSnapshot);
 
         expect(result).toBeFalse();
-        expect(authenticationServiceSpy.login).toHaveBeenCalledWith('/test');
+        expect(authenticationServiceSpy.signin).toHaveBeenCalledWith('/test');
     });
 
     it('should allow activation if authenticated and policies are authorized', async () => {

@@ -26,7 +26,7 @@ export class AuthenticationGuard implements CanMatch, CanActivate {
             return true;
         }
 
-        authenticated = await this.auth.login(returnUrl);
+        authenticated = await this.auth.signin(returnUrl);
         if(authenticated) {
             return true;
         }

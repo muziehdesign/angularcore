@@ -4,6 +4,9 @@ import { AuthenticationService } from './identityserver/authentication.service';
 import { Location } from '@angular/common';
 import { AuthorizationService } from '../public-api';
 
+/**
+ * Automatically performs a silent sign in or redirect to the sign in page if the user is not authenticated. If the user is authenticated, it checks the `authorization` route data.
+ */
 @Injectable({
     providedIn: 'root',
 })
@@ -16,7 +19,7 @@ export class AuthorizationGuard implements CanActivate, CanMatch {
 
     async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<GuardResult> {
         const url = state.url;
-        return this.checkAuthentication(url, route.data['authorization'] || []);
+        return this.checkAuthentication(url, route.data?.['authorization'] || []);
     }
 
     async canMatch(route: Route, segments: UrlSegment[]): Promise<GuardResult> {
@@ -29,7 +32,7 @@ export class AuthorizationGuard implements CanActivate, CanMatch {
       console.log('[AuthorizationGuard] checkAuthentication', returnUrl, policies);
         let authenticated = this.authentication.getSnapshot().authenticated;
         if (!authenticated) {
-            authenticated = await this.authentication.login(returnUrl);
+            authenticated = await this.authentication.signin(returnUrl);
         }
 
         if (!authenticated) {
