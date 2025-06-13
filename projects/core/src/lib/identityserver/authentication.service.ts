@@ -2,7 +2,6 @@ import { AuthenticatedUser } from './authenticated-user';
 import { AUTHENTICATION_OPTIONS, AuthenticationOptions } from './authentication-options';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { Inject, Injectable } from '@angular/core';
-import { WINDOW } from '../window.token';
 import { Log, User, UserManager } from 'oidc-client-ts';
 import { Logger } from '../logger/logger';
 import { OIDC_USER_MANAGER } from './providers';
@@ -14,7 +13,6 @@ export class AuthenticationService {
     constructor(
         @Inject(AUTHENTICATION_OPTIONS) private settings: AuthenticationOptions,
         @Inject(OIDC_USER_MANAGER) private userManager: UserManager,
-        @Inject(WINDOW) private window: Window,
         private logger: Logger
     ) {
         console.log('[AuthenticationService]Creating authentication service', settings);

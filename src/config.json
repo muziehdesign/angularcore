@@ -20,7 +20,7 @@
         "loadUserInfo": true,
         "automaticSilentRenew": true,
         "monitorSession": true,
-        "logLevel": 0
+        "logLevel": "none"
     },
     "build": {
         "timestamp": "2024-01-12T20:16:11.6932Z",

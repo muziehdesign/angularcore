@@ -36,13 +36,10 @@ export const DEFAULT_USER_MANAGER_PROVIDER: FactoryProvider = {
 };
 
 export function provideAuthentication(configFn: (injector: Injector) => AuthenticationOptions) : EnvironmentProviders {
-
-    console.log('providing');
     const providers: Provider[] = [
         {
             provide: AUTHENTICATION_OPTIONS,
             useFactory: (injector: Injector) => {
-                console.log('[AuthenticationService]Creating authentication options'); 
                 return configFn(injector);
             },
             deps: [Injector]

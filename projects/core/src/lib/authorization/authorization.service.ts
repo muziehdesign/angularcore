@@ -8,7 +8,9 @@ export interface NamespacedAuthorizationDataResponse {
     data: AuthorizationData;
 }
 
-// TODO: this relies on AuthorizationGuard to do a silent renew, will need to change....
+/**
+ * Authorizes a permission policy against registered authorization responses.
+ */
 @Injectable({
     providedIn: 'root',
 })

@@ -42,7 +42,7 @@
                                 "output": "oidc"
                             }
                         ],
-                        "styles": ["./node_modules/@angular/material/prebuilt-themes/indigo-pink.css", "src/styles.scss"],
+                        "styles": ["src/styles.scss"],
                         "scripts": [],
                         "browser": "src/main.ts",
                         "stylePreprocessorOptions": {
