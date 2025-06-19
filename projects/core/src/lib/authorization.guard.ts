@@ -10,9 +10,9 @@ import { AuthorizationService } from '../public-api';
 @Injectable()
 export class AuthorizationGuard implements CanActivate, CanMatch {
     constructor(
-        private authentication: AuthenticationService,
-        private authorization: AuthorizationService,
-        private location: Location
+        protected authentication: AuthenticationService,
+        protected authorization: AuthorizationService,
+        protected location: Location
     ) {}
 
     async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<GuardResult> {
@@ -28,23 +28,32 @@ export class AuthorizationGuard implements CanActivate, CanMatch {
     protected async authorize(returnUrl: string, policies: string[] = []): Promise<GuardResult> {
         const authenticated = await this.isAuthenticated();
         if (!authenticated) {
-            return this.handleUnauthorized(returnUrl);
+            return this.handleUnauthenticated(returnUrl);
         }
 
         if (policies.length === 0) {
             return true;
         }
 
-        return (await Promise.all(policies.map((p) => this.authorization.authorize(p)))).every((v) => v === true);
+        const authorized = (await Promise.all(policies.map((p) => this.authorization.authorize(p)))).every((v) => v === true);
+        if (authorized) {
+            return true;
+        }
+
+        return this.handleUnauthorized(returnUrl);
     }
 
     protected async isAuthenticated(): Promise<boolean> {
         return this.authentication.getSnapshot().authenticated;
     }
 
-    protected async handleUnauthorized(returnUrl: string): Promise<GuardResult> {
+    protected async handleUnauthenticated(returnUrl: string): Promise<GuardResult> {
         const never = new Promise<never>(() => {});
         await this.authentication.signinRedirect(returnUrl);
         return never;
+    }
+
+    protected async handleUnauthorized(returnUrl: string): Promise<GuardResult> {
+        return false;
     }
 }
