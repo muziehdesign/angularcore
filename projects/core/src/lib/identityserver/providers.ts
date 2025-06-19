@@ -2,6 +2,7 @@ import { EnvironmentProviders, FactoryProvider, inject, InjectionToken, Injector
 import { INavigator, StateStore, UserManager, UserManagerSettings } from "oidc-client-ts";
 import { AUTHENTICATION_OPTIONS, AuthenticationOptions } from "./authentication-options";
 import { AuthenticationService } from "./authentication.service";
+import { AuthorizationGuard } from "@muziehdesign/angularcore";
 
 export const OIDC_REDIRECT_NAVIGATOR = new InjectionToken<INavigator>('OidcRedirectNavigator');
 export const OIDC_POPUP_NAVIGATOR = new InjectionToken<INavigator>('OidcPopupNavigator');
@@ -45,7 +46,8 @@ export function provideAuthentication(configFn: (injector: Injector) => Authenti
             deps: [Injector]
         },
         DEFAULT_USER_MANAGER_PROVIDER,
-        AuthenticationService
+        AuthenticationService,
+        AuthorizationGuard
     ];
 
     return makeEnvironmentProviders(providers);

@@ -95,6 +95,10 @@ export class AuthenticationService {
         return user;
     }
 
+    signinRedirect(returnUrl: string): Promise<void> {
+        return this.userManager.signinRedirect({ state: returnUrl });
+    }
+
     async signin(returnUrl: string): Promise<boolean> {
         const user: User | null = await this.siginSilent();
         if (!user) {
