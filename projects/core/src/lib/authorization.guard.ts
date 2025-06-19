@@ -25,10 +25,10 @@ export class AuthorizationGuard implements CanActivate, CanMatch {
         return this.authorize(url, route.data?.['authorization'] || []);
     }
 
-    protected async authorize(returnUrl: string, policies: string[] = []): Promise<boolean> {
+    protected async authorize(returnUrl: string, policies: string[] = []): Promise<GuardResult> {
         const authenticated = await this.isAuthenticated();
         if (!authenticated) {
-            return this.handleUnauthorized(returnUrl).then(() => false);
+            return this.handleUnauthorized(returnUrl);
         }
 
         if (policies.length === 0) {
@@ -42,7 +42,9 @@ export class AuthorizationGuard implements CanActivate, CanMatch {
         return this.authentication.getSnapshot().authenticated;
     }
 
-    protected async handleUnauthorized(returnUrl: string): Promise<void> {
+    protected async handleUnauthorized(returnUrl: string): Promise<GuardResult> {
+        const never = new Promise<never>(() => {});
         await this.authentication.signinRedirect(returnUrl);
+        return never;
     }
 }
