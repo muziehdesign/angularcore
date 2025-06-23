@@ -99,6 +99,9 @@ export class AuthenticationService {
         return this.userManager.signinRedirect({ state: returnUrl });
     }
 
+    /**
+     * Performs a silent sign-in. If the user is not authenticated, redirects to the identity provider.
+     */
     async signin(returnUrl: string): Promise<boolean> {
         const user: User | null = await this.siginSilent();
         if (!user) {
@@ -106,6 +109,10 @@ export class AuthenticationService {
             return false;
         }
         return true;
+    }
+
+    signoutSilent(): Promise<void> {
+        return this.userManager.signoutSilent();
     }
 
     async initialize(): Promise<void> {
