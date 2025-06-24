@@ -30,7 +30,6 @@ export const DEFAULT_USER_MANAGER_PROVIDER: FactoryProvider = {
             userStore: stateStore,
             stateStore: stateStore
         } satisfies UserManagerSettings;
-        console.log('[AuthenticationService]Creating user manager with settings', settings);
         return new UserManager(settings, oidcRedirectNavigator, oidcPopupNavigator, oidcIframeNavigator);
     },
     deps: [AUTHENTICATION_OPTIONS, [new Optional(), OIDC_STATE_STORE], [new Optional(), OIDC_REDIRECT_NAVIGATOR], [new Optional(), OIDC_POPUP_NAVIGATOR], [new Optional(), OIDC_IFRAME_NAVIGATOR]]

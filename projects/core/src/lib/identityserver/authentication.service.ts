@@ -9,6 +9,7 @@ import { OIDC_USER_MANAGER } from './providers';
 @Injectable()
 export class AuthenticationService {
     private readonly state = new BehaviorSubject<User | undefined>(undefined);
+    private initializationPromise: Promise<void> | undefined;
 
     constructor(
         @Inject(AUTHENTICATION_OPTIONS) private settings: AuthenticationOptions,
@@ -77,11 +78,6 @@ export class AuthenticationService {
         return Promise.resolve(this.mapToAuthenticatedUser(user));
     }
 
-    async handleSilentCallback(): Promise<boolean> {
-        await this.userManager.signinSilentCallback();
-        return true;
-    }
-
     async signinRedirectCallback(url?: string): Promise<string> {
         const redirectedUser = await this.userManager.signinRedirectCallback(url);
         const returnUrl = redirectedUser.state || '/';
@@ -90,9 +86,9 @@ export class AuthenticationService {
         return redirectedUser.state as string;
     }
 
-    siginSilent(): Promise<User | null> { 
-        const user = this.userManager.signinSilent().catch(() => null);
-        return user;
+    async signinSilent(): Promise<AuthenticatedUser | undefined> { 
+        const user = await this.userManager.signinSilent().catch(() => null);
+        return this.mapToAuthenticatedUser(user || undefined);
     }
 
     signinRedirect(returnUrl: string): Promise<void> {
@@ -102,22 +98,20 @@ export class AuthenticationService {
     /**
      * Performs a silent sign-in. If the user is not authenticated, redirects to the identity provider.
      */
-    async signin(returnUrl: string): Promise<boolean> {
-        const user: User | null = await this.siginSilent();
+    async signin(returnUrl: string): Promise<AuthenticatedUser | undefined> {
+        const user = await this.signinSilent();
         if (!user) {
             await this.userManager.signinRedirect({ state: returnUrl });
-            return false;
         }
-        return true;
+        return user;
     }
 
-    signoutSilent(): Promise<void> {
-        return this.userManager.signoutSilent();
-    }
-
+    /**
+     * Initializes the authentication service; performs a silent sign-in. This logic only runs once.
+     */
     async initialize(): Promise<void> {
-        this.userManager.clearStaleState();
-        await this.siginSilent();
+        this.initializationPromise = this.initializationPromise || this.internalInitialize();
+        return this.initializationPromise;
     }
 
     getSnapshot() : AuthenticationStateData {
@@ -139,6 +133,11 @@ export class AuthenticationService {
                 } satisfies AuthenticationStateData;
             })
         );
+    }
+
+    private async internalInitialize(): Promise<void> {
+        this.userManager.clearStaleState();
+        await this.signinSilent();
     }
 
     private mapToAuthenticatedUser(user: User | undefined): AuthenticatedUser | undefined {

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, CanMatch, GuardResult, Route, RouterStateSnapshot, UrlSegment } from '@angular/router';
-import { AuthenticationService } from './identityserver/authentication.service';
 import { Location } from '@angular/common';
-import { AuthorizationService } from '../public-api';
+import { AuthenticationService } from './identityserver/authentication.service';
+import { AuthorizationService } from './authorization/authorization.service';
 
 /**
  * Automatically performs a silent sign in or redirect to the sign in page if the user is not authenticated. If the user is authenticated, it checks the `authorization` route data.
@@ -44,13 +44,15 @@ export class AuthorizationGuard implements CanActivate, CanMatch {
     }
 
     protected async isAuthenticated(): Promise<boolean> {
+        console.log('[AuthorizationGuard] Checking authentication status, waiting for initial authentication');
+        await this.authentication.initialize();
+        console.log('[AuthorizationGuard] finished initial authentication')
         return this.authentication.getSnapshot().authenticated;
     }
 
     protected async handleUnauthenticated(returnUrl: string): Promise<GuardResult> {
-        const never = new Promise<never>(() => {});
         await this.authentication.signinRedirect(returnUrl);
-        return never;
+        return false;
     }
 
     protected async handleUnauthorized(returnUrl: string): Promise<GuardResult> {
