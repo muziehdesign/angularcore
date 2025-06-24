@@ -25,14 +25,14 @@ export class AuthenticationService {
 
         this.userManager.events.addUserLoaded((user) => {
             console.log('[AuthenticationService]user loaded');
-            this.state.next(user);
-            this.eventsSubject.next(new AuthenticationEvent(AuthenticationEventType.UserLoaded));
+            //this.state.next(user);
+            //this.eventsSubject.next(new AuthenticationEvent(AuthenticationEventType.UserLoaded));
         });
 
         this.userManager.events.addUserUnloaded(() => {
             console.log('[AuthenticationService]user unloaded');
-            this.state.next(undefined);
-            this.eventsSubject.next(new AuthenticationEvent(AuthenticationEventType.UserUnloaded));
+            //this.state.next(undefined);
+            //this.eventsSubject.next(new AuthenticationEvent(AuthenticationEventType.UserUnloaded));
         });
 
         this.userManager.events.addAccessTokenExpiring(async ()=>{
@@ -42,7 +42,6 @@ export class AuthenticationService {
 
         this.userManager.events.addAccessTokenExpired(async () => {
             console.log('[AuthenticationService]access token expired');
-            this.state.next(undefined);
             this.eventsSubject.next(new AuthenticationEvent(AuthenticationEventType.AccessTokenExpired));
         });
 
@@ -82,7 +81,10 @@ export class AuthenticationService {
     }
 
     async signinSilent(): Promise<AuthenticatedUser | undefined> { 
+        console.log(`[AuthenticationService]Performing silent sign-in`);
         const user = await this.userManager.signinSilent().catch(() => null);
+        this.state.next(user || undefined);
+        console.log(`[AuthenticationService]Silent sign-in completed, user: ${user?.expired}, expires at: ${user?.expires_at}`);
         return this.mapToAuthenticatedUser(user || undefined);
     }
 
@@ -106,7 +108,7 @@ export class AuthenticationService {
     }
 
     /**
-     * Initializes the authentication service; performs a silent sign-in. This logic only runs once.
+     * Initializes the authentication service; performs a silent sign-in. This logic only runs once and is relied on by AuthorizationGuard.
      */
     async initialize(): Promise<void> {
         this.initializationPromise = this.initializationPromise || this.internalInitialize();
@@ -135,7 +137,7 @@ export class AuthenticationService {
     }
 
     private async internalInitialize(): Promise<void> {
-        this.userManager.clearStaleState();
+        console.log('[AuthenticationService]Initializing authentication service');
         await this.signinSilent();
     }
 

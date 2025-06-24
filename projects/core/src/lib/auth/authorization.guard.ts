@@ -46,7 +46,7 @@ export class AuthorizationGuard implements CanActivate, CanMatch {
     protected async isAuthenticated(): Promise<boolean> {
         console.log('[AuthorizationGuard] Checking authentication status, waiting for initial authentication');
         await this.authentication.initialize();
-        console.log('[AuthorizationGuard] finished initial authentication')
+        console.log('[AuthorizationGuard] finished initial authentication:', this.authentication.getSnapshot().authenticated)
         return this.authentication.getSnapshot().authenticated;
     }
 
