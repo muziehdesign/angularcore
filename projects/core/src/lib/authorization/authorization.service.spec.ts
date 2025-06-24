@@ -9,7 +9,7 @@ describe('AuthorizationService', () => {
     let loggerSpy: jasmine.SpyObj<Logger>;
 
     beforeEach(() => {
-        loggerSpy = jasmine.createSpyObj('Logger', ['log', 'error']);
+        loggerSpy = jasmine.createSpyObj<Logger>('Logger', ['error']);
 
         TestBed.configureTestingModule({
             providers: [

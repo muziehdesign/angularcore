@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { UserManager, User, UserManagerEvents } from 'oidc-client-ts';
 import { AuthenticationService } from './authentication.service';
-import { AUTHENTICATION_OPTIONS } from './authentication-options';
 import { Logger } from '../logger/logger';
 import { OIDC_USER_MANAGER } from './providers';
 
@@ -20,7 +19,6 @@ describe('AuthenticationService', () => {
         TestBed.configureTestingModule({
             providers: [
                 AuthenticationService, 
-                { provide: AUTHENTICATION_OPTIONS, useValue: { logLevel: 'none' } }, 
                 { provide: Logger, useValue: loggerSpy }, 
                 { provide: OIDC_USER_MANAGER, useValue: userManagerSpy }],
         });

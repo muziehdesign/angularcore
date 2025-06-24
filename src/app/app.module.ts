@@ -24,14 +24,7 @@ import { AppConfig } from 'src/environments/app-config';
     providers: [
         provideAuthentication((injector: Injector) => {
             const config = injector.get(AppConfig);
-            return {
-                ...config.identity,
-                onSilentRenewError: (error: Error) => {
-                    const w = injector.get(WINDOW);
-                    w.alert('Session expired. Please refresh browser page to continue.');
-                    return Promise.resolve();
-                },
-            };
+            return config.identity;
         }),
         provideHttpClient(withInterceptorsFromDi()),
         {

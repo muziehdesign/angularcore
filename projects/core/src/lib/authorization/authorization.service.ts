@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AuthorizationData } from './authorization-data';
-import { AsyncSubject, BehaviorSubject, catchError, first, firstValueFrom, forkJoin, map, Observable, of, Subject, switchMap, take } from 'rxjs';
+import { AsyncSubject, firstValueFrom, map, Observable, take } from 'rxjs';
 import { Logger } from '../logger/logger';
 
 export interface NamespacedAuthorizationDataResponse {

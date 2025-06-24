@@ -1,4 +1,4 @@
-import { EnvironmentProviders, FactoryProvider, inject, InjectionToken, Injector, makeEnvironmentProviders, Optional, provideAppInitializer, provideEnvironmentInitializer, Provider } from '@angular/core';
+import { EnvironmentProviders, FactoryProvider, InjectionToken, Injector, makeEnvironmentProviders, Optional, Provider } from '@angular/core';
 import { INavigator, Log, StateStore, UserManager, UserManagerSettings } from 'oidc-client-ts';
 import { AUTHENTICATION_OPTIONS, AuthenticationOptions } from './authentication-options';
 import { AuthenticationService } from './authentication.service';

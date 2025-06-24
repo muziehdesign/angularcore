@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Logger } from '@muziehdesign/angularcore';
+import { AuthenticationEventType, AuthenticationService, WINDOW } from '@muziehdesign/angularcore';
 import { AppConfig } from 'src/environments/app-config';
 
 @Component({
@@ -14,6 +14,13 @@ export class AppComponent {
     constructor(
         private config: AppConfig,
         private router: Router,
-        private logger: Logger
-    ) { }
+        private authentication: AuthenticationService,
+        @Inject(WINDOW) private window: Window
+    ) { 
+        this.authentication.events.subscribe((event) => {
+            if(event.type === AuthenticationEventType.SilentRenewError) {
+                window.alert('Session expired. Please refresh browser page to continue.');
+            }
+        });
+    }
 }

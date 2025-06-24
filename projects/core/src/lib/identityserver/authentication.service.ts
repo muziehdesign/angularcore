@@ -1,6 +1,5 @@
 import { AuthenticatedUser } from './authenticated-user';
-import { AUTHENTICATION_OPTIONS, AuthenticationOptions } from './authentication-options';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject, map } from 'rxjs';
 import { Inject, Injectable } from '@angular/core';
 import { User, UserManager } from 'oidc-client-ts';
 import { Logger } from '../logger/logger';
@@ -11,50 +10,55 @@ export class AuthenticationService {
     private readonly state = new BehaviorSubject<User | undefined>(undefined);
     private initializationPromise: Promise<void> | undefined;
 
+    private readonly eventsSubject = new ReplaySubject<AuthenticationEvent>(1);
+
     constructor(
-        @Inject(AUTHENTICATION_OPTIONS) private settings: AuthenticationOptions,
         @Inject(OIDC_USER_MANAGER) private userManager: UserManager,
         private logger: Logger
     ) {
-        console.log('[AuthenticationService]Creating authentication service', settings);
-
         this.userManager.events.addUserSignedOut(async () => {
             this.logger.debug('[AuthenticationService]Sign-in status at the OP has changed. Performing signoutRedirect.');
             this.state.next(undefined);
-            await this.userManager.signoutRedirect();
+            this.eventsSubject.next(new AuthenticationEvent(AuthenticationEventType.UserSignedOut));
+            await this.userManager.signoutRedirect(); // TODO
         });
 
         this.userManager.events.addUserLoaded((user) => {
             console.log('[AuthenticationService]user loaded');
             this.state.next(user);
+            this.eventsSubject.next(new AuthenticationEvent(AuthenticationEventType.UserLoaded));
         });
 
         this.userManager.events.addUserUnloaded(() => {
             console.log('[AuthenticationService]user unloaded');
             this.state.next(undefined);
+            this.eventsSubject.next(new AuthenticationEvent(AuthenticationEventType.UserUnloaded));
         });
 
         this.userManager.events.addAccessTokenExpiring(async ()=>{
             console.log('[AuthenticationService]access token expiring');
+            this.eventsSubject.next(new AuthenticationEvent(AuthenticationEventType.AccessTokenExpiring));
         });
 
         this.userManager.events.addAccessTokenExpired(async () => {
             console.log('[AuthenticationService]access token expired');
             this.state.next(undefined);
+            this.eventsSubject.next(new AuthenticationEvent(AuthenticationEventType.AccessTokenExpired));
         });
 
         this.userManager.events.addSilentRenewError(async (error) => {
             console.log('[AuthenticationService]silent renew error', error);
             this.state.next(undefined); 
-
-            if(this.settings.onSilentRenewError) {
-                await this.settings.onSilentRenewError(error);
-            }
+            this.eventsSubject.next(new SilentRenewErrorEvent(error));
         });
 
         this.userManager.events.addUserSessionChanged(() => {
-            console.log('[AuthenticationService]user session changed');
+            this.eventsSubject.next(new AuthenticationEvent(AuthenticationEventType.UserSessionChanged));
         });
+    }
+
+    get events(): Observable<AuthenticationEvent> {
+        return this.eventsSubject.asObservable();
     }
 
     async loadUser(): Promise<AuthenticatedUser | undefined> {
@@ -84,6 +88,10 @@ export class AuthenticationService {
 
     signinRedirect(returnUrl: string): Promise<void> {
         return this.userManager.signinRedirect({ state: returnUrl });
+    }
+
+    signoutRedirect(): Promise<void> {
+        return this.userManager.signoutRedirect();
     }
 
     /**
@@ -145,6 +153,32 @@ export interface AuthenticationStateData {
     user?: AuthenticatedUser;
     token?: string;
 }
+
+export enum AuthenticationEventType {
+    UserLoaded = 'userLoaded',
+    UserUnloaded = 'userUnloaded',
+    SilentRenewError = 'silentRenewError',
+    UserSignedOut = 'userSignedOut',
+    UserSessionChanged = 'userSessionChanged',
+    AccessTokenExpiring = 'accessTokenExpiring',
+    AccessTokenExpired = 'accessTokenExpired'
+}
+
+export class AuthenticationEvent {
+    readonly type: AuthenticationEventType;
+    constructor(type: AuthenticationEventType) {
+        this.type = type;
+    }
+}
+
+export class SilentRenewErrorEvent extends AuthenticationEvent {
+    readonly error: Error;
+    constructor(error: Error) {
+        super(AuthenticationEventType.SilentRenewError);
+        this.error = error;
+    }
+}
+
 
 /**
  * 
