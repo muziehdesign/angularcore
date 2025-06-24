@@ -2,9 +2,9 @@ import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Route, RouterStateSnapshot, UrlSegment } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { AuthorizationGuard } from './auth/authorization.guard';
-import { AuthenticationService } from './auth/authentication.service';
-import { AuthorizationService } from './authorization/authorization.service';
+import { AuthorizationGuard } from './authorization.guard';
+import { AuthenticationService } from './authentication.service';
+import { AuthorizationService } from '../authorization/authorization.service';
 
 describe('AuthorizationGuard', () => {
     let guard: AuthorizationGuard;

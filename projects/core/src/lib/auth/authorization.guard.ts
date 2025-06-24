@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, CanMatch, GuardResult, Route, RouterStateSnapshot, UrlSegment } from '@angular/router';
 import { Location } from '@angular/common';
-import { AuthenticationService } from './identityserver/authentication.service';
-import { AuthorizationService } from './authorization/authorization.service';
+import { AuthenticationService } from './authentication.service';
+import { AuthorizationService } from './authorization.service';
 
 /**
  * Automatically performs a silent sign in or redirect to the sign in page if the user is not authenticated. If the user is authenticated, it checks the `authorization` route data.

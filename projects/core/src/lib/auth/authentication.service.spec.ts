@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { UserManager, User, UserManagerEvents } from 'oidc-client-ts';
 import { AuthenticationService } from './authentication.service';
 import { Logger } from '../logger/logger';
-import { OIDC_USER_MANAGER } from './providers';
+import { OIDC_USER_MANAGER } from '../identityserver/providers';
 
 describe('AuthenticationService', () => {
     let service: AuthenticationService;

@@ -11,9 +11,7 @@ export interface NamespacedAuthorizationDataResponse {
 /**
  * Authorizes a permission policy against registered authorization responses.
  */
-@Injectable({
-    providedIn: 'root',
-})
+@Injectable()
 export class AuthorizationService {
     private dataSubject?: AsyncSubject<Map<string, AuthorizationData>>;
     private source?: Observable<NamespacedAuthorizationDataResponse[]>
