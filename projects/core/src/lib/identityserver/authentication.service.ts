@@ -2,7 +2,7 @@ import { AuthenticatedUser } from './authenticated-user';
 import { AUTHENTICATION_OPTIONS, AuthenticationOptions } from './authentication-options';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { Inject, Injectable } from '@angular/core';
-import { Log, User, UserManager } from 'oidc-client-ts';
+import { User, UserManager } from 'oidc-client-ts';
 import { Logger } from '../logger/logger';
 import { OIDC_USER_MANAGER } from './providers';
 
@@ -17,15 +17,6 @@ export class AuthenticationService {
         private logger: Logger
     ) {
         console.log('[AuthenticationService]Creating authentication service', settings);
-        const map = new Map<string, number>();
-        map.set('debug', Log.DEBUG);
-        map.set('error', Log.ERROR);
-        map.set('none', Log.NONE);
-        map.set('warn', Log.WARN);
-        map.set('info', Log.INFO);
-
-        Log.setLevel(map.get(settings.logLevel) || Log.NONE);
-        Log.setLogger(logger);
 
         this.userManager.events.addUserSignedOut(async () => {
             this.logger.debug('[AuthenticationService]Sign-in status at the OP has changed. Performing signoutRedirect.');
