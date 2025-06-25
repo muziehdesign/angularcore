@@ -31,18 +31,29 @@ jobs:
           root: .
           paths:
             - .
+      - save_cache:
+          key: cypress-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - ~/.cache/Cypress
   test:
     <<: *defaults
     steps:
       - attach_workspace:
           at: .
-      #- run: npm run ng -- test components 
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
+      - run: npm run test:ci
       - run: echo test
+      - run:
+          name: Print pipeline number
+          command: echo "Pipeline number is $CIRCLE_PIPELINE_NUMBER"
   build:
     <<: *defaults
     steps:
       - attach_workspace:
           at: .
+      - restore_cache:
+          key: cypress-cache-{{ checksum "package-lock.json" }}
       #- run: npm run lint
       - run:
           name: "version @muziehdesign/angularcore"
@@ -50,6 +61,7 @@ jobs:
             npm pkg get version
           working_directory: ./projects/core
       - run: npm run ng -- build core
+      - run: npm run cypress:ci
       - store_artifacts:
           path: /dist/core
           destination: muziehdesign/angularcore

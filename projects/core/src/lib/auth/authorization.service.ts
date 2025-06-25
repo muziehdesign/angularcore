@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AuthorizationData } from './authorization-data';
-import { AsyncSubject, BehaviorSubject, catchError, first, firstValueFrom, forkJoin, map, Observable, of, Subject, switchMap, take } from 'rxjs';
+import { AsyncSubject, firstValueFrom, map, Observable, take } from 'rxjs';
 import { Logger } from '../logger/logger';
 
 export interface NamespacedAuthorizationDataResponse {
@@ -8,10 +8,10 @@ export interface NamespacedAuthorizationDataResponse {
     data: AuthorizationData;
 }
 
-// TODO: this relies on AuthorizationGuard to do a silent renew, will need to change....
-@Injectable({
-    providedIn: 'root',
-})
+/**
+ * Authorizes a permission policy against registered authorization responses.
+ */
+@Injectable()
 export class AuthorizationService {
     private dataSubject?: AsyncSubject<Map<string, AuthorizationData>>;
     private source?: Observable<NamespacedAuthorizationDataResponse[]>

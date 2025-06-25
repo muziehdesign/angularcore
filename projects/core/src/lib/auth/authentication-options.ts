@@ -13,6 +13,8 @@ export interface AuthenticationOptions {
     checkSessionInterval?: number;
     accessTokenExpiringNotificationTime?: number;
     filterProtocolClaims?: boolean;
+    monitorSession?: boolean;
+    loadUserInfo?: boolean;
 }
 
 export const AUTHENTICATION_OPTIONS = new InjectionToken<AuthenticationOptions>('AuthenticationOptions');

@@ -1,21 +1,23 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthenticationGuard, authenticationRoutes } from '@muziehdesign/angularcore';
+import { authenticationRoutes, AuthorizationGuard } from '@muziehdesign/angularcore';
 import { cartRoutes } from './cart/cart.routes';
 import { checkoutLazyLoadingRoutes } from './checkout/checkout-routing.module';
 import { orderLazyLoadingRoutes } from './order/order-routing.module';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ProfileComponent } from './profile/profile.component';
+import { AboutComponent } from './about/about.component';
 
 const routes: Routes = [
-    { path: '', redirectTo: '/items', pathMatch: 'full' },
+    { path: '', redirectTo: '/about', pathMatch: 'full' },
+    { path: 'about', component: AboutComponent },
     { path: 'logout', redirectTo: '/', pathMatch: 'full' },
     ...authenticationRoutes,
     ...orderLazyLoadingRoutes,
     ...checkoutLazyLoadingRoutes,
     { path: 'items', loadChildren: () => import('./item/item.routes').then((x) => x.itemRoutes) },
     ...cartRoutes,
-    { path: 'profile', component: ProfileComponent, canActivate: [AuthenticationGuard] }, // TODO
+    { path: 'profile', component: ProfileComponent, canActivate: [AuthorizationGuard] }, // TODO
     { path: '**', component: PageNotFoundComponent },
 ];
 

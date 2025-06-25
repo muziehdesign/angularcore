@@ -9,18 +9,24 @@
         "url": "http://localhost:5000"
     },
     "identity": {
-        "authority": "http://localhost:5002",
+        "authority": "http://localhost:4201/ids",
         "clientId": "shoppingcart-web",
-        "responseType": "id_token token",
-        "scope": "openid profile shoppingcart-api catalog-api",
+        "responseType": "code",
+        "scope": "openid profile",
         "redirectUri": "http://localhost:4200/login-redirect",
         "silentRedirectUri": "http://localhost:4200/oidc/silent-redirect.html",
         "postLogoutRedirectUri": "http://localhost:4200/logout",
         "accessTokenExpiringNotificationTime": 60,
-        "loadUserInfo": true,
-        "automaticSilentRenew": true,
-        "monitorSession": true,
-        "logLevel": "none"
+        "loadUserInfo": false,
+        "automaticSilentRenew": false,
+        "logLevel": "none",
+        "metadata": {
+            "issuer": "http://localhost:4201/ids",
+            "authorizationEndpoint": "http://localhost:4201/ids/connect/authorize",
+            "endSessionEndpoint": "http://localhost:4201/ids/connect/endsession",
+            "jwksUri": "http://localhost:4201/ids/.well-known/openid-configuration/jwks",
+            "checkSessionIFrame": "http://localhost:4201/ids/connect/checksession"
+        }
     },
     "build": {
         "timestamp": "2024-01-12T20:16:11.6932Z",

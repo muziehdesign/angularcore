@@ -1,19 +1,18 @@
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, Injector, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { AuthenticationGuard, AuthenticationService, AuthorizationService } from '@muziehdesign/angularcore';
+import { AuthenticationService, AuthorizationService, provideAuth, WINDOW } from '@muziehdesign/angularcore';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { ProfileComponent } from './profile/profile.component';
 import { CoreModule } from './core/core.module';
 import { LayoutModule } from './layout/layout.module';
 import { ShoppingCartClient } from './api/shopping-cart/shopping-cart.client';
 import { map } from 'rxjs';
+import { AppConfig } from 'src/environments/app-config';
 
 @NgModule({
-    declarations: [AppComponent, PageNotFoundComponent, ProfileComponent],
+    declarations: [AppComponent],
     bootstrap: [AppComponent],
     imports: [
         BrowserModule,
@@ -23,11 +22,14 @@ import { map } from 'rxjs';
         AppRoutingModule,
     ],
     providers: [
-        AuthenticationGuard,
+        provideAuth((injector: Injector) => {
+            const config = injector.get(AppConfig);
+            return config.identity;
+        }),
         provideHttpClient(withInterceptorsFromDi()),
         {
-            provide: 'APP_INITIALIZER',
-            useFactory: (authentication: AuthenticationService, authorization: AuthorizationService, client: ShoppingCartClient) => () => {
+            provide: APP_INITIALIZER,
+            useFactory: (authentication: AuthenticationService, authorization: AuthorizationService, client: ShoppingCartClient) => async () => {
                 authorization.register(
                     client.getAuthorization().pipe(
                         map((data) => {
@@ -35,6 +37,8 @@ import { map } from 'rxjs';
                         })
                     )
                 );
+
+                await authentication.initialize();
             },
             deps: [AuthenticationService, AuthorizationService, ShoppingCartClient],
             multi: true,
