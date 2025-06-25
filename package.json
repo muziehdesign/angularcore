@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "concurrently -k \"ng build core --watch\" \"wait-on ./dist/core/index.d.ts && ng serve --open\"",
+    "start:cypress": "ng build core && concurrently \"node ./mock-server/server.js\" \"ng serve --configuration=cypress --host=0.0.0.0\"",
     "build": "ng build core && ng build shoppingcart-web",
     "watch": "ng build --watch --configuration development",
     "test": "ng test --project=core",
@@ -12,8 +13,8 @@
     "prettier": "prettier . --write",
     "prettier:check": "prettier . --check",
     "prettier:fix": "prettier . --write",
-    "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress": "start-server-and-test start:cypress http-get://localhost:4200 'cypress open'",
+    "cypress:ci": "start-server-and-test start:cypress http-get://localhost:4200 'cypress run'"
   },
   "private": true,
   "dependencies": {
@@ -52,18 +53,21 @@
     "@typescript-eslint/parser": "^8.31.1",
     "autoprefixer": "^10.4.7",
     "concurrently": "^8.2.2",
-    "cypress": "^12.17.4",
+    "cypress": "^14.5.0",
     "eslint": "^9.25.1",
     "eslint-plugin-sonarjs": "^3.0.2",
     "jasmine-core": "~4.1.0",
+    "jsrsasign": "^11.1.0",
     "karma": "~6.4.4",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.1",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "karma-junit-reporter": "^2.0.1",
+    "morgan": "^1.10.0",
     "ng-packagr": "^19.2.2",
     "prettier": "^3.0.3",
+    "start-server-and-test": "^2.0.12",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3",
     "wait-on": "^8.0.3"

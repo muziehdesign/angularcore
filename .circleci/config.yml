@@ -50,6 +50,7 @@ jobs:
             npm pkg get version
           working_directory: ./projects/core
       - run: npm run ng -- build core
+      - run: npm run cypress:ci
       - store_artifacts:
           path: /dist/core
           destination: muziehdesign/angularcore

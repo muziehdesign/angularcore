@@ -1,0 +1,37 @@
+{
+    "service": {
+        "name": "shoppingcart-web"
+    },
+    "catalogApi": {
+        "url": "http://localhost:5001"
+    },
+    "shoppingCartApi": {
+        "url": "http://localhost:5000"
+    },
+    "identity": {
+        "authority": "http://localhost:4201/ids",
+        "clientId": "shoppingcart-web",
+        "responseType": "code",
+        "scope": "openid profile",
+        "redirectUri": "http://localhost:4200/login-redirect",
+        "silentRedirectUri": "http://localhost:4200/oidc/silent-redirect.html",
+        "postLogoutRedirectUri": "http://localhost:4200/logout",
+        "accessTokenExpiringNotificationTime": 60,
+        "loadUserInfo": false,
+        "automaticSilentRenew": false,
+        "logLevel": "none",
+        "metadata": {
+            "issuer": "http://localhost:4201/ids",
+            "authorizationEndpoint": "http://localhost:4201/ids/connect/authorize",
+            "endSessionEndpoint": "http://localhost:4201/ids/connect/endsession",
+            "jwksUri": "http://localhost:4201/ids/.well-known/openid-configuration/jwks",
+            "checkSessionIFrame": "http://localhost:4201/ids/connect/checksession"
+        }
+    },
+    "build": {
+        "timestamp": "2024-01-12T20:16:11.6932Z",
+        "version": "1.0.0",
+        "tag": "1.0-local",
+        "suffix": "local"
+    }
+}

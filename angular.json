@@ -18,12 +18,10 @@
                     "builder": "@angular-devkit/build-angular:application",
                     "options": {
                         "outputPath": {
-                          "base": "dist/shoppingcart-web"
+                            "base": "dist/shoppingcart-web"
                         },
                         "index": "src/index.html",
-                        "polyfills": [
-                          "src/polyfills.ts"
-                        ],
+                        "polyfills": ["src/polyfills.ts"],
                         "tsConfig": "tsconfig.app.json",
                         "inlineStyleLanguage": "scss",
                         "assets": [
@@ -46,9 +44,7 @@
                         "scripts": [],
                         "browser": "src/main.ts",
                         "stylePreprocessorOptions": {
-                          "includePaths": [
-                            ".", "node_modules/@muziehdesign/components/styles", "node_modules"
-                          ]
+                            "includePaths": [".", "node_modules/@muziehdesign/components/styles", "node_modules"]
                         }
                     },
                     "configurations": {
@@ -74,10 +70,19 @@
                             "outputHashing": "all"
                         },
                         "development": {
-                          "optimization": false,
+                            "optimization": false,
                             "extractLicenses": false,
                             "sourceMap": true,
                             "namedChunks": true
+                        },
+                        "cypress": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.cypress.ts"
+                                }
+                            ],
+                            "sourceMap": true
                         }
                     },
                     "defaultConfiguration": "production"
@@ -90,6 +95,9 @@
                         },
                         "development": {
                             "buildTarget": "shoppingcart-web:build:development"
+                        },
+                        "cypress": {
+                            "buildTarget": "shoppingcart-web:build:production,cypress"
                         }
                     },
                     "defaultConfiguration": "development"
