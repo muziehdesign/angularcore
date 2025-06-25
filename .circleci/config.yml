@@ -12,7 +12,7 @@ orbs:
 
 defaults: &defaults
   docker:
-    - image: cimg/node:22.17.0-browsers
+    - image: cimg/node:22.2.0-browsers
       environment:
         CHROME_BIN: /usr/bin/google-chrome
 
@@ -40,8 +40,13 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
       - run: npm run test:ci
       - run: echo test
+      - run:
+          name: Print pipeline number
+          command: echo "Pipeline number is $CIRCLE_PIPELINE_NUMBER"
   build:
     <<: *defaults
     steps:
