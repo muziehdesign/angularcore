@@ -31,6 +31,10 @@ jobs:
           root: .
           paths:
             - .
+      - save_cache:
+          key: cypress-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - ~/.cache/Cypress
   test:
     <<: *defaults
     steps:
@@ -43,6 +47,8 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - restore_cache:
+          key: cypress-cache-{{ checksum "package-lock.json" }}
       #- run: npm run lint
       - run:
           name: "version @muziehdesign/angularcore"

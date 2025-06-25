@@ -82,7 +82,10 @@ export class AuthenticationService {
 
     async signinSilent(): Promise<AuthenticatedUser | undefined> { 
         console.log(`[AuthenticationService]Performing silent sign-in`);
-        const user = await this.userManager.signinSilent().catch(() => null);
+        const user = await this.userManager.signinSilent().catch((err) => {
+            this.logger.warn('[AuthenticationService]Silent sign-in failed, no user data available', err);
+            return null;
+        });
         this.state.next(user || undefined);
         console.log(`[AuthenticationService]Silent sign-in completed, user: ${user?.expired}, expires at: ${user?.expires_at}`);
         return this.mapToAuthenticatedUser(user || undefined);
