@@ -26,4 +26,4 @@ export { List, Paged, Search, SearchModel, Auditable, Subject, AuditableModel, S
 export { UnexpectedError } from './lib/errors';
 export { OperationResource, OperationResult, OperationStatus } from './lib/operation-resource';
 
-export { provideAuth, OIDC_USER_MANAGER } from './lib/auth/providers';
+export { provideAuth, OIDC_USER_MANAGER, createUserManager } from './lib/auth/providers';
