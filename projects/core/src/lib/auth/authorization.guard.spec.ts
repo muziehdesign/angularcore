@@ -4,7 +4,7 @@ import { Location } from '@angular/common';
 
 import { AuthorizationGuard } from './authorization.guard';
 import { AuthenticationService } from './authentication.service';
-import { AuthorizationService } from '../authorization/authorization.service';
+import { AuthorizationService } from './authorization.service';
 
 describe('AuthorizationGuard', () => {
     let guard: AuthorizationGuard;

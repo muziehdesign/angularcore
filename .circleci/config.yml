@@ -40,7 +40,7 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      #- run: npm run ng -- test components 
+      - run: npm run test:ci
       - run: echo test
   build:
     <<: *defaults

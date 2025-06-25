@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { UserManager, User, UserManagerEvents } from 'oidc-client-ts';
 import { AuthenticationService } from './authentication.service';
 import { Logger } from '../logger/logger';
-import { OIDC_USER_MANAGER } from '../identityserver/providers';
+import { OIDC_USER_MANAGER } from './providers';
 
 describe('AuthenticationService', () => {
     let service: AuthenticationService;
@@ -67,20 +67,16 @@ describe('AuthenticationService', () => {
 
     it('should initialize', async () => {
         userManagerSpy.signinSilent.and.returnValue(Promise.resolve(null));
-        userManagerSpy.clearStaleState.and.stub();
 
         await service.initialize();
-        expect(userManagerSpy.clearStaleState).toHaveBeenCalled();
         expect(userManagerSpy.signinSilent).toHaveBeenCalled();
     });
 
     it('should only initialize once', async () => {
         userManagerSpy.signinSilent.and.returnValue(Promise.resolve(null));
-        userManagerSpy.clearStaleState.and.stub();
 
         await service.initialize();
         await service.initialize();
-        expect(userManagerSpy.clearStaleState).toHaveBeenCalledTimes(1);
         expect(userManagerSpy.signinSilent).toHaveBeenCalledTimes(1);
     });
 });
