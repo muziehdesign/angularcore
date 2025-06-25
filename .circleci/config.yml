@@ -27,6 +27,9 @@ jobs:
           command: |
             sh ./version.sh ${CIRCLE_BUILD_NUM} ${CIRCLE_BRANCH}
             cat foo.txt
+      - run:
+          name: Print variables
+          command: echo "Pipeline number is << pipeline.number >> << pipeline.id >>"
       - persist_to_workspace:
           root: .
           paths:
@@ -44,9 +47,6 @@ jobs:
       - browser-tools/install-chromedriver
       - run: npm run test:ci
       - run: echo test
-      - run:
-          name: Print pipeline number
-          command: echo "Pipeline number is $CIRCLE_PIPELINE_NUMBER"
   build:
     <<: *defaults
     steps:
