@@ -1,6 +1,6 @@
 import { EnvironmentProviders, InjectionToken, Injector, makeEnvironmentProviders, Provider } from '@angular/core';
 import { INavigator, Log, StateStore, UserManager, UserManagerSettings } from 'oidc-client-ts';
-import { AuthenticationOptions } from './authentication-options';
+import { AUTHENTICATION_OPTIONS, AuthenticationOptions } from './authentication-options';
 import { AuthenticationService } from './authentication.service';
 import { AuthorizationGuard } from './authorization.guard';
 import { Logger } from '../logger/logger';
@@ -10,6 +10,11 @@ export const OIDC_USER_MANAGER = new InjectionToken<UserManager>('OidcUserManage
 
 export function provideAuth(getConfigFn: (injector: Injector) => AuthenticationOptions, extra? : { userManager?: (injector: Injector) => UserManager, authorizationGuard?: Provider}): EnvironmentProviders {
     const providers: Provider[] = [
+        {
+            provide: AUTHENTICATION_OPTIONS,
+            useFactory: (injector: Injector) => getConfigFn(injector),
+            deps: [Injector],
+        },
         {
             provide: OIDC_USER_MANAGER,
             useFactory: (injector: Injector, logger: Logger) => {
