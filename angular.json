@@ -44,7 +44,7 @@
                         "scripts": [],
                         "browser": "src/main.ts",
                         "stylePreprocessorOptions": {
-                            "includePaths": [".", "node_modules/@muziehdesign/components/styles", "node_modules"]
+                            "includePaths": [".", "node_modules"]
                         }
                     },
                     "configurations": {
