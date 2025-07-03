@@ -2,7 +2,6 @@ import { AfterViewInit, Component, Signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CartItemModel } from '../models/cart-item.model';
 import { RouterModule } from '@angular/router';
-import { FormsModule as MuziehFormsModule, NgFormModelState, NgFormModelStateFactory } from '@muziehdesign/forms';
 import { CustomerInputModel } from './customer-input.model';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CreateOrderModel } from './create-order.model';
@@ -13,7 +12,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-cart',
-    imports: [CommonModule, RouterModule, FormsModule, MuziehFormsModule],
+    imports: [CommonModule, RouterModule, FormsModule],
     templateUrl: './cart.component.html',
     styleUrls: ['./cart.component.scss'],
     providers: [CartFacade]
@@ -21,9 +20,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
 export class CartComponent implements AfterViewInit {
     items: Signal<CartItemModel[] | undefined>;
     model: CreateOrderModel;
-    modelState!: NgFormModelState<CreateOrderModel>;
     @ViewChild('cartForm', { static: true }) cartForm!: NgForm;
-    constructor(private modelStateFactory: NgFormModelStateFactory, private facade: CartFacade, private router: Router) {
+    constructor(private facade: CartFacade, private router: Router) {
         this.items = toSignal(this.facade.getItems());
         this.model = new CreateOrderModel();
         this.model.address = new AddressInputModel();
@@ -31,7 +29,6 @@ export class CartComponent implements AfterViewInit {
     }
 
     ngAfterViewInit():void {
-        this.modelState = this.modelStateFactory.create(this.cartForm, this.model);
     }
 
     public async createOrder() {
@@ -40,9 +37,6 @@ export class CartComponent implements AfterViewInit {
         }
 
         // TODO: troubleshoot needed for undefined form error
-        this.modelState = this.modelState || this.modelStateFactory.create(this.cartForm, this.model);
-        const result = await this.modelState.validate();
-        console.log('attempt to create order', result);
         await this.facade.createOrder(this.model);
         this.router.navigate(['/orders']);
     }
