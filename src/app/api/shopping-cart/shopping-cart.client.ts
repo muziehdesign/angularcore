@@ -1,6 +1,5 @@
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AUTHENTICATED_REQUEST } from '@muziehdesign/angularcore';
 import { Observable } from 'rxjs';
 import { AppConfig } from 'src/environments/app-config';
 import { PagedResponse } from '../paged.response';
@@ -8,6 +7,7 @@ import { OrderRequest } from './models/requests/order.request';
 import { AuthorizationResponse } from './models/responses/authorization.response';
 import { CustomerResponse } from './models/responses/customer.response';
 import { OrderReponse } from './models/responses/order.response';
+import { AUTHENTICATED_REQUEST } from '@muziehdesign/angularcore';
 
 @Injectable({
     providedIn: 'root',
@@ -25,7 +25,7 @@ export class ShoppingCartClient {
     }
 
     createOrders(order: OrderRequest): Observable<OrderReponse> {
-        return this.http.post<OrderReponse>(`${this.config.shoppingCartApi?.url}/api/v1/orders`, order, { context: new HttpContext().set(AUTHENTICATED_REQUEST, true) });
+        return this.http.post<OrderReponse>(`${this.config.shoppingCartApi?.url}/api/v1/orders`, order);
     }
 
     getOrders(): Observable<PagedResponse<OrderReponse>> {

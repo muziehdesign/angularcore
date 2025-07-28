@@ -16,7 +16,7 @@ export class AuthenticationService {
         @Inject(OIDC_USER_MANAGER) private userManager: UserManager,
         private logger: Logger
     ) {
-        console.log('[AuthenticationService]Initializing authentication service');
+        console.log('[AuthenticationService]constructor');
         this.userManager.events.addUserSignedOut(async () => {
             this.logger.debug('[AuthenticationService]Sign-in status at the OP has changed. Performing signoutRedirect.');
             this.state.next(undefined);
