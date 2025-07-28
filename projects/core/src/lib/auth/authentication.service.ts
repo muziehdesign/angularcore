@@ -16,6 +16,7 @@ export class AuthenticationService {
         @Inject(OIDC_USER_MANAGER) private userManager: UserManager,
         private logger: Logger
     ) {
+        console.log('[AuthenticationService]Initializing authentication service');
         this.userManager.events.addUserSignedOut(async () => {
             this.logger.debug('[AuthenticationService]Sign-in status at the OP has changed. Performing signoutRedirect.');
             this.state.next(undefined);
@@ -35,7 +36,7 @@ export class AuthenticationService {
             //this.eventsSubject.next(new AuthenticationEvent(AuthenticationEventType.UserUnloaded));
         });
 
-        this.userManager.events.addAccessTokenExpiring(async ()=>{
+        this.userManager.events.addAccessTokenExpiring(async () => {
             console.log('[AuthenticationService]access token expiring');
             this.eventsSubject.next(new AuthenticationEvent(AuthenticationEventType.AccessTokenExpiring));
         });
@@ -47,7 +48,7 @@ export class AuthenticationService {
 
         this.userManager.events.addSilentRenewError(async (error) => {
             console.log('[AuthenticationService]silent renew error', error);
-            this.state.next(undefined); 
+            this.state.next(undefined);
             this.eventsSubject.next(new SilentRenewErrorEvent(error));
         });
 
@@ -80,7 +81,7 @@ export class AuthenticationService {
         return redirectedUser.state as string;
     }
 
-    async signinSilent(): Promise<AuthenticatedUser | undefined> { 
+    async signinSilent(): Promise<AuthenticatedUser | undefined> {
         console.log(`[AuthenticationService]Performing silent sign-in`);
         const user = await this.userManager.signinSilent().catch((err) => {
             this.logger.warn('[AuthenticationService]Silent sign-in failed, no user data available', err);
@@ -97,6 +98,10 @@ export class AuthenticationService {
 
     signoutRedirect(): Promise<void> {
         return this.userManager.signoutRedirect();
+    }
+
+    signoutSilent(): Promise<void> {
+        return this.userManager.signoutSilent();
     }
 
     /**
@@ -118,7 +123,7 @@ export class AuthenticationService {
         return this.initializationPromise;
     }
 
-    getSnapshot() : AuthenticationStateData {
+    getSnapshot(): AuthenticationStateData {
         const user = this.state.getValue();
         return {
             user: this.mapToAuthenticatedUser(user),
@@ -166,7 +171,7 @@ export enum AuthenticationEventType {
     UserSignedOut = 'userSignedOut',
     UserSessionChanged = 'userSessionChanged',
     AccessTokenExpiring = 'accessTokenExpiring',
-    AccessTokenExpired = 'accessTokenExpired'
+    AccessTokenExpired = 'accessTokenExpired',
 }
 
 export class AuthenticationEvent {
@@ -183,7 +188,6 @@ export class SilentRenewErrorEvent extends AuthenticationEvent {
         this.error = error;
     }
 }
-
 
 /**
  * 
