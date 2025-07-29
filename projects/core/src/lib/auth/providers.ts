@@ -58,6 +58,7 @@ export function createUserManager(config: AuthenticationOptions, stateStore?: St
         monitorSession: config.monitorSession,
         userStore: stateStore,
         stateStore: stateStore,
+        revokeTokensOnSignout: config.revokeTokensOnSignout,
     } satisfies UserManagerSettings;
     return new UserManager(settings, redirectNavigator, popupNavigator, iframeNavigator);
 }

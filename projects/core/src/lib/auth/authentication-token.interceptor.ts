@@ -12,7 +12,6 @@ export class AuthenticationTokenInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const snapshot = this.auththenticationService.getSnapshot();
-        console.log('[AuthenticationTokenInterceptor]intercept', snapshot);
         if(snapshot.authenticated) {
             request = request.clone({ setHeaders: { Authorization: `Bearer ${snapshot.token}` } });
         }

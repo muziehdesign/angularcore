@@ -15,6 +15,7 @@ export interface AuthenticationOptions {
     filterProtocolClaims?: boolean;
     monitorSession?: boolean;
     loadUserInfo?: boolean;
+    revokeTokensOnSignout?: boolean;
 }
 
 export const AUTHENTICATION_OPTIONS = new InjectionToken<AuthenticationOptions>('AuthenticationOptions');
