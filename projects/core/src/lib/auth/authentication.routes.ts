@@ -7,7 +7,7 @@ export const authenticationRoutes: Routes = [
     {
         path: 'login-redirect',
         component: LoginRedirectComponent,
-        canMatch: [
+        /*canMatch: [
             async (route: Route, segments: UrlSegment[]) => {
                 const auth = inject(AuthenticationService);
                 const router = inject(Router);
@@ -23,6 +23,6 @@ export const authenticationRoutes: Routes = [
                     return new RedirectCommand(router.createUrlTree(['/']));
                 }
             },
-        ],
+        ],*/
     },
 ];

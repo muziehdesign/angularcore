@@ -20,6 +20,7 @@
     <div>
         @if(user()) {
             {{ user()?.name }}
+            <button (click)="signOut()">Logout</button>
         } @else {
             <button (click)="signIn()">Login</button>
         }

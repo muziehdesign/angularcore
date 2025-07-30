@@ -11,6 +11,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
     standalone: false
 })
 export class HeaderComponent{
+
     user: Signal<AuthenticatedUser | undefined>;
     itemCount$: Observable<number>;
     constructor(
@@ -23,6 +24,10 @@ export class HeaderComponent{
     async signIn() {
         await this.facade.login();
         return false;
+    }
+
+    async signOut() {
+        await this.facade.logout();
     }
 
     async troubleshoot() {

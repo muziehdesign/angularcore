@@ -5,6 +5,7 @@ import { ShoppingCart } from '../core/shopping-cart';
 
 @Injectable()
 export class LayoutFacade {
+
     constructor(private auth: AuthenticationService, private cart: ShoppingCart) {}
 
     getUser() {
@@ -13,6 +14,10 @@ export class LayoutFacade {
 
     login() {
         return this.auth.signin('/');
+    }
+
+    logout() {
+        return this.auth.signoutRedirect();
     }
 
     getCartCount(): Observable<number> {

@@ -6,15 +6,21 @@ import { Router } from '@angular/router';
     selector: 'mz-login-redirect',
     imports: [],
     standalone: true,
-    template: ''
+    template: 'redirecting...',
 })
 export class LoginRedirectComponent implements OnInit {
- 
-  constructor(private auth: AuthenticationService, private router: Router) {
-
-  }
-  async ngOnInit() {
-    const returnUrl = await this.auth.signinRedirectCallback();
-    this.router.navigateByUrl(returnUrl);
-  }
+    constructor(
+        private auth: AuthenticationService,
+        private router: Router
+    ) {}
+    async ngOnInit() {
+        try {
+            console.log('login redirect oninit');
+            const returnUrl = await this.auth.signinRedirectCallback();
+            await this.router.navigateByUrl(returnUrl, { replaceUrl: true });
+        } catch (e) {
+            console.error(e);
+            await this.router.navigate(['/'], { replaceUrl: true });
+        }
+    }
 }
