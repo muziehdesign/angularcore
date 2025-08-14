@@ -100,10 +100,6 @@ export class AuthenticationService {
         return this.userManager.signoutRedirect();
     }
 
-    signoutSilent(): Promise<void> {
-        return this.userManager.signoutSilent();
-    }
-
     /**
      * Performs a silent sign-in. If the user is not authenticated, redirects to the identity provider.
      */
