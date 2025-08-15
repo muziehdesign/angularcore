@@ -16,7 +16,7 @@ export class AuthenticationService {
         @Inject(OIDC_USER_MANAGER) private userManager: UserManager,
         private logger: Logger
     ) {
-        
+
         this.userManager.events.addUserSignedOut(async () => {
             this.logger.debug('[AuthenticationService]Sign-in status at the OP has changed. Performing signoutRedirect.');
             this.state.next(undefined);
@@ -25,29 +25,29 @@ export class AuthenticationService {
         });
 
         this.userManager.events.addUserLoaded((user) => {
-            this.logger.info('[AuthenticationService]user loaded');
+            this.logger.debug('[AuthenticationService]user loaded');
             //this.state.next(user);
             //this.eventsSubject.next(new AuthenticationEvent(AuthenticationEventType.UserLoaded));
         });
 
         this.userManager.events.addUserUnloaded(() => {
-            this.logger.info('[AuthenticationService]user unloaded');
+            this.logger.debug('[AuthenticationService]user unloaded');
             //this.state.next(undefined);
             //this.eventsSubject.next(new AuthenticationEvent(AuthenticationEventType.UserUnloaded));
         });
 
         this.userManager.events.addAccessTokenExpiring(async () => {
-            this.logger.info('[AuthenticationService]access token expiring');
+            this.logger.debug('[AuthenticationService]access token expiring');
             this.eventsSubject.next(new AuthenticationEvent(AuthenticationEventType.AccessTokenExpiring));
         });
 
         this.userManager.events.addAccessTokenExpired(async () => {
-            this.logger.info('[AuthenticationService]access token expired');
+            this.logger.debug('[AuthenticationService]access token expired');
             this.eventsSubject.next(new AuthenticationEvent(AuthenticationEventType.AccessTokenExpired));
         });
 
         this.userManager.events.addSilentRenewError(async (error) => {
-            this.logger.info('[AuthenticationService]silent renew error', error);
+            this.logger.debug('[AuthenticationService]silent renew error', error);
             this.state.next(undefined);
             this.eventsSubject.next(new SilentRenewErrorEvent(error));
         });
@@ -64,11 +64,11 @@ export class AuthenticationService {
     async loadUser(): Promise<AuthenticatedUser | undefined> {
         const user: User | null = await this.userManager.getUser().catch(() => null);
         if (!user || user.expired) {
-            this.logger.info(`[AuthenticationService]No user data to load, or user expired at ${user?.expires_at}`);
+            this.logger.debug(`[AuthenticationService]No user data to load, or user expired at ${user?.expires_at}`);
             this.state.next(undefined);
             return undefined;
         }
-        this.logger.info(`[AuthenticationService]Restored user, expires at ${user?.expires_at}, in ${user?.expires_in}`);
+        this.logger.debug(`[AuthenticationService]Restored user, expires at ${user?.expires_at}, in ${user?.expires_in}`);
         this.state.next(user);
         return Promise.resolve(this.mapToAuthenticatedUser(user));
     }
@@ -77,18 +77,18 @@ export class AuthenticationService {
         const redirectedUser = await this.userManager.signinRedirectCallback(url);
         const returnUrl = redirectedUser.state || '/';
         //window.history.replaceState({}, '', returnUrl);
-        this.logger.info(`[AuthenticationService]handle login callback: ${redirectedUser.expired}, ${redirectedUser.expires_at}, ${returnUrl}`);
+        this.logger.debug(`[AuthenticationService]handle login callback: ${redirectedUser.expired}, ${redirectedUser.expires_at}, ${returnUrl}`);
         return redirectedUser.state as string;
     }
 
     async signinSilent(): Promise<AuthenticatedUser | undefined> {
-        this.logger.info(`[AuthenticationService]Performing silent sign-in`);
+        this.logger.debug(`[AuthenticationService]Performing silent sign-in`);
         const user = await this.userManager.signinSilent().catch((err) => {
             this.logger.warn('[AuthenticationService]Silent sign-in failed, no user data available', err);
             return null;
         });
         this.state.next(user || undefined);
-        this.logger.info(`[AuthenticationService]Silent sign-in completed, user: ${user?.expired}, expires at: ${user?.expires_at}`);
+        this.logger.debug(`[AuthenticationService]Silent sign-in completed, user: ${user?.expired}, expires at: ${user?.expires_at}`);
         return this.mapToAuthenticatedUser(user || undefined);
     }
 
