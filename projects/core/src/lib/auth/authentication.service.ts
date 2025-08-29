@@ -25,7 +25,7 @@ export class AuthenticationService {
 
         this.userManager.events.addUserLoaded((user) => {
             console.log('[AuthenticationService]user loaded');
-            //this.state.next(user);
+            this.state.next(user);
             //this.eventsSubject.next(new AuthenticationEvent(AuthenticationEventType.UserLoaded));
         });
 
@@ -47,7 +47,7 @@ export class AuthenticationService {
 
         this.userManager.events.addSilentRenewError(async (error) => {
             console.log('[AuthenticationService]silent renew error', error);
-            this.state.next(undefined); 
+            this.state.next(undefined);
             this.eventsSubject.next(new SilentRenewErrorEvent(error));
         });
 
@@ -80,7 +80,7 @@ export class AuthenticationService {
         return redirectedUser.state as string;
     }
 
-    async signinSilent(): Promise<AuthenticatedUser | undefined> { 
+    async signinSilent(): Promise<AuthenticatedUser | undefined> {
         console.log(`[AuthenticationService]Performing silent sign-in`);
         const user = await this.userManager.signinSilent().catch((err) => {
             this.logger.warn('[AuthenticationService]Silent sign-in failed, no user data available', err);
@@ -186,7 +186,7 @@ export class SilentRenewErrorEvent extends AuthenticationEvent {
 
 
 /**
- * 
+ *
  *  https://github.com/IdentityModel/oidc-client-js/wiki#methods
     getUser: Returns promise to load the User object for the currently authenticated user.
     removeUser: Returns promise to remove from any storage the currently authenticated user.
