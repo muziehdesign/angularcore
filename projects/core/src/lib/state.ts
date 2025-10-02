@@ -8,8 +8,12 @@ export class State<T> {
     }
 
     patch(partial: Partial<T>): void {
+        this.update(s => ({ ...s, ...partial }));
+    }
+
+    update(updateFn: (current: T) => T): void {
         const currentState = this.state$.getValue();
-        const newValue = { ...currentState, ...partial };
+        const newValue = updateFn(currentState);
         this.set(newValue);
     }
 
