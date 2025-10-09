@@ -1,5 +1,5 @@
 import { Component, Signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ItemModel } from '../models/item.model';
 import { ItemCardComponent } from '../item-card/item-card.component';
 import { ItemFacade } from '../item.facade';
@@ -8,7 +8,7 @@ import { PagedModel } from 'src/app/models/paged.model';
 
 @Component({
     selector: 'app-item-list',
-    imports: [CommonModule, ItemCardComponent],
+    imports: [ItemCardComponent],
     templateUrl: './item-list.component.html',
     styleUrls: ['./item-list.component.scss']
 })
