@@ -1,5 +1,5 @@
-import { Injectable } from "@angular/core";
-import { AuthenticationService } from "@muziehdesign/angularcore";
+import { Inject, Injectable } from "@angular/core";
+import { Authentication, AUTHENTICATION } from "@muziehdesign/angularcore";
 import { firstValueFrom, Observable } from "rxjs";
 import { CartItemModel } from "../models/cart-item.model";
 import { OrderService } from "../core/order.service";
@@ -8,7 +8,7 @@ import { CreateOrderModel } from "./create-order.model";
 
 @Injectable()
 export class CartFacade {
-    constructor(private cart: ShoppingCart, private service: OrderService, private auth: AuthenticationService) { }
+    constructor(private cart: ShoppingCart, private service: OrderService, @Inject(AUTHENTICATION) private auth: Authentication) { }
 
     getItems(): Observable<CartItemModel[]> {
         return this.cart.stateChanges();
@@ -17,7 +17,7 @@ export class CartFacade {
     async loginIfNeeded(): Promise<boolean> {
         const authenticated = await this.auth.getSnapshot().authenticated;
         if(!authenticated) {
-            await this.auth.signin('/'); // TODO: redirect to state is not working
+            await this.auth.signinRedirect('/'); // TODO: redirect to state is not working
             return true;
         }
 

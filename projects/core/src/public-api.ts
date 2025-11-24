@@ -3,9 +3,9 @@ export { AuthenticationOptions, AUTHENTICATION_OPTIONS } from './lib/auth/authen
 export { AuthenticationService } from './lib/auth/authentication.service';
 export { AuthenticationEvent, AuthenticationEventType, SilentRenewErrorEvent } from './lib/auth/authentication-event';
 export { AuthenticationStateData } from './lib/auth/authentication-state-data';
-
+export { AUTHENTICATION, Authentication } from './lib/auth/authentication';
 export { AuthenticatedUser } from './lib/auth/authenticated-user';
-export { AuthenticationTokenInterceptor, AUTHENTICATED_REQUEST } from './lib/auth/authentication-token.interceptor';
+export { AuthenticationTokenInterceptor, AUTHENTICATED_REQUEST, authInterceptor } from './lib/auth/authentication-token.interceptor';
 export { authenticationRoutes } from './lib/auth/authentication.routes';
 // authorization
 export { AuthorizationService } from './lib/auth/authorization.service';

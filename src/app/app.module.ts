@@ -1,7 +1,7 @@
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { APP_INITIALIZER, Injector, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { AuthenticationService, AuthorizationService, provideAuth, WINDOW } from '@muziehdesign/angularcore';
+import { Authentication, AUTHENTICATION, authInterceptor, AuthorizationService, provideAuth } from '@muziehdesign/angularcore';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -26,10 +26,10 @@ import { AppConfig } from 'src/environments/app-config';
             const config = injector.get(AppConfig);
             return config.identity;
         }),
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withInterceptors([authInterceptor])),
         {
             provide: APP_INITIALIZER,
-            useFactory: (authentication: AuthenticationService, authorization: AuthorizationService, client: ShoppingCartClient) => async () => {
+            useFactory: (authentication: Authentication, authorization: AuthorizationService, client: ShoppingCartClient) => async () => {
                 authorization.register(
                     client.getAuthorization().pipe(
                         map((data) => {
@@ -40,7 +40,7 @@ import { AppConfig } from 'src/environments/app-config';
 
                 await authentication.initialize();
             },
-            deps: [AuthenticationService, AuthorizationService, ShoppingCartClient],
+            deps: [AUTHENTICATION, AuthorizationService, ShoppingCartClient],
             multi: true,
         },
     ],

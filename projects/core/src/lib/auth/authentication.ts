@@ -4,7 +4,7 @@ import { AuthenticationEvent } from './authentication-event';
 import { AuthenticatedUser } from './authenticated-user';
 import { AuthenticationStateData } from './authentication-state-data';
 
-export const AUTHENTICATION = new InjectionToken<string>('AUTHENTICATION');
+export const AUTHENTICATION = new InjectionToken<Authentication>('AUTHENTICATION');
 
 export interface Authentication {
     get events(): Observable<AuthenticationEvent>;

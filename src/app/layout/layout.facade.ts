@@ -1,18 +1,18 @@
-import { Injectable } from '@angular/core';
-import { AuthenticationService } from '@muziehdesign/angularcore';
+import { Inject, Injectable } from '@angular/core';
+import { Authentication, AUTHENTICATION } from '@muziehdesign/angularcore';
 import { map, Observable } from 'rxjs';
 import { ShoppingCart } from '../core/shopping-cart';
 
 @Injectable()
 export class LayoutFacade {
-    constructor(private auth: AuthenticationService, private cart: ShoppingCart) {}
+    constructor(@Inject(AUTHENTICATION) private auth: Authentication, private cart: ShoppingCart) {}
 
     getUser() {
         return this.auth.stateChanges().pipe(map((s) => s.user));
     }
 
     login() {
-        return this.auth.signin('/');
+        return this.auth.signinRedirect('/');
     }
 
     getCartCount(): Observable<number> {

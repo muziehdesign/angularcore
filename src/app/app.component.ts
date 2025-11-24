@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthenticationEventType, AuthenticationService, WINDOW } from '@muziehdesign/angularcore';
+import { AUTHENTICATION, Authentication, AuthenticationEventType, WINDOW } from '@muziehdesign/angularcore';
 import { AppConfig } from 'src/environments/app-config';
 
 @Component({
@@ -14,7 +14,7 @@ export class AppComponent {
     constructor(
         private config: AppConfig,
         private router: Router,
-        private authentication: AuthenticationService,
+        @Inject(AUTHENTICATION) private authentication: Authentication,
         @Inject(WINDOW) private window: Window
     ) { 
         this.authentication.events.subscribe((event) => {
