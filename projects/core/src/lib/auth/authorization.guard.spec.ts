@@ -5,6 +5,7 @@ import { Location } from '@angular/common';
 import { AuthorizationGuard } from './authorization.guard';
 import { AuthenticationService } from './authentication.service';
 import { AuthorizationService } from './authorization.service';
+import { AUTHENTICATION } from './authentication';
 
 describe('AuthorizationGuard', () => {
     let guard: AuthorizationGuard;
@@ -18,7 +19,7 @@ describe('AuthorizationGuard', () => {
         locationSpy = jasmine.createSpyObj('Location', ['path']);
 
         TestBed.configureTestingModule({
-            providers: [AuthorizationGuard, { provide: AuthenticationService, useValue: authenticationServiceSpy }, { provide: AuthorizationService, useValue: authorizationServiceSpy }, { provide: Location, useValue: locationSpy }],
+            providers: [AuthorizationGuard, { provide: AUTHENTICATION, useValue: authenticationServiceSpy }, { provide: AuthorizationService, useValue: authorizationServiceSpy }, { provide: Location, useValue: locationSpy }],
         });
         guard = TestBed.inject(AuthorizationGuard);
     });

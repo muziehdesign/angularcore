@@ -5,10 +5,11 @@ import { AuthenticationService } from './authentication.service';
 import { AuthorizationGuard } from './authorization.guard';
 import { Logger } from '../logger/logger';
 import { AuthorizationService } from './authorization.service';
+import { AUTHENTICATION, Authentication } from './authentication';
 
 export const OIDC_USER_MANAGER = new InjectionToken<UserManager>('OidcUserManager');
 
-export function provideAuth(getConfigFn: (injector: Injector) => AuthenticationOptions, extra? : { userManager?: (injector: Injector) => UserManager, authorizationGuard?: Provider}): EnvironmentProviders {
+export function provideAuth(getConfigFn: (injector: Injector) => AuthenticationOptions, extra?: { userManager?: (injector: Injector) => UserManager; authorizationGuard?: Provider }): EnvironmentProviders {
     const providers: Provider[] = [
         {
             provide: AUTHENTICATION_OPTIONS,
@@ -33,9 +34,23 @@ export function provideAuth(getConfigFn: (injector: Injector) => AuthenticationO
             },
             deps: [Injector, Logger],
         },
-        AuthenticationService,
+        { provide: AUTHENTICATION, useClass: AuthenticationService },
         AuthorizationService,
-        extra?.authorizationGuard || AuthorizationGuard
+        extra?.authorizationGuard || AuthorizationGuard,
+    ];
+
+    return makeEnvironmentProviders(providers);
+}
+
+export function provideAuthWith(options: { authentication: (injector: Injector) => Authentication }): EnvironmentProviders {
+    const providers: Provider[] = [
+        {
+            provide: AUTHENTICATION,
+            useFactory: options.authentication,
+            deps: [Injector],
+        },
+        AuthorizationService,
+        AuthorizationGuard,
     ];
 
     return makeEnvironmentProviders(providers);

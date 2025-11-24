@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from '../authentication.service';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Authentication, AUTHENTICATION } from '../authentication';
+import { AuthenticationService } from '../authentication.service';
 
 @Component({
     selector: 'mz-login-redirect',
@@ -10,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class LoginRedirectComponent implements OnInit {
  
-  constructor(private auth: AuthenticationService, private router: Router) {
+  constructor(@Inject(AUTHENTICATION) private auth: AuthenticationService, private router: Router) {
 
   }
   async ngOnInit() {

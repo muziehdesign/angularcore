@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LoginRedirectComponent } from './login-redirect.component';
-import { AuthenticationService } from '../authentication.service';
 import { Router } from '@angular/router';
+import { AUTHENTICATION } from '../authentication';
 
 describe('LoginRedirectComponent', () => {
   let component: LoginRedirectComponent;
@@ -12,7 +12,7 @@ describe('LoginRedirectComponent', () => {
     await TestBed.configureTestingModule({
       imports: [LoginRedirectComponent],
       providers: [
-        {provide: AuthenticationService, useValue: {handleLoginCallback: () => Promise.resolve('/')}},
+        {provide: AUTHENTICATION, useValue: {handleLoginCallback: () => Promise.resolve('/')}},
         {provide: Router, useValue: {navigateByUrl: () => Promise.resolve()}},
       ]
     })

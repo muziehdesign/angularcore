@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
 import { AuthenticationTokenInterceptor } from './authentication-token.interceptor';
-import { AuthenticationService } from './authentication.service';
+import { AUTHENTICATION } from './authentication';
 
 describe('AuthenticationTokenInterceptor', () => {
     beforeEach(() => {
-        let authenticationService = jasmine.createSpyObj(AuthenticationService.name, ['getUser', 'interceptSilentRedirect']);
+        let authenticationService = jasmine.createSpyObj("Authentication", ['getUser', 'interceptSilentRedirect']);
         TestBed.configureTestingModule({
-            providers: [AuthenticationTokenInterceptor, { provide: AuthenticationService, useValue: authenticationService }],
+            providers: [AuthenticationTokenInterceptor, { provide: AUTHENTICATION, useValue: authenticationService }],
         });
     });
 

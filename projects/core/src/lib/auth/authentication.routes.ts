@@ -1,6 +1,7 @@
 import { RedirectCommand, Route, Router, Routes, UrlSegment } from '@angular/router';
 import { LoginRedirectComponent } from './login-redirect/login-redirect.component';
 import { inject } from '@angular/core';
+import { AUTHENTICATION } from './authentication';
 import { AuthenticationService } from './authentication.service';
 
 export const authenticationRoutes: Routes = [
@@ -9,7 +10,7 @@ export const authenticationRoutes: Routes = [
         component: LoginRedirectComponent,
         canMatch: [
             async (route: Route, segments: UrlSegment[]) => {
-                const auth = inject(AuthenticationService);
+                const auth = inject<AuthenticationService>(AUTHENTICATION);
                 const router = inject(Router);
                 
                 try {

@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { Observable, of, tap, throwError } from 'rxjs';
+import { of, tap, throwError } from 'rxjs';
 import { AUTHORIZATION_POLICY } from './authorization-policy';
 import { AuthorizationService, NamespacedAuthorizationDataResponse } from './authorization.service';
 import { Logger } from '../logger/logger';

@@ -6,9 +6,10 @@ import { Logger } from '../logger/logger';
 import { OIDC_USER_MANAGER } from './providers';
 import { AuthenticationStateData } from './authentication-state-data';
 import { AuthenticationEvent, AuthenticationEventType, SilentRenewErrorEvent } from './authentication-event';
+import { Authentication } from './authentication';
 
 @Injectable()
-export class AuthenticationService {
+export class AuthenticationService implements Authentication {
     private readonly state = new BehaviorSubject<User | undefined>(undefined);
     private initializationPromise: Promise<void> | undefined;
 
