@@ -4,6 +4,8 @@ import { Inject, Injectable } from '@angular/core';
 import { User, UserManager } from 'oidc-client-ts';
 import { Logger } from '../logger/logger';
 import { OIDC_USER_MANAGER } from './providers';
+import { AuthenticationStateData } from './authentication-state-data';
+import { AuthenticationEvent, AuthenticationEventType, SilentRenewErrorEvent } from './authentication-event';
 
 @Injectable()
 export class AuthenticationService {
@@ -152,38 +154,6 @@ export class AuthenticationService {
         return undefined;
     }
 }
-
-export interface AuthenticationStateData {
-    authenticated: boolean;
-    user?: AuthenticatedUser;
-    token?: string;
-}
-
-export enum AuthenticationEventType {
-    UserLoaded = 'userLoaded',
-    UserUnloaded = 'userUnloaded',
-    SilentRenewError = 'silentRenewError',
-    UserSignedOut = 'userSignedOut',
-    UserSessionChanged = 'userSessionChanged',
-    AccessTokenExpiring = 'accessTokenExpiring',
-    AccessTokenExpired = 'accessTokenExpired'
-}
-
-export class AuthenticationEvent {
-    readonly type: AuthenticationEventType;
-    constructor(type: AuthenticationEventType) {
-        this.type = type;
-    }
-}
-
-export class SilentRenewErrorEvent extends AuthenticationEvent {
-    readonly error: Error;
-    constructor(error: Error) {
-        super(AuthenticationEventType.SilentRenewError);
-        this.error = error;
-    }
-}
-
 
 /**
  *

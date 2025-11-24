@@ -1,6 +1,9 @@
 // identityserver
 export { AuthenticationOptions, AUTHENTICATION_OPTIONS } from './lib/auth/authentication-options';
-export { AuthenticationService, AuthenticationStateData, AuthenticationEvent, AuthenticationEventType } from './lib/auth/authentication.service';
+export { AuthenticationService } from './lib/auth/authentication.service';
+export { AuthenticationEvent, AuthenticationEventType, SilentRenewErrorEvent } from './lib/auth/authentication-event';
+export { AuthenticationStateData } from './lib/auth/authentication-state-data';
+
 export { AuthenticatedUser } from './lib/auth/authenticated-user';
 export { AuthenticationTokenInterceptor, AUTHENTICATED_REQUEST } from './lib/auth/authentication-token.interceptor';
 export { authenticationRoutes } from './lib/auth/authentication.routes';
