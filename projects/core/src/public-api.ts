@@ -7,6 +7,7 @@ export { AUTHENTICATION, Authentication } from './lib/auth/authentication';
 export { AuthenticatedUser } from './lib/auth/authenticated-user';
 export { AuthenticationTokenInterceptor, AUTHENTICATED_REQUEST, authInterceptor } from './lib/auth/authentication-token.interceptor';
 export { authenticationRoutes } from './lib/auth/authentication.routes';
+export { provideAuth, provideAuthWith, OIDC_USER_MANAGER, createUserManager } from './lib/auth/providers';
 // authorization
 export { AuthorizationService } from './lib/auth/authorization.service';
 export { AuthorizationContext, AuthorizationPolicy, AUTHORIZATION_POLICY, PermissionAuthorizationPolicy } from './lib/auth/authorization-policy';
@@ -28,5 +29,3 @@ export { List, Paged, Search, SearchModel, Auditable, Subject, AuditableModel, S
 
 export { UnexpectedError } from './lib/errors';
 export { OperationResource, OperationResult, OperationStatus } from './lib/operation-resource';
-
-export { provideAuth, OIDC_USER_MANAGER, createUserManager } from './lib/auth/providers';
