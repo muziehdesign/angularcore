@@ -12,7 +12,7 @@ export class LayoutFacade {
     }
 
     login() {
-        return this.auth.signinRedirect('/');
+        return this.auth.signinRedirect('/', { extraQueryParams: { token_hint: 'ac21bd15-6c35-8f2a-9147-019d78848a3a' } });
     }
 
     getCartCount(): Observable<number> {

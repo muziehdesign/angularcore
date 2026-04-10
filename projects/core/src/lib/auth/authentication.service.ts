@@ -94,8 +94,8 @@ export class AuthenticationService implements Authentication {
         return this.mapToAuthenticatedUser(user || undefined);
     }
 
-    signinRedirect(returnUrl: string): Promise<void> {
-        return this.userManager.signinRedirect({ state: returnUrl });
+    signinRedirect(returnUrl: string, options?: { extraQueryParams?: Record<string, string | number | boolean> }): Promise<void> {
+        return this.userManager.signinRedirect({ state: returnUrl, extraQueryParams: options?.extraQueryParams });
     }
 
     signoutRedirect(): Promise<void> {
