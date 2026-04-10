@@ -10,16 +10,16 @@ describe('AuthenticationService', () => {
     let loggerSpy: jasmine.SpyObj<Logger>;
 
     beforeEach(() => {
-        userManagerSpy = jasmine.createSpyObj<UserManager>('UserManager', 
-            ['signinSilent', 'signinRedirect', 'getUser', 'clearStaleState'], 
+        userManagerSpy = jasmine.createSpyObj<UserManager>('UserManager',
+            ['signinSilent', 'signinRedirect', 'getUser', 'clearStaleState'],
             {events: jasmine.createSpyObj<UserManagerEvents>('UserManagerEvents', ['addAccessTokenExpired', 'addAccessTokenExpiring', 'addUserSessionChanged', 'addUserLoaded', 'addUserUnloaded', 'addSilentRenewError', 'addUserSignedOut'])}
         );
         loggerSpy = jasmine.createSpyObj<Logger>('Logger', ['debug', 'error']);
 
         TestBed.configureTestingModule({
             providers: [
-                AuthenticationService, 
-                { provide: Logger, useValue: loggerSpy }, 
+                AuthenticationService,
+                { provide: Logger, useValue: loggerSpy },
                 { provide: OIDC_USER_MANAGER, useValue: userManagerSpy }],
         });
         service = TestBed.inject(AuthenticationService);
@@ -51,7 +51,7 @@ describe('AuthenticationService', () => {
 
             const result = await service.signinSilent();
             expect(result?.subjectId).toBe('1234567890');
-            expect(result?.name).toBe('John Doe'); 
+            expect(result?.name).toBe('John Doe');
             expect(result?.username).toBe('unittestjohndoe');
             expect(result?.provider).toBe('unittest');
             expect(userManagerSpy.signinSilent).toHaveBeenCalled();
@@ -62,7 +62,7 @@ describe('AuthenticationService', () => {
         userManagerSpy.signinRedirect.and.returnValue(Promise.resolve());
 
         const result = await service.signinRedirect('/return-url');
-        expect(userManagerSpy.signinRedirect).toHaveBeenCalledWith({ state: '/return-url' });
+        expect(userManagerSpy.signinRedirect).toHaveBeenCalledWith({ state: '/return-url', extraQueryParams: undefined });
     });
 
     it('should initialize', async () => {
