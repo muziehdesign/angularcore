@@ -62,7 +62,7 @@ describe('AuthenticationService', () => {
         userManagerSpy.signinRedirect.and.returnValue(Promise.resolve());
 
         const result = await service.signinRedirect('/return-url');
-        expect(userManagerSpy.signinRedirect).toHaveBeenCalledWith({ state: '/return-url', extraQueryParams: undefined });
+        expect(userManagerSpy.signinRedirect).toHaveBeenCalledWith({ state: '/return-url', extraQueryParams: undefined, prompt: undefined });
     });
 
     it('should initialize', async () => {
